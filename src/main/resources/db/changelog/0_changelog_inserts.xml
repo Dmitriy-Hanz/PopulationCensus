@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd" context="runtime_insert">
+
+    <changeSet id="1" author="Household_inserts">
+        <sql>
+            insert into household
+            (number_of_members,
+             rooms_count,
+             part_of_room,
+             has_foreign_residents,
+             has_farm_facilities)
+            values
+            (
+             1,
+             1,
+             '1/2',
+             0,
+             0
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
