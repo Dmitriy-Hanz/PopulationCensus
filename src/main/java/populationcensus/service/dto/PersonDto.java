@@ -33,7 +33,6 @@ public class PersonDto {
     private String nameOfNativeLanguage;
     private Integer speakingLanguage;
     private String nameOfSpeakingLanguage;
-    private String sourceOfResources;
     private Integer mainSourceOfResources;
 
     private LivingPlaceInfoDto livingPlaceInfo;
@@ -75,7 +74,6 @@ public class PersonDto {
         nameOfNativeLanguage = entity.getNameOfNativeLanguage();
         speakingLanguage = entity.getSpeakingLanguage();
         nameOfSpeakingLanguage = entity.getNameOfSpeakingLanguage();
-        sourceOfResources = entity.getSourceOfResources();
         mainSourceOfResources = entity.getMainSourceOfResources();
 
         if (entity.getLivingPlaceInfo() != null){

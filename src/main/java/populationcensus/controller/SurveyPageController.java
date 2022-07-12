@@ -52,11 +52,11 @@ public class SurveyPageController {
 
     @PostMapping(value = "/personNext")
     public String personQuestionsPage(@ModelAttribute(name = "currentPerson") PersonDto obj, Model model) {
-//        ((List<PersonDto>)model.getAttribute("persons")).add(obj);
         HouseholdDto tempHousehold = (HouseholdDto)model.getAttribute("household");
         List<PersonDto> tempPersons = (List<PersonDto>)model.getAttribute("persons");
 
         tempPersons.add(obj);
+        model.addAttribute("currentPerson", new PersonDto());
 
         if (tempPersons.size() == tempHousehold.getNumberOfMembers()){
             return "redirect:/main/surveyFinish";
@@ -65,7 +65,8 @@ public class SurveyPageController {
     }
 
     @PostMapping(value = "/foreignPerson")
-    public String foreignPersonQuestionsPage() {
+    public String foreignPersonQuestionsPage(Model model) {
+        ((PersonDto)model.getAttribute("currentPerson")).setIsForeign(true);
         return "redirect:/main/surveyForeignPerson";
     }
 }

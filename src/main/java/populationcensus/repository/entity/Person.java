@@ -88,9 +88,6 @@ public class Person {
     @Column(name = "name_of_speaking_language")
     private String nameOfSpeakingLanguage;
 
-    @Column(name = "source_of_resources")
-    private String sourceOfResources;
-
     @Column(name = "main_source_of_resources")
     private Integer mainSourceOfResources;
 

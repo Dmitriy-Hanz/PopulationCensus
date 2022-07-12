@@ -90,7 +90,6 @@
                 name_of_native_language     varchar(100),
                 speaking_language           int,
                 name_of_speaking_language   varchar(100),
-                source_of_resources         varchar(100),
                 main_source_of_resources    int,
 
                 constraint id_pk primary key (id),
