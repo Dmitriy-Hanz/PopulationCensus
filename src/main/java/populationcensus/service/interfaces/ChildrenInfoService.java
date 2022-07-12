@@ -17,8 +17,8 @@ public interface ChildrenInfoService {
 
     void deleteChildrenInfoById(long childrenInfoId);
     void deleteChildrenInfo(ChildrenInfo childrenInfo);
-    void deleteChildrenInfoByPersonId(long householdId);
-    void deleteChildrenInfoByPerson(Household household);
+    void deleteChildrenInfoByPersonId(long personId);
+    void deleteChildrenInfoByPerson(Person person);
 
     Person findLinkedPerson(long childrenInfoId);
     Person findLinkedPerson(ChildrenInfo childrenInfo);
