@@ -4,9 +4,9 @@ import org.mapstruct.Mapper;
 import populationcensus.repository.entity.Household;
 import populationcensus.service.dto.HouseholdDto;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {AccommodationsInfoMapper.class, FullAddressInfoMapper.class})
 public interface HouseholdMapper {
-    HouseholdDto toHouseholdDto(Household horse);
+    HouseholdDto toHouseholdDto(Household entity);
 
-    Household toHousehold(HouseholdDto horseDto);
+    Household toHousehold(HouseholdDto entityDto);
 }
