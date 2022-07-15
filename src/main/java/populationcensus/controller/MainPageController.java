@@ -24,6 +24,6 @@ public class MainPageController {
 
     @PostMapping("/authorization")
     public String authorization(){
-        return "";
+        return "redirect:adminMain";
     }
 }
