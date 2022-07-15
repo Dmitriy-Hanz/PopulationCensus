@@ -37,6 +37,7 @@ public class LivingCountryInfo {
     private Integer reasonForLeavingBelarus;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "linked_person_id")

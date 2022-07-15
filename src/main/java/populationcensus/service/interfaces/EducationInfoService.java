@@ -8,18 +8,21 @@ import populationcensus.repository.entity.Person;
 public interface EducationInfoService {
 
     void saveEducationInfo(EducationInfo entity);
-    void saveEducationInfo(long personId, ChildrenInfo entity);
+    void saveEducationInfo(long personId, EducationInfo entity);
+    void saveEducationInfo(Person person, EducationInfo entity);
 
     EducationInfo findEducationInfo(long educationInfoId);
-    EducationInfo findEducationInfoByPerson(Person person);
     EducationInfo findEducationInfoByPersonId(long personId);
+    EducationInfo findEducationInfoByPerson(Person person);
 
-    void deleteEducationInfo(EducationInfo educationInfo);
     void deleteEducationInfoById(long educationInfoId);
-    void deleteEducationInfoByPerson(Person person);
+    void deleteEducationInfo(EducationInfo educationInfo);
     void deleteEducationInfoByPersonId(long personId);
+    void deleteEducationInfoByPerson(Person person);
+
+    Person findLinkedPerson(long educationInfoId);
+    Person findLinkedPerson(EducationInfo educationInfo);
 
     void updateEducationInfo(EducationInfo entity);
 
-    Person findLinkedPerson(long educationInfoId);
 }

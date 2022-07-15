@@ -1,25 +1,24 @@
 package populationcensus.service.interfaces;
 
-import populationcensus.repository.entity.ChildrenInfo;
-import populationcensus.repository.entity.EducationInfo;
-import populationcensus.repository.entity.LivingPlaceInfo;
-import populationcensus.repository.entity.Person;
+import populationcensus.repository.entity.*;
 
 public interface LivingPlaceInfoService {
 
     void saveLivingPlaceInfo(LivingPlaceInfo entity);
     void saveLivingPlaceInfo(long personId, LivingPlaceInfo entity);
+    void saveLivingPlaceInfo(Person person, LivingPlaceInfo entity);
 
     LivingPlaceInfo findLivingPlaceInfo(long livingPlaceInfoId);
-    LivingPlaceInfo findLivingPlaceInfoByPerson(Person person);
     LivingPlaceInfo findLivingPlaceInfoByPersonId(long personId);
+    LivingPlaceInfo findLivingPlaceInfoByPerson(Person person);
 
-    void deleteLivingPlaceInfo(LivingPlaceInfo livingPlaceInfo);
     void deleteLivingPlaceInfoById(long livingPlaceInfoId);
-    void deleteLivingPlaceInfoByPerson(Person person);
+    void deleteLivingPlaceInfo(LivingPlaceInfo livingPlaceInfo);
     void deleteLivingPlaceInfoByPersonId(long personId);
-
-    void updateLivingPlaceInfo(LivingPlaceInfo entity);
+    void deleteLivingPlaceInfoByPerson(Person person);
 
     Person findLinkedPerson(long livingPlaceInfoId);
+    Person findLinkedPerson(LivingPlaceInfo livingPlaceInfo);
+
+    void updateLivingPlaceInfo(LivingPlaceInfo entity);
 }

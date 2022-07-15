@@ -48,6 +48,7 @@ public class AccommodationsInfo {
     private Integer cookingEquipment;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "linked_household_id")

@@ -80,8 +80,8 @@ public class ChildrenInfoServiceImpl implements ChildrenInfoService {
 
 
     @Override
-    public void deleteChildrenInfoById(long childrenInfo) {
-        childrenInfoRep.deleteById(childrenInfo);
+    public void deleteChildrenInfoById(long childrenInfoId) {
+        childrenInfoRep.deleteById(childrenInfoId);
         childrenInfoRep.flush();
     }
 

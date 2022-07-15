@@ -51,6 +51,7 @@ public class FullAddressInfo {
     private String flatOrRoomNumber;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "linked_household_id")

@@ -42,5 +42,6 @@ public class HouseholdDto {
         } else {
             this.fullAddressInfo = new FullAddressInfoDto();
         }
+
     }
 }

@@ -19,7 +19,6 @@ import java.util.Optional;
 public class HouseholdServiceImpl implements HouseholdService {
 
     private final HouseholdRep householdRep;
-    private final AccommodationsInfoRep accommodationsInfoRep;
 
     @Override
     public void saveHousehold(Household entity) {
@@ -33,13 +32,45 @@ public class HouseholdServiceImpl implements HouseholdService {
                 entity.getFullAddressInfo().setHouseholdInFullAddressInfo(entity);
             }
         }
+
+        if(entity.getPersons() != null){
+            List<Person> tempPersons = entity.getPersons();
+            for (Person tempPerson : tempPersons) {
+                if (tempPerson.getHouseholdField() == null) {
+                    tempPerson.setHouseholdField(entity);
+                }
+
+                if (tempPerson.getLivingPlaceInfo() != null) {
+                    if (tempPerson.getLivingPlaceInfo().getPersonInLivingPlaceInfo() == null) {
+                        tempPerson.getLivingPlaceInfo().setPersonInLivingPlaceInfo(tempPerson);
+                    }
+                }
+                if (tempPerson.getLivingCountryInfo() != null) {
+                    if (tempPerson.getLivingCountryInfo().getPersonInLivingCountryInfo() == null) {
+                        tempPerson.getLivingCountryInfo().setPersonInLivingCountryInfo(tempPerson);
+                    }
+                }
+                if (tempPerson.getEducationInfo() != null) {
+                    if (tempPerson.getEducationInfo().getPersonInEducationInfo() == null) {
+                        tempPerson.getEducationInfo().setPersonInEducationInfo(tempPerson);
+                    }
+                }
+                if (tempPerson.getWorkInfo() != null) {
+                    if (tempPerson.getWorkInfo().getPersonInWorkInfo() == null) {
+                        tempPerson.getWorkInfo().setPersonInWorkInfo(tempPerson);
+                    }
+                }
+                if (tempPerson.getChildrenInfo() != null) {
+                    if (tempPerson.getChildrenInfo().getPersonInChildrenInfo() == null) {
+                        tempPerson.getChildrenInfo().setPersonInChildrenInfo(tempPerson);
+                    }
+                }
+            }
+        }
+
         householdRep.saveAndFlush(entity);
     }
 
-    @Override
-    public void updateHousehold(Household entity) {
-        householdRep.flush();
-    }
 
     @Override
     public Household findHousehold(long householdId) {
@@ -131,4 +162,9 @@ public class HouseholdServiceImpl implements HouseholdService {
         return null;
     }
 
+
+    @Override
+    public void updateHousehold(Household entity) {
+        householdRep.flush();
+    }
 }

@@ -10,5 +10,5 @@ import populationcensus.service.dto.HouseholdDto;
 public interface ChildrenInfoMapper {
     ChildrenInfoDto toChildrenInfoDto(ChildrenInfo entity);
 
-    ChildrenInfo toChildrenInfo(HouseholdDto entityDto);
+    ChildrenInfo toChildrenInfo(ChildrenInfoDto entityDto);
 }

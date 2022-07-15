@@ -6,17 +6,19 @@ public interface LivingCountryInfoService {
 
     void saveLivingCountryInfo(LivingCountryInfo entity);
     void saveLivingCountryInfo(long personId, LivingCountryInfo entity);
+    void saveLivingCountryInfo(Person person, LivingCountryInfo entity);
 
     LivingCountryInfo findLivingCountryInfo(long livingCountryInfoId);
-    LivingCountryInfo findLivingCountryInfoByPerson(Person person);
     LivingCountryInfo findLivingCountryInfoByPersonId(long personId);
+    LivingCountryInfo findLivingCountryInfoByPerson(Person person);
 
-    void deleteLivingCountryInfo(LivingCountryInfo livingCountryInfo);
     void deleteLivingCountryInfoById(long livingCountryInfoId);
-    void deleteLivingCountryInfoByPerson(Person person);
+    void deleteLivingCountryInfo(LivingCountryInfo livingCountryInfo);
     void deleteLivingCountryInfoByPersonId(long personId);
+    void deleteLivingCountryInfoByPerson(Person person);
+
+    Person findLinkedPerson(long livingCountryInfoId);
+    Person findLinkedPerson(LivingCountryInfo livingCountryInfo);
 
     void updateLivingCountryInfo(LivingCountryInfo entity);
-
-    Person findLinkedPerson(int livingCountryInfoId);
 }
