@@ -5,8 +5,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <include file="db/changelog/v/00_00_0000_tables.xml"/>
-
-<!--    <include file="db/changelog/0_changelog_inserts.xml"/>-->
+    <include file="db/changelog/v/0000-00-00--01-tables.xml"/>
+    <include file="db/changelog/v/2022-07-15--02-user-table.xml"/>
 
 </databaseChangeLog>
