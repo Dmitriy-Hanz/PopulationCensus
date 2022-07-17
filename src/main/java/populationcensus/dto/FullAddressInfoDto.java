@@ -1,13 +1,8 @@
-package populationcensus.service.dto;
+package populationcensus.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import populationcensus.repository.entity.AccommodationsInfo;
 import populationcensus.repository.entity.FullAddressInfo;
-import populationcensus.repository.entity.Household;
-
-import javax.persistence.Column;
 
 @Data
 @NoArgsConstructor

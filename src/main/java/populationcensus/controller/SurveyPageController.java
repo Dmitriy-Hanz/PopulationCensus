@@ -3,18 +3,20 @@ package populationcensus.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import populationcensus.repository.entity.Household;
 import populationcensus.repository.entity.Person;
-import populationcensus.service.dto.HouseholdDto;
-import populationcensus.service.dto.PersonDto;
-import populationcensus.service.dto.mapper.HouseholdMapper;
-import populationcensus.service.dto.mapper.PersonMapper;
+import populationcensus.dto.HouseholdDto;
+import populationcensus.dto.PersonDto;
+import populationcensus.dto.mapper.HouseholdMapper;
+import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.service.interfaces.HouseholdService;
 
+import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,7 +58,11 @@ public class SurveyPageController {
     }
 
     @PostMapping(value = "/householdNext")
-    public String personQuestionsPage(@ModelAttribute(name = "household") HouseholdDto obj, Model model) {
+    public String personQuestionsPage(@ModelAttribute(name = "household") @Valid HouseholdDto obj, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "householdQuestionsPage";
+        }
+
         model.addAttribute("currentPerson", new PersonDto());
         model.addAttribute("persons", new LinkedList<PersonDto>());
         return "redirect:/main/surveyPerson";

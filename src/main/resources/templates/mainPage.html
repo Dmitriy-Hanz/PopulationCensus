@@ -7,10 +7,10 @@
     <div th:insert="common/lib :: copy"/>
     <title>mainPage.html</title>
 </head>
-<body>
+<body style="background: #71dd8a">
     <div th:insert="common/header :: headerPage"></div>
 
-    <div id="carousel" class="carousel slide carousel-fade" data-ride="carousel" style="margin-bottom: -35%">
+    <div id="carousel" class="carousel slide carousel-fade h-100" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img class="img-fluid w-100" src="/images/carousel/1.jpg" alt="Первый слайд">
@@ -22,6 +22,7 @@
                 <img class="img-fluid w-100" src="/images/carousel/3.jpg" alt="Третий слайд">
             </div>
         </div>
+        <hr class="m-0"/>
     </div>
     <script>
         $(function () {
@@ -35,7 +36,7 @@
         });
     </script>
 
-    <div class="position-relative" style="margin-left: 90px; margin-right: 90px"> <!--style="margin-left: 40%"-->
+    <div class="position-relative" style="margin-left: 90px; margin-right: 90px; margin-top: -35%"> <!--style="margin-left: 40%"-->
             <div class="row">
                 <div class="col-sm"></div>
                 <div class="col-sm">

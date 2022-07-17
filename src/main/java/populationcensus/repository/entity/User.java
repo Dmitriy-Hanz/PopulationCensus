@@ -13,13 +13,9 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access=AccessLevel.PRIVATE, force=true)
-@RequiredArgsConstructor
 @Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+
 @Entity
-@Table(name = "user")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

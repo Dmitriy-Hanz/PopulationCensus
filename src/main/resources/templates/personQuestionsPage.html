@@ -263,7 +263,7 @@
                     </div>
                     <small class="form-text text-muted">К вопросу 12 после ответа на вопрос 11.3</small>
                 </div>
-                <div class="form-row w-50 mt-2" style="display: none" id="lp_regionOrDistrictName_v2">
+                <div class="form-row w-50" style="display: none" id="lp_regionOrDistrictName_v2">
                     <div class="col text-center pl-0">
                         <small class="text-muted align-bottom">Укажите название страны</small>
                         <input class="form-control" th:field="*{livingPlaceInfo.nameOfPreviousCountry}">
@@ -343,7 +343,7 @@
                         <option value="3">На постоянное место жительства</option>
                         <option value="4">Не планирую</option>
                     </select>
-                    <small class="form-text text-muted" style="margin-top: -0px">Если ответ "Нет" -> к вопросу 13</small>
+                    <small class="form-text text-muted" style="margin-top: -0px">Если ответ "Не планирую" -> к вопросу 13</small>
                 </div>
 
                 <div class="form-row mt-2 w-75">
@@ -456,7 +456,7 @@
                 </div>
                 <script>
                     w_doYouHaveWork.onchange = function (){
-                        w_doYouHaveWork.value == true ? w_whyDidntYouWorkTillNow.style.display='block' : w_whyDidntYouWorkTillNow.style.display='none';
+                        w_doYouHaveWork.checked === true ? w_whyDidntYouWorkTillNow.style.display='block' : w_whyDidntYouWorkTillNow.style.display='none';
                     };
                 </script>
 
@@ -497,8 +497,8 @@
                 </div>
                 <script>
                     w_locationOfWork.onchange = function (){
-                        w_locationOfWork.value == 2 ? w_locationOfWork_v2.style.display='block' : w_locationOfWork_v2.style.display='none';
-                        w_locationOfWork.value == 3 ? w_locationOfWork_v3.style.display='block' : w_locationOfWork_v3.style.display='none';
+                        w_locationOfWork.value === 2 ? w_locationOfWork_v2.style.display='block' : w_locationOfWork_v2.style.display='none';
+                        w_locationOfWork.value === 3 ? w_locationOfWork_v3.style.display='block' : w_locationOfWork_v3.style.display='none';
                     };
                 </script>
 

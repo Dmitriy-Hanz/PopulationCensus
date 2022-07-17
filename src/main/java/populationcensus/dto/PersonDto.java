@@ -1,10 +1,8 @@
-package populationcensus.service.dto;
+package populationcensus.dto;
 
 import lombok.Data;
-import lombok.ToString;
 import populationcensus.repository.entity.*;
 
-import javax.persistence.*;
 import java.util.Date;
 
 @Data

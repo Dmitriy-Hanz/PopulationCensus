@@ -1,8 +1,8 @@
-package populationcensus.service.dto.mapper;
+package populationcensus.dto.mapper;
 
 import org.mapstruct.*;
 import populationcensus.repository.entity.Person;
-import populationcensus.service.dto.PersonDto;
+import populationcensus.dto.PersonDto;
 
 import java.util.List;
 

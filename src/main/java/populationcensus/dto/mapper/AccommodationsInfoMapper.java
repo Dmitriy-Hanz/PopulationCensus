@@ -1,11 +1,8 @@
-package populationcensus.service.dto.mapper;
+package populationcensus.dto.mapper;
 
 import org.mapstruct.Mapper;
 import populationcensus.repository.entity.AccommodationsInfo;
-import populationcensus.repository.entity.ChildrenInfo;
-import populationcensus.service.dto.AccommodationsInfoDto;
-import populationcensus.service.dto.ChildrenInfoDto;
-import populationcensus.service.dto.HouseholdDto;
+import populationcensus.dto.AccommodationsInfoDto;
 
 @Mapper(componentModel = "spring")
 public interface AccommodationsInfoMapper {
