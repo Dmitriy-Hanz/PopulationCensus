@@ -14,9 +14,9 @@
     <name>populationcensus</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <java.version>11</java.version>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+        <java.version>16</java.version>
 
         <liquibase.propertyFile.Path>src\main\resources\application.yml</liquibase.propertyFile.Path>
     </properties>
@@ -96,7 +96,6 @@
             <optional>true</optional>
         </dependency>
 
-
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
@@ -149,8 +148,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>
@@ -166,6 +163,11 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
                             <version>0.2.0</version>
+                        </path>
+                        <path>
+                            <groupId>org.hibernate.validator</groupId>
+                            <artifactId>hibernate-validator</artifactId>
+                            <version>6.1.6.Final</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

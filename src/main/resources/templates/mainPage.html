@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <div th:insert="common/lib :: copy"/>
+    <script type="text/javascript" th:src="@{/js/validation.js}"></script>
     <title>mainPage.html</title>
 </head>
 <body style="background: #71dd8a">
@@ -76,10 +77,10 @@
                                             <p>
                                                 Введите номер паспорта, чтобы найти вашу анкету в базе данных
                                             </p>
-                                            <form th:action="@{/myBlank}" method="post">
-                                                <input type="text" class="form-control" placeholder="Номер паспорта">
+                                            <form th:action="@{/myBlank}" method="post" onsubmit="return validatePassportID()">
+                                                <input type="text" name="passportID" class="form-control" placeholder="Номер паспорта">
                                                 <hr/>
-                                                <button class="btn btn-primary w-100">Продолжить</button>
+                                                <button type="submit" class="btn btn-primary w-100">Продолжить</button>
                                             </form>
                                             <button type="button" class="btn btn-secondary w-100 mt-3" data-dismiss="modal">Отмена</button>
                                         </div>

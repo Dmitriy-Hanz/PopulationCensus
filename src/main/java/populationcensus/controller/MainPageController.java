@@ -1,10 +1,14 @@
 package populationcensus.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
+@SessionAttributes("passportID")
 public class MainPageController {
 
     @GetMapping("/main")
@@ -18,7 +22,8 @@ public class MainPageController {
     }
 
     @PostMapping(value = "/myBlank")
-    public String userBlankViewerPage(){
+    public String userBlankViewerPage(@RequestParam(name = "passportID") String passportID, Model model){
+        model.addAttribute("passportID", passportID);
         return "redirect:main/myBlank";
     }
 

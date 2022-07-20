@@ -7,5 +7,7 @@
 
     <include file="db/changelog/v/0000-00-00--01-tables.xml"/>
     <include file="db/changelog/v/2022-07-15--02-user-table.xml"/>
+    <include file="db/changelog/v/2022-07-17--03-role-table.xml"/>
+    <include file="db/changelog/v/2022-07-17--04-user_role-table.xml"/>
 
 </databaseChangeLog>

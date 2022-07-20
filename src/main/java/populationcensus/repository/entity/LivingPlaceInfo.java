@@ -3,6 +3,7 @@ package populationcensus.repository.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Builder
@@ -22,7 +23,7 @@ public class LivingPlaceInfo {
     private Boolean doYouLiveHereFromBirth;
 
     @Column(name = "arrival_period")
-    private Date arrivalPeriod;
+    private LocalDate arrivalPeriod;
 
     @Column(name = "previous_living_place")
     private Integer previousLivingPlace;

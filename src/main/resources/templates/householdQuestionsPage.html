@@ -15,7 +15,7 @@
     <h3>Домохозяйство</h3>
     <hr/>
 
-    <form name="huy" th:action="@{/householdNext}" th:object="${household}" method="post" onsubmit="return validateHousehold()">
+    <form th:action="@{/householdNext}" th:object="${household}" method="post" onsubmit="return validateHousehold()">
 
         <p class="font-weight-bold">Адрес проживания домохозяйства:</p>
         <div class="border rounded mb-4" style="margin: -10px; padding: 10px">

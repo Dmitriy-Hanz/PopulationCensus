@@ -49,6 +49,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public Person findPersonByPassportID(String passportID) {
+        return personRep.findByPassportID(passportID).orElse(null);
+    }
+
+    @Override
     public void deletePerson(Person person) {
 
     }

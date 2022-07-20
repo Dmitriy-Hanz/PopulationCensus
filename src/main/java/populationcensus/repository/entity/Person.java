@@ -3,6 +3,7 @@ package populationcensus.repository.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Builder
@@ -44,7 +45,7 @@ public class Person {
     private String passportID;
 
     @Column(name = "birthday_date")
-    private Date birthdayDate;
+    private LocalDate birthdayDate;
 
     @Column(name = "age")
     private Integer age;

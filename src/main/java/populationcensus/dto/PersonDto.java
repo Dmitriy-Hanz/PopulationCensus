@@ -3,6 +3,7 @@ package populationcensus.dto;
 import lombok.Data;
 import populationcensus.repository.entity.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -16,7 +17,7 @@ public class PersonDto {
     private String surname;
     private String fathername;
     private String passportID;
-    private Date birthdayDate;
+    private LocalDate birthdayDate; private String stringBirthdayDate;
     private Integer age;
     private Integer gender;
     private Integer householdRelations;
@@ -39,6 +40,15 @@ public class PersonDto {
     private WorkInfoDto workInfo;
     private ChildrenInfoDto childrenInfo;
 
+    public PersonDto(boolean isForeign) {
+        livingPlaceInfo = new LivingPlaceInfoDto();
+        livingCountryInfo = new LivingCountryInfoDto();
+        educationInfo = new EducationInfoDto();
+        workInfo = new WorkInfoDto();
+        childrenInfo = new ChildrenInfoDto();
+        this.isForeign = isForeign;
+    }
+
     public PersonDto() {
         livingPlaceInfo = new LivingPlaceInfoDto();
         livingCountryInfo = new LivingCountryInfoDto();
@@ -57,7 +67,7 @@ public class PersonDto {
         surname = entity.getSurname();
         fathername = entity.getFathername();
         passportID = entity.getPassportID();
-        birthdayDate = entity.getBirthdayDate();
+        birthdayDate = entity.getBirthdayDate(); stringBirthdayDate = birthdayDate.toString();
         age = entity.getAge();
         gender = entity.getGender();
         householdRelations = entity.getHouseholdRelations();

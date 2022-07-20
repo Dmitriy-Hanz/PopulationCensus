@@ -7,6 +7,7 @@ import populationcensus.repository.entity.FullAddressInfo;
 import populationcensus.repository.entity.LivingPlaceInfo;
 
 import javax.persistence.Column;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -14,7 +15,7 @@ import java.util.Date;
 public class LivingPlaceInfoDto {
     private Long id;
     private Boolean doYouLiveHereFromBirth;
-    private Date arrivalPeriod;
+    private LocalDate arrivalPeriod; private String stringArrivalPeriod;
     private Integer previousLivingPlace;
     private String regionOrDistrictName;
     private String cityOrPGTName;
@@ -26,7 +27,7 @@ public class LivingPlaceInfoDto {
     public LivingPlaceInfoDto(LivingPlaceInfo entity) {
         id = entity.getId();
         doYouLiveHereFromBirth = entity.getDoYouLiveHereFromBirth();
-        arrivalPeriod = entity.getArrivalPeriod();
+        arrivalPeriod = entity.getArrivalPeriod(); stringArrivalPeriod = arrivalPeriod.toString();
         previousLivingPlace = entity.getPreviousLivingPlace();
         regionOrDistrictName = entity.getRegionOrDistrictName();
         cityOrPGTName = entity.getCityOrPGTName();

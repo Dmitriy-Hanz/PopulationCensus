@@ -1,12 +1,14 @@
-function getValueByName(name){
-    return document.getElementsByName(name)[0].value;
-}
-function isChecked(name){
-    return document.getElementsByName(name)[0].checked;
-}
 function validationFail(message){
     alert(message);
     return false;
+}
+
+function getValueByName(name){
+    return document.getElementsByName(name)[0].value;
+}
+
+function isChecked(name){
+    return document.getElementsByName(name)[0].checked;
 }
 function isEmptyString(name){
     return getValueByName(name) === "";
@@ -14,8 +16,18 @@ function isEmptyString(name){
 function isNotIntegerNumber(name) {
     return Number.isInteger(+getValueByName(name)) === false;
 }
-
-
+function isDropdownZero(name) {
+    return getValueByName(name) == 0;
+}
+function isDropdownEqual(name,value) {
+    return getValueByName(name) == value;
+}
+function isAgeMoreThan(value) {
+    return +getValueByName("age") > value;
+}
+function isAgeInArea(down,up) {
+    return +getValueByName("age") > down && +getValueByName("age") < up;
+}
 
 function validateHousehold() {
 
@@ -90,10 +102,191 @@ function validateHousehold() {
 }
 
 function validatePerson() {
-    // alert(isChecked("accommodationsInfo.hasBathOrShower"));
+
+    if (isEmptyString("surname")) { return validationFail("Не указана фамилия."); }
+    if (isEmptyString("name")) { return validationFail("Не указано имя."); }
+    if (isEmptyString("passportID")) { return validationFail("Не указан идентификационный номер."); }
+    if (isEmptyString("stringBirthdayDate")) { return validationFail("Не указана дата рождения."); }
+
+    if (isEmptyString("age")) { return validationFail("Не указано число полных лет."); }
+    else
+    { if (isNotIntegerNumber("age")) return validationFail("число полных лет должно быть целым числом(целой цифрой)."); }
+
+    if (isDropdownZero("gender")) { return validationFail("Не указан пол."); }
+    if (isDropdownZero("householdRelations")) { return validationFail("Не указана информация об отношении к первому лицу в домохозяйстве."); }
+    if (isAgeMoreThan(15) && isDropdownZero("maritalStatus")) { return validationFail("Не указана информация о семейном положении."); }
+
+    if (isDropdownZero("birthCountry")) { return validationFail("Не указана информация о стране рождения."); }
+    else
+    { if(isDropdownEqual("birthCountry",2) && isEmptyString("nameOfBirthCountry"))  return validationFail("Не указано название страны рождения."); }
+
+    if (isDropdownZero("citizenship")) { return validationFail("Не указана информация о гражданстве."); }
+    else
+    {
+        if (isDropdownEqual("citizenship",2) && isEmptyString("nameOfCitizenshipCountry")) { return validationFail("Не указана информация о гражданстве (название страны)."); }
+    }
 
 
+    if (isDropdownZero("nationality")) { return validationFail("Не указана информация о национальности."); }
+    else{
+        if (isDropdownEqual("nationality",6) && isEmptyString("nameOfNationality")){return validationFail("Не указана информация о национальности (название).");}
+    }
 
-    // alert("SWALLOW MY CUM");
-    // return false;
+    if (isDropdownZero("nativeLanguage")) { return validationFail("Не указана информация о родном языке."); }
+    else{
+        if (isDropdownEqual("nativeLanguage",5) && isEmptyString("nameOfNativeLanguage")){return validationFail("Не указана информация о родном языке (название).");}
+    }
+
+    if (isDropdownZero("speakingLanguage")) { return validationFail("Не указана информация о разговорном языке."); }
+    else{
+        if (isDropdownEqual("speakingLanguage",5) && isEmptyString("nameOfSpeakingLanguage")){return validationFail("Не указана информация о разговорном языке (название).");}
+    }
+
+    if (isDropdownZero("mainSourceOfResources")) { return validationFail("Не указан основной источник средств к существованию."); }
+
+
+    ///////////////////
+    //LivingPlaceInfo//
+
+    if (!isChecked("livingPlaceInfo.doYouLiveHereFromBirth"))
+    {
+        if (isEmptyString("livingPlaceInfo.stringArrivalPeriod")) { return validationFail("Не указана дата прибытия."); }
+        if (isDropdownZero("livingPlaceInfo.previousLivingPlace")) { return validationFail("Не указана информация о предыдущем месте жительства."); }
+        else
+        {
+            if (isDropdownEqual("livingPlaceInfo.previousLivingPlace",1))
+            {
+                if (isEmptyString("livingPlaceInfo.regionOrDistrictName")) { return validationFail("Не указано название области/района предыдущего места жительства."); }
+                if (!isChecked("livingPlaceInfo.isItVillage") && isEmptyString("livingPlaceInfo.cityOrPGTName")) { return validationFail("Не указано место проживания (город/ПГТ/деревня)."); }
+                if (isChecked("livingPlaceInfo.isItVillage") && !isEmptyString("livingPlaceInfo.cityOrPGTName")) { return validationFail("Должно быть указано только одно место проживания (города/ПГТ или деревня)."); }
+            }
+            if (isDropdownEqual("livingPlaceInfo.previousLivingPlace",2))
+            {
+                if (isEmptyString("livingPlaceInfo.nameOfPreviousCountry")) { return validationFail("Не указано название страны предыдущего места жительства."); }
+            }
+        }
+        if (isDropdownZero("livingPlaceInfo.reasonForArrivalAtPlace")) { return validationFail("Не указана причина прибытия."); }
+    }
+
+
+    /////////////////////
+    //LivingCountryInfo//
+
+    if (!isChecked("livingPlaceInfo.doYouLiveHereFromBirth"))
+    {
+        if (isChecked("livingCountryInfo.didYouLiveInOtherCountry"))
+        {
+            if (isEmptyString("livingCountryInfo.nameOfCountryYouCameFrom")) { return validationFail("Не указана информация о стране, из которой вы прибыли в РБ на ПМЖ."); }
+            if (isEmptyString("livingCountryInfo.stringArrivalPeriod")) { return validationFail("Не указан период прибытия."); }
+            if (isDropdownZero("livingCountryInfo.reasonForArrivalAtRB")) { return validationFail("Не указана причина прибытия."); }
+        }
+    }
+    if (isDropdownZero("livingCountryInfo.infoAboutLeavingBelarus") && isAgeInArea(14,74)) { return validationFail("Не указана информация о желании покинуть РБ."); }
+    if (!isDropdownEqual("livingCountryInfo.infoAboutLeavingBelarus",4) && isDropdownZero("livingCountryInfo.reasonForLeavingBelarus")){return validationFail("Не указана причина выезда из РБ.");}
+
+
+    /////////////////
+    //EducationInfo//
+
+    if (isAgeMoreThan(9)){
+        if (isDropdownZero("educationInfo.lvlOfEducation")) { return validationFail("Не указана информация об образовании."); }
+        if (isDropdownZero("educationInfo.academicDegree")) { return validationFail("Не указана информация о наличии ученой степени."); }
+    }
+    if (isAgeMoreThan(6) && isDropdownZero("educationInfo.basicEducationInfo")) { return validationFail("Не указана информация о получении основного образования."); }
+
+
+    ////////////
+    //WorkInfo//
+
+    if (isAgeInArea(15,75))
+    {
+        if (isChecked("workInfo.doYouHaveWork") || isChecked("workInfo.whyDidntYouWorkTillNow"))
+        {
+            switch (+getValueByName("workInfo.locationOfWork"))
+            {
+                case 0:
+                    return validationFail("Не указана информация о месте работы.");
+                case 2:
+                    if (isEmptyString("workInfo.regionOrDistrictName")) { return validationFail("Не указано название области/района, где находилось место вашей работы."); }
+                    if (!isChecked("workInfo.isItVillage") && isEmptyString("workInfo.cityOrPGTName")) { return validationFail("Не указана информация о месте работы (город/ПГТ/деревня)."); }
+                    if (isChecked("workInfo.isItVillage") && !isEmptyString("workInfo.cityOrPGTName")) { return validationFail("Некорректно указана информация о месте работы (город/ПГТ ИЛИ деревня)."); }
+                    break;
+                case 3:
+                    if (isEmptyString("workInfo.nameOfCountry")) { return validationFail("Не указано название страны, где находилось место вашей работы."); }
+                    if (isDropdownZero("workInfo.departureFrequencyToWork")) { return validationFail("Не указана информация о частоте выездов на территорию другого гос-ва для работы."); }
+                    break;
+            }
+            if (isDropdownZero("workInfo.unemploymentReason")) { return validationFail("Не указана причина, по которой вы не работаете в населенном пункте ПМЖ."); }
+        }
+        if (isDropdownEqual("workInfo.locationOfWork", 1) || !isDropdownZero("workInfo.unemploymentReason"))
+        {
+            if (isDropdownZero("workInfo.typeOfWorkplace")) { return validationFail("Не указана информация о месте вашей работы."); }
+            if (isDropdownZero("workInfo.typeOfWorkPosition")) { return validationFail("Не указана информация о должности на работы."); }
+        }
+
+        if (isDropdownZero("workInfo.typeOfWorkPosition"))
+        {
+            if (!(isChecked("workInfo.didYouLookedForAJob") && isChecked("workInfo.canYouStarWorkingInTwoWeeks")) || !isChecked("workInfo.canYouStarWorkingInTwoWeeks"))
+            {
+                if (isDropdownZero("workInfo.whyYouCantWorkOrStoppedSearch")) { return validationFail("Не указана информация о причине отказа от трудоустройства."); }
+            }
+        }
+    }
+
+
+    ////////////////
+    //ChildrenInfo//
+
+    if (isDropdownEqual("gender",2))
+    {
+        if (isAgeMoreThan(14))
+        {
+            if (isEmptyString("childrenInfo.howManyChildrenDoYouHave") && !isChecked("childrenInfo.noChildren")) { return validationFail("Не указана информация о количестве имеющихся детей."); }
+            if (!isEmptyString("childrenInfo.howManyChildrenDoYouHave") && isChecked("childrenInfo.noChildren")) { return validationFail("Некорректно указана информация о количестве имеющихся детей."); }
+            if (!isEmptyString("childrenInfo.howManyChildrenDoYouHave") && isNotIntegerNumber("childrenInfo.howManyChildrenDoYouHave")) { return validationFail("Количество имеющихся детей должно быть числом/цифрой."); }
+        }
+        if (isAgeInArea(17,50))
+        {
+            if (isDropdownZero("childrenInfo.childrenPlans")) { return validationFail("Не указана информация о планах на рождение детей."); }
+            if (isDropdownEqual("childrenInfo.childrenPlans",1))
+            {
+                if (isEmptyString("childrenInfo.howManyChildrenDoYouWant") && !isChecked("childrenInfo.dontKnowHowMany")) { return validationFail("Не указана информация о количестве желаемых детей."); }
+                if (!isEmptyString("childrenInfo.howManyChildrenDoYouWant") && isChecked("childrenInfo.dontKnowHowMany")) { return validationFail("Некорректно указана информация о количестве желаемых детей."); }
+                if (isNotIntegerNumber("childrenInfo.howManyChildrenDoYouWant")) { return validationFail("Количество желаемых детей должно быть числом/цифрой."); }
+            }
+        }
+    }
 }
+
+function validateForeignPerson() {
+    if (isEmptyString("surname")) { return validationFail("Не указана фамилия."); }
+    if (isEmptyString("name")) { return validationFail("Не указано имя."); }
+    if (isEmptyString("stringBirthdayDate")) { return validationFail("Не указана дата рождения."); }
+
+    if (isEmptyString("age")) { return validationFail("Не указано число полных лет."); }
+    else
+    { if (isNotIntegerNumber("age")) return validationFail("число полных лет должно быть целым числом(целой цифрой)."); }
+
+    if (isDropdownZero("gender")) { return validationFail("Не указан пол."); }
+    if (isDropdownZero("birthCountry")) { return validationFail("Не указана информация о стране рождения."); }
+    else
+    { if(isDropdownEqual("birthCountry",2) && isEmptyString("nameOfBirthCountry"))  return validationFail("Не указано название страны рождения."); }
+
+    if (isDropdownZero("citizenship")) { return validationFail("Не указана информация о гражданстве."); }
+    else
+    { if (isDropdownEqual("citizenship",2) && isEmptyString("nameOfCitizenshipCountry")) { return validationFail("Не указана информация о гражданстве (название страны)."); }}
+
+    if (isEmptyString("passportID")) { return validationFail("Не указан идентификационный номер."); }
+
+    if (isEmptyString("homeCountry")) { return validationFail("Не указана страна постоянного проживания."); }
+    if (isDropdownZero("reasonForMigration")) { return validationFail("Не указана причина приезда в РБ."); }
+}
+
+
+function  validatePassportID(){
+    if (isEmptyString("passportID")) { return validationFail("Вы должны указать номер паспорта."); }
+}
+
+
+
+

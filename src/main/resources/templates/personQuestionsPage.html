@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <div th:insert="common/lib :: copy"/>
-    <title>personQuestionsPage.html</title>
+    <script type="text/javascript" th:src="@{/js/validation.js}"></script>
+    <title></title>
 </head>
 <body style="background: #F2F2F2">
     <div th:insert="common/header :: headerPage"/>
@@ -16,7 +17,7 @@
         <h4>[[${persons.size() + 1}]] из [(${household.numberOfMembers})]</h4>
         <hr/>
 
-        <form th:action="@{/personNext}" th:object="${currentPerson}" method="post">
+        <form th:action="@{/personNext}" th:object="${currentPerson}" method="post" onsubmit="return validatePerson()">
 
             <p class="font-weight-bold">Общая информация:</p>
             <div class="border rounded mb-4" style="margin: -10px; padding: 10px">
@@ -35,7 +36,7 @@
                 <div class="form-row">
                     <div class="col-6 pl-0">
                         <span class="align-bottom mt-1">3. Дата рождения (число, месяц, год)</span>
-                        <input class="form-control" th:field="*{birthdayDate}">
+                        <input type="date" class="form-control" th:field="*{stringBirthdayDate}">
                     </div>
                     <div class="col-3 pl-0">
                         <span class="align-bottom mt-1">Число полных лет</span>
@@ -85,7 +86,7 @@
 
                 <div class="form-row mt-2">
                     <div class="col p-0">
-                        <span class="align-bottom">7. Место вашего рождения</span>
+                        <span class="align-bottom">7. Страна вашего рождения</span>
                         <select class="custom-select" th:field="*{birthCountry}" id="p_birthCountry">
                             <option value="0" selected>...</option>
                             <option value="1">Республика Беларусь</option>
@@ -158,7 +159,7 @@
                             <option value="2">Русский</option>
                             <option value="3">Польский</option>
                             <option value="4">Украинский</option>
-                            <option value="6">Другой</option>
+                            <option value="5">Другой</option>
                         </select>
                     </div>
                     <div class="col-5 text-center" id="p_nameOfNativeLanguage" style="visibility: hidden">
@@ -167,7 +168,7 @@
                     </div>
                     <script>
                         p_nativeLanguage.onchange = function (){
-                            this.value == 6 ? p_nameOfNativeLanguage.style.visibility='visible' : p_nameOfNativeLanguage.style.visibility='hidden';
+                            this.value == 5 ? p_nameOfNativeLanguage.style.visibility='visible' : p_nameOfNativeLanguage.style.visibility='hidden';
                         };
                     </script>
                 </div>
@@ -181,7 +182,7 @@
                             <option value="2">Русском</option>
                             <option value="3">Польском</option>
                             <option value="4">Украинском</option>
-                            <option value="6">Другом</option>
+                            <option value="5">Другом</option>
                         </select>
                     </div>
                     <div class="col-5 text-center" id="p_nameOfSpeakingLanguage" style="visibility: hidden">
@@ -190,7 +191,7 @@
                     </div>
                     <script>
                         p_speakingLanguage.onchange = function (){
-                            this.value == 6 ? p_nameOfSpeakingLanguage.style.visibility='visible' : p_nameOfSpeakingLanguage.style.visibility='hidden';
+                            this.value == 5 ? p_nameOfSpeakingLanguage.style.visibility='visible' : p_nameOfSpeakingLanguage.style.visibility='hidden';
                         };
                     </script>
                 </div>
@@ -203,15 +204,15 @@
                         <option value="2">Самозанятость (работа не по найму)</option>
                         <option value="3">Работа в личном подсобном хозяйстве</option>
                         <option value="4">Производство товаров для собственного использования</option>
-                        <option value="6">Пенсия</option>
-                        <option value="7">Стипендия</option>
-                        <option value="8">Пособие по безработице</option>
-                        <option value="9">Государственные пособия (кроме пособия по безработице)</option>
-                        <option value="10">Иные виды пособий и помощи</option>
-                        <option value="11">Доходы от сдачи в аренду имущества, дивиденды либо другие выплаты по вкладам и ценным бумагам</option>
-                        <option value="12">Ссуды или использование сбережений, реализация имущества</option>
-                        <option value="13">На иждивении другого лица</option>
-                        <option value="14">Прочие источники</option>
+                        <option value="5">Пенсия</option>
+                        <option value="6">Стипендия</option>
+                        <option value="7">Пособие по безработице</option>
+                        <option value="8">Государственные пособия (кроме пособия по безработице)</option>
+                        <option value="9">Иные виды пособий и помощи</option>
+                        <option value="10">Доходы от сдачи в аренду имущества, дивиденды либо другие выплаты по вкладам и ценным бумагам</option>
+                        <option value="11">Ссуды или использование сбережений, реализация имущества</option>
+                        <option value="12">На иждивении другого лица</option>
+                        <option value="13">Прочие источники</option>
                     </select>
                 </div>
 
@@ -220,24 +221,24 @@
             <p class="font-weight-bold">Место проживания:</p>
             <div class="border rounded mb-4" style="margin: -10px; padding: 10px">
                 <div class="form-row">
-                    <span class="w-100">11.</span>
+                    <span class="w-100">13.</span>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" th:field="*{livingPlaceInfo.doYouLiveHereFromBirth}">
                         <label>В вашем текущем городе, поселке городского типа или сельском населенном пункте этого административного района вы проживаете непрерывно с рождения?</label>
-                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Да" -> к вопросу 11.1</small>
+                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Нет" -> к вопросу 13.1; "Да" -> к вопросу 14</small>
                     </div>
                 </div>
 
                 <div class="form-row mb-3">
                     <div class="col-7 pl-0">
-                        <span class="align-bottom mt-1">11.1. Укажите период, когда вы прибыли в данный населенный пункт (месяц, год)</span>
-                        <input class="form-control" th:field="*{livingPlaceInfo.arrivalPeriod}">
+                        <span class="align-bottom mt-1">13.1. Укажите период, когда вы прибыли в данный населенный пункт (месяц, год)</span>
+                        <input type="date" class="form-control" th:field="*{livingPlaceInfo.stringArrivalPeriod}">
                     </div>
                 </div>
 
                 <div class="form-row mt-2">
                     <div class="col-6 p-0">
-                        <span class="align-bottom">11.2. Укажите ваше предыдущее место жительства</span>
+                        <span class="align-bottom">13.2. Укажите ваше предыдущее место жительства</span>
                         <select class="custom-select" th:field="*{livingPlaceInfo.previousLivingPlace}" id="lp_previousLivingPlace">
                             <option value="0" selected>...</option>
                             <option value="1">Республика Беларусь</option>
@@ -261,14 +262,14 @@
                         <label>Является ли ваше предыдущее место жительства сельским населенным пунктом?</label>
                         <small class="form-text text-muted" style="margin-top: -5px;">Если ответ "Да" -> не заполнять поля "наименования области, района" и "наименования города, ПГТ"</small>
                     </div>
-                    <small class="form-text text-muted">К вопросу 12 после ответа на вопрос 11.3</small>
+                    <small class="form-text text-muted">К вопросу 14 после ответа на вопрос 13.3</small>
                 </div>
                 <div class="form-row w-50" style="display: none" id="lp_regionOrDistrictName_v2">
                     <div class="col text-center pl-0">
                         <small class="text-muted align-bottom">Укажите название страны</small>
                         <input class="form-control" th:field="*{livingPlaceInfo.nameOfPreviousCountry}">
                     </div>
-                    <small class="form-text text-muted">К вопросу 12.4 после ответа на вопрос 11.3</small>
+                    <small class="form-text text-muted">К вопросу 14.4 после ответа на вопрос 13.3</small>
                 </div>
                 <script>
                     lp_previousLivingPlace.onchange = function (){
@@ -278,7 +279,7 @@
                 </script>
 
                 <div class="form-row mt-3 w-75">
-                    <span class="align-bottom">11.3. Укажите основную причину, по которой Вы прибыли в данный населенный пункт</span>
+                    <span class="align-bottom">13.3. Укажите основную причину, по которой Вы прибыли в данный населенный пункт</span>
                     <select class="custom-select" th:field="*{livingPlaceInfo.reasonForArrivalAtPlace}">
                         <option value="0" selected>...</option>
                         <option value="1">Работа</option>
@@ -296,30 +297,31 @@
             </div>
 
             <p class="font-weight-bold">Страна проживания:</p>
+            <small class="form-text text-muted mb-2" style="margin-top: -8px">Если на вопрос 13 ответ "Да" -> к вопросу 15</small>
             <div class="border rounded mb-4" style="margin: -10px; padding: 10px">
                 <div class="form-row">
-                    <span class="w-100">12.</span>
+                    <span class="w-100">14.</span>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" th:field="*{livingCountryInfo.didYouLiveInOtherCountry}">
                         <label>Проживали ли Вы непрерывно 1 год и более в другой стране?</label>
-                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Нет" -> к вопросу 12.4</small>
+                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Нет" -> к вопросу 14.4</small>
                     </div>
                 </div>
 
                 <div class="form-row mt-2">
-                    <span class="align-bottom mt-1">12.1. Укажите название страны Вы прибыли в Республику Беларусь на постоянное место жительства</span>
+                    <span class="align-bottom mt-1">14.1. Укажите название страны Вы прибыли в Республику Беларусь на постоянное место жительства</span>
                     <input class="form-control" th:field="*{livingCountryInfo.nameOfCountryYouCameFrom}"/>
                 </div>
 
                 <div class="form-row mt-2">
                     <div class="col-7 pl-0">
-                        <span class="align-bottom mt-1">12.2. Укажите период прибытия (месяц, год)</span>
-                        <input class="form-control" th:field="*{livingCountryInfo.arrivalPeriod}">
+                        <span class="align-bottom mt-1">14.2. Укажите период прибытия (месяц, год)</span>
+                        <input type="date" class="form-control" th:field="*{livingCountryInfo.stringArrivalPeriod}">
                     </div>
                 </div>
 
                 <div class="form-row mt-2 w-75">
-                    <span class="align-bottom">12.3. Укажите основную причину, по которой Вы прибыли в Республику Беларусь на постоянное место жительства</span>
+                    <span class="align-bottom">14.3. Укажите основную причину, по которой Вы прибыли в Республику Беларусь на постоянное место жительства</span>
                     <select class="custom-select" th:field="*{livingCountryInfo.reasonForArrivalAtRB}">
                         <option value="0" selected>...</option>
                         <option value="1">Работа</option>
@@ -335,7 +337,7 @@
                 </div>
 
                 <div class="form-row mt-2 w-75">
-                    <span class="align-bottom">12.4. Планируете ли Вы выехать из Республики Беларусь (для лиц в возрасте 15-74 лет)?</span>
+                    <span class="align-bottom">14.4. Планируете ли Вы выехать из Республики Беларусь (для лиц в возрасте 15-74 лет)?</span>
                     <select class="custom-select" th:field="*{livingCountryInfo.infoAboutLeavingBelarus}">
                         <option value="0" selected>...</option>
                         <option value="1">На срок менее 1 года</option>
@@ -343,11 +345,11 @@
                         <option value="3">На постоянное место жительства</option>
                         <option value="4">Не планирую</option>
                     </select>
-                    <small class="form-text text-muted" style="margin-top: -0px">Если ответ "Не планирую" -> к вопросу 13</small>
+                    <small class="form-text text-muted" style="margin-top: -0px">Если ответ "Не планирую" -> к вопросу 15</small>
                 </div>
 
                 <div class="form-row mt-2 w-75">
-                    <span class="align-bottom">12.5. По какой причине Вы планируете выехать из Республики Беларусь?</span>
+                    <span class="align-bottom">14.5. По какой причине Вы планируете выехать из Республики Беларусь?</span>
                     <select class="custom-select" th:field="*{livingCountryInfo.reasonForLeavingBelarus}">
                         <option value="0" selected>...</option>
                         <option value="1">Работа</option>
@@ -369,7 +371,7 @@
 
                 <div class="form-row">
                     <div class="col-7 p-0">
-                        <span class="align-bottom">13. Укажите ваш уровень (ступень) образования (для лиц в возрасте 10 лет и старше)</span>
+                        <span class="align-bottom">15. Укажите ваш уровень (ступень) образования (для лиц в возрасте 10 лет и старше)</span>
                         <select class="custom-select" th:field="*{educationInfo.lvlOfEducation}" id="e_lvlOfEducation">
                             <option value="0" selected>...</option>
                             <option value="1">Начальное</option>
@@ -408,7 +410,7 @@
                 </script>
 
                 <div class="form-row mt-2">
-                    <span class="align-bottom">14. Получали ли вы основное образование на дату проведения переписи (для лиц в возрасте 6 лет и старше)?</span>
+                    <span class="align-bottom">15.1 Получали ли вы основное образование на дату проведения переписи (для лиц в возрасте 6 лет и старше)?</span>
                     <select class="custom-select" th:field="*{educationInfo.basicEducationInfo}">
                         <option value="0" selected>...</option>
                         <option value="1">Общее среднее</option>
@@ -444,31 +446,32 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" th:field="*{workInfo.doYouHaveWork}" id="w_doYouHaveWork">
                         <label>16. Была ли у Вас с 27 сентября 2019 г. по 3 октября 2019 г. оплачиваемая работа, занятие, приносящее доход, или работа без оплаты труда у родственника (далее - работа) (для лиц в возрасте 15-74 лет)</label>
-                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Да" -> к вопросу 16.1</small>
+                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Да" -> к вопросу 16.2; "Нет" -> к вопросу 16.1</small>
                     </div>
                 </div>
-                <div class="form-row mt-2" id="w_whyDidntYouWorkTillNow" style="display: none">
+                <div class="form-row mt-2" id="w_whyDidntYouWorkTillNow" style="display: block">
                     <div class="form-check pr-2">
                         <input class="form-check-input" type="checkbox" th:field="*{workInfo.whyDidntYouWorkTillNow}">
-                        <label>Вы временно не работали по причине болезни; отпуска, в том числе отпуска по беременности и родам, по уходу за ребенком в возрасте до 3 лет; производства работ вахтовым методом или иного специфического характера работы, прохождения курсов повышения квалификации и тому подобное?</label>
-                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Да" -> к вопросу 16.1; "Нет" -> к вопросу 20</small>
+                        <label>16.1 Вы временно не работали по причине болезни; отпуска, в том числе отпуска по беременности и родам, по уходу за ребенком в возрасте до 3 лет; производства работ вахтовым методом или иного специфического характера работы, прохождения курсов повышения квалификации и тому подобное?</label>
+                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Да" -> к вопросу 16.2; "Нет" -> к вопросу 20</small>
                     </div>
                 </div>
                 <script>
                     w_doYouHaveWork.onchange = function (){
-                        w_doYouHaveWork.checked === true ? w_whyDidntYouWorkTillNow.style.display='block' : w_whyDidntYouWorkTillNow.style.display='none';
+                        w_doYouHaveWork.checked === true ? w_whyDidntYouWorkTillNow.style.display='none' : w_whyDidntYouWorkTillNow.style.display='block';
                     };
                 </script>
 
                 <div class="form-row mt-2">
                     <div class="col-6 p-0">
-                        <span class="align-bottom">16.1. Где находилось место вашей работы?</span>
+                        <span class="align-bottom">16.2. Где находилось место вашей работы?</span>
                         <select class="custom-select" th:field="*{workInfo.locationOfWork}" id="w_locationOfWork">
                             <option value="0" selected>...</option>
                             <option value="1">В населенном пункте по месту жительства</option>
                             <option value="2">В другом населенном пункте Республики Беларусь</option>
                             <option value="3">В другой стране</option>
                         </select>
+                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "В населенном пункте по месту жительства" -> к вопросу 17</small>
                     </div>
                 </div>
                 <div class="container pl-0" style="display: none" id="w_locationOfWork_v2">
@@ -493,7 +496,7 @@
                         <small class="text-muted align-bottom">Укажите название страны</small>
                         <input class="form-control" th:field="*{workInfo.nameOfCountry}">
                     </div>
-                    <small class="form-text text-muted">К вопросу 16.2</small>
+                    <small class="form-text text-muted">К вопросу 16.3</small>
                 </div>
                 <script>
                     w_locationOfWork.onchange = function (){
@@ -503,7 +506,7 @@
                 </script>
 
                 <div class="form-row mt-2">
-                    <span class="align-bottom">16.2. Как часто вы выезжали на работу на территорию другого государства?</span>
+                    <span class="align-bottom">16.3. Как часто вы выезжали на работу на территорию другого государства?</span>
                     <select class="custom-select" th:field="*{workInfo.departureFrequencyToWork}">
                         <option value="0" selected>...</option>
                         <option value="1">Ежедневно</option>
@@ -563,13 +566,13 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" th:field="*{workInfo.canYouStarWorkingInTwoWeeks}">
                         <label>21. Если бы Вы получили подходящую работу, готовы ли Вы приступить к ней в ближайшие две недели?</label>
-                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Да" и на вопрос 20 ответ "Да" -> к вопросу 23; Если ответ "Да" и на вопрос 20 ответ "Нет" -> к вопросу 22</small>
+                        <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Да" и на вопрос 20 ответ "Да" -> к вопросу 22; Если ответ "Да" и на вопрос 20 ответ "Нет" -> к вопросу 22; Если ответ "Нет" -> к вопросу 22</small>
                     </div>
                 </div>
 
                 <div class="form-row mt-2">
                     <span class="align-bottom">22. Укажите основную причину, по которой Вы отказались от поиска работы (не готовы приступить к работе)</span>
-                    <select class="custom-select" th:field="*{workInfo.typeOfWorkplace}">
+                    <select class="custom-select" th:field="*{workInfo.whyYouCantWorkOrStoppedSearch}">
                         <option value="0" selected>...</option>
                         <option value="1">Получил(а) работу, организовал(а) собственное дело и приступлю к ней в ближайшие две недели</option>
                         <option value="2">Нашел (нашла) работу и ожидаю ответа</option>

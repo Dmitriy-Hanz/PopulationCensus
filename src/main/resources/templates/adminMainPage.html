@@ -39,34 +39,69 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="currentProfileModal">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Текущий профиль</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+
+                <div th:if="${#authentication.name} != 'admin'">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Текущий профиль</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </div>
+                <div th:if="${#authentication.name} == 'admin'">
+                    <div class="modal-header" style="background: gold">
+                        <h5 class="modal-title">Текущий профиль</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+
+
                 <div class="modal-body">
-                    <p>Логин: <b>Login</b></p>
-                    <p>Пароль: <b>Password</b></p>
-                    <small class="mt-2">Дополнительная информация</small>
-                    <hr class="mt-0 mb-1"/>
-                    <p>Имя: <b>Name</b></p>
-                    <p>Фамилия: <b>Surname</b></p>
-                    <p>Отчество: <b>Fathername</b></p>
-<!--                    <hr/>-->
+                    <p>Логин: <b th:utext="${currentUser.username}">Login</b></p>
+                    <p>Пароль: <b th:utext="${currentUser.decodedPassword}">Password</b></p>
+                    <div th:if="${#authentication.name} != 'admin'">
+                        <small class="mt-2">Дополнительная информация</small>
+                        <hr class="mt-0 mb-1"/>
+                        <p>Имя: <b th:utext="${currentUser.name}"></b> <small class="text-muted" th:if="${currentUser.name} == ''">Имя не указано</small></p>
+                        <p>Фамилия: <b th:utext="${currentUser.surname}"></b> <small class="text-muted" th:if="${currentUser.surname} == ''">Фамилия не указана</small></p>
+                        <p>Отчество: <b th:utext="${currentUser.fathername}"></b> <small class="text-muted" th:if="${currentUser.fathername} == ''">Отчество не указано</small></p>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <form th:action="@{/editCurrentProfile}" method="post" class="w-100">
-                        <button class="btn btn-secondary w-100">Редактировать профиль</button>
-                    </form>
-                    <form th:action="@{/deleteCurrentProfile}" method="post" class="w-100">
-                        <button class="btn btn-danger w-100">Удалить профиль</button>
-                    </form>
+                <div th:if="${#authentication.name} != 'admin'">
+                    <div class="modal-footer">
+                        <form th:action="@{/editCurrentUser}" th:object="${currentUser}" method="post" class="w-100">
+                            <button class="btn btn-secondary w-100">Редактировать профиль</button>
+                        </form>
+                        <button class="btn btn-danger w-100" data-toggle="modal" data-target="#deleteCurrentProfileModal">Удалить профиль</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="modal" tabindex="-1" role="dialog" id="deleteCurrentProfileModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Удаление текущего профиля.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы уверены?</p>
+                </div>
+                <div class="modal-footer">
+                    <form th:action="@{/deleteCurrentUser}" th:method="post">
+                        <button class="btn btn-primary h-50">Да</button>
+                    </form>
+                    <button class="btn btn-secondary h-50" data-dismiss="modal">Нет</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

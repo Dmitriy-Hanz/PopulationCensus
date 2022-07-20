@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <div th:insert="common/lib :: copy"/>
+    <script type="text/javascript" th:src="@{/js/validation.js}"></script>
     <title>foreignPersonQuestionsPage.html</title>
 </head>
 <body style="background: #F2F2F2">
@@ -16,7 +17,7 @@
         <h4>[[${persons.size() + 1}]] из [(${household.numberOfMembers})]</h4>
         <hr/>
 
-        <form th:action="@{/personNext}" th:object="${currentPerson}" method="post">
+        <form th:action="@{/personNext}" th:object="${currentPerson}" method="post" onsubmit="return validateForeignPerson()">
 
             <div class="form-row">
                 <span class="align-bottom mt-1">1. Фамилия</span>
@@ -30,7 +31,7 @@
             <div class="form-row mt-2">
                 <div class="col-6 pl-0">
                     <span class="align-bottom mt-1">2. Дата рождения (число, месяц, год)</span>
-                    <input class="form-control" th:field="*{birthdayDate}">
+                    <input type="date" class="form-control" th:field="*{stringBirthdayDate}">
                 </div>
                 <div class="col-3 pl-0">
                     <span class="align-bottom mt-1">Число полных лет</span>
@@ -78,20 +79,19 @@
                         <option value="3">Без гражданства</option>
                     </select>
                 </div>
-                <div class="col text-center" id="p_citizenship_v1" style="display: none">
-                    <small class="text-muted align-bottom">Идентификационный номер (указан в паспорте)</small>
-                    <input class="form-control" th:field="*{passportID}"/>
-                </div>
                 <div class="col text-center" id="p_citizenship_v2" style="display: none">
                     <small class="text-muted align-bottom">Укажите название страны</small>
                     <input class="form-control" th:field="*{nameOfCitizenshipCountry}">
                 </div>
                 <script>
                     p_citizenship.onchange = function (){
-                        p_citizenship.value == 1 ? p_citizenship_v1.style.display='block' : p_citizenship_v1.style.display='none';
                         p_citizenship.value == 2 ? p_citizenship_v2.style.display='block' : p_citizenship_v2.style.display='none';
                     };
                 </script>
+            </div>
+            <div class="form-row w-50">
+                <span class="align-bottom mt-1 ml-3">Идентификационный номер (указан в паспорте)</span>
+                <input class="form-control" th:field="*{passportID}"/>
             </div>
 
             <div class="form-row w-50">
@@ -107,10 +107,10 @@
                     <option value="2">Получение образования</option>
                     <option value="3">Служебная или деловая встреча</option>
                     <option value="4">Посещение родственников</option>
-                    <option value="6">Туризм, отдых или лечение</option>
-                    <option value="7">Транзит</option>
-                    <option value="8">Поиск убежища</option>
-                    <option value="9">Другая цель</option>
+                    <option value="5">Туризм, отдых или лечение</option>
+                    <option value="6">Транзит</option>
+                    <option value="7">Поиск убежища</option>
+                    <option value="8">Другая цель</option>
                 </select>
             </div>
 

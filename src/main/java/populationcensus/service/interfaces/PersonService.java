@@ -16,6 +16,7 @@ public interface PersonService {
     Person findPerson(long personId);
     Person findPersonByHousehold(Household household);
     Person findPersonByHouseholdId(long householdId);
+    Person findPersonByPassportID(String passportID);
 
     void deletePerson(Person person);
     void deletePersonById(long personId);
