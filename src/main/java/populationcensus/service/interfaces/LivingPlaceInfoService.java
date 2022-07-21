@@ -20,5 +20,4 @@ public interface LivingPlaceInfoService {
     Person findLinkedPerson(long livingPlaceInfoId);
     Person findLinkedPerson(LivingPlaceInfo livingPlaceInfo);
 
-    void updateLivingPlaceInfo(LivingPlaceInfo entity);
 }

@@ -2,6 +2,7 @@ package populationcensus.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import populationcensus.repository.entity.LivingCountryInfo;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.LivingCountryInfoRep;
@@ -19,13 +20,14 @@ public class LivingCountryInfoServiceImpl implements LivingCountryInfoService {
 
     @Override
     public void saveLivingCountryInfo(LivingCountryInfo entity) {
-        if(entity.getPersonInLivingCountryInfo() == null) {
+        if (entity.getPersonInLivingCountryInfo() == null) {
             return;
         }
         livingCountryInfoRep.saveAndFlush(entity);
     }
 
     @Override
+    @Transactional
     public void saveLivingCountryInfo(long personId, LivingCountryInfo entity) {
         if (entity.getPersonInLivingCountryInfo() != null) {
             return;
@@ -34,7 +36,7 @@ public class LivingCountryInfoServiceImpl implements LivingCountryInfoService {
 
         personOptional.ifPresent(
                 (obj) -> {
-                    if(obj.getLivingCountryInfo() != null){
+                    if (obj.getLivingCountryInfo() != null) {
                         return;
                     }
                     entity.setPersonInLivingCountryInfo(personOptional.get());
@@ -45,7 +47,7 @@ public class LivingCountryInfoServiceImpl implements LivingCountryInfoService {
 
     @Override
     public void saveLivingCountryInfo(Person person, LivingCountryInfo entity) {
-        if(entity.getPersonInLivingCountryInfo() != null || person.getId() == null){
+        if (entity.getPersonInLivingCountryInfo() != null || person.getId() == null) {
             return;
         }
         entity.setPersonInLivingCountryInfo(person);
@@ -60,80 +62,49 @@ public class LivingCountryInfoServiceImpl implements LivingCountryInfoService {
     }
 
     @Override
+    @Transactional
     public LivingCountryInfo findLivingCountryInfoByPersonId(long personId) {
-        Optional<Person> personOptional = personRep.findById(personId);
-        Person personResult = personOptional.orElse(null);
-        if (personResult == null){
-            return null;
-        }
-        return personResult.getLivingCountryInfo();
+        Person person = personRep.findById(personId).orElse(null);
+        return livingCountryInfoRep.findByPersonInLivingCountryInfo(person).orElse(null);
     }
 
     @Override
     public LivingCountryInfo findLivingCountryInfoByPerson(Person person) {
-        if (person == null) {
-            return null;
-        }
-        return findLivingCountryInfoByPersonId(person.getId());
+        return livingCountryInfoRep.findByPersonInLivingCountryInfo(person).orElse(null);
     }
 
 
     @Override
     public void deleteLivingCountryInfoById(long livingCountryInfoId) {
         livingCountryInfoRep.deleteById(livingCountryInfoId);
-        livingCountryInfoRep.flush();
     }
 
     @Override
     public void deleteLivingCountryInfo(LivingCountryInfo livingCountryInfo) {
-        if (livingCountryInfo == null){
-            return;
-        }
-        deleteLivingCountryInfoById(livingCountryInfo.getId());
+        livingCountryInfoRep.delete(livingCountryInfo);
     }
 
     @Override
     public void deleteLivingCountryInfoByPersonId(long personId) {
-        Optional<Person> personOptional = personRep.findById(personId);
-        Person personResult = personOptional.orElse(null);
-        if (personResult == null){
-            return;
-        }
-        deleteLivingCountryInfo(personResult.getLivingCountryInfo());
-        personRep.flush();
+        Person person = personRep.findById(personId).orElse(null);
+        livingCountryInfoRep.deleteByPersonInLivingCountryInfo(person);
     }
 
     @Override
     public void deleteLivingCountryInfoByPerson(Person person) {
-        if(person == null){
-            return;
-        }
-        deleteLivingCountryInfoByPersonId(person.getId());
+        livingCountryInfoRep.deleteByPersonInLivingCountryInfo(person);
     }
 
 
-
+    @Transactional
     @Override
     public Person findLinkedPerson(long livingCountryInfoId) {
-        Optional<LivingCountryInfo> livingCountryInfoOptional = livingCountryInfoRep.findById(livingCountryInfoId);
-        LivingCountryInfo livingCountryInfoResult = livingCountryInfoOptional.orElse(null);
-        if (livingCountryInfoResult == null){
-            return null;
-        }
-        return livingCountryInfoResult.getPersonInLivingCountryInfo();
+        LivingCountryInfo livingCountryInfo = livingCountryInfoRep.findById(livingCountryInfoId).orElse(new LivingCountryInfo());
+        return personRep.findByLivingCountryInfo(livingCountryInfo).orElse(null);
     }
 
     @Override
     public Person findLinkedPerson(LivingCountryInfo livingCountryInfo) {
-        return findLinkedPerson(livingCountryInfo.getId());
-    }
-
-
-    @Override
-    public void updateLivingCountryInfo(LivingCountryInfo entity) {
-        if (entity == null){
-            return;
-        }
-        livingCountryInfoRep.saveAndFlush(entity);
+        return personRep.findByLivingCountryInfo(livingCountryInfo).orElse(null);
     }
 }

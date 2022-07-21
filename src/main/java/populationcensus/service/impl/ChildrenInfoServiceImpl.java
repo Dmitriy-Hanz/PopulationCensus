@@ -2,8 +2,8 @@ package populationcensus.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import populationcensus.repository.entity.ChildrenInfo;
-import populationcensus.repository.entity.Household;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.ChildrenInfoRep;
 import populationcensus.repository.repositories.PersonRep;
@@ -27,6 +27,7 @@ public class ChildrenInfoServiceImpl implements ChildrenInfoService {
     }
 
     @Override
+    @Transactional
     public void saveChildrenInfo(long personId, ChildrenInfo entity) {
         if (entity.getPersonInChildrenInfo() != null) {
             return;
@@ -61,80 +62,49 @@ public class ChildrenInfoServiceImpl implements ChildrenInfoService {
     }
 
     @Override
+    @Transactional
     public ChildrenInfo findChildrenInfoByPersonId(long personId) {
-        Optional<Person> personOptional = personRep.findById(personId);
-        Person personResult = personOptional.orElse(null);
-        if (personResult == null){
-            return null;
-        }
-        return personResult.getChildrenInfo();
+        Person person = personRep.findById(personId).orElse(null);
+        return childrenInfoRep.findByPersonInChildrenInfo(person).orElse(null);
     }
 
     @Override
     public ChildrenInfo findChildrenInfoByPerson(Person person) {
-        if (person == null) {
-            return null;
-        }
-        return findChildrenInfoByPersonId(person.getId());
+        return childrenInfoRep.findByPersonInChildrenInfo(person).orElse(null);
     }
 
 
     @Override
     public void deleteChildrenInfoById(long childrenInfoId) {
         childrenInfoRep.deleteById(childrenInfoId);
-        childrenInfoRep.flush();
     }
 
     @Override
     public void deleteChildrenInfo(ChildrenInfo childrenInfo) {
-        if (childrenInfo == null){
-            return;
-        }
-        deleteChildrenInfoById(childrenInfo.getId());
+        childrenInfoRep.delete(childrenInfo);
     }
 
     @Override
     public void deleteChildrenInfoByPersonId(long personId) {
-        Optional<Person> personOptional = personRep.findById(personId);
-        Person personResult = personOptional.orElse(null);
-        if (personResult == null){
-            return;
-        }
-        deleteChildrenInfo(personResult.getChildrenInfo());
-        personRep.flush();
+        Person person = personRep.findById(personId).orElse(null);
+        childrenInfoRep.deleteByPersonInChildrenInfo(person);
     }
 
     @Override
     public void deleteChildrenInfoByPerson(Person person) {
-        if(person == null){
-            return;
-        }
-        deleteChildrenInfoByPersonId(person.getId());
+        childrenInfoRep.deleteByPersonInChildrenInfo(person);
     }
 
 
-
+    @Transactional
     @Override
     public Person findLinkedPerson(long childrenInfoId) {
-        Optional<ChildrenInfo> childrenInfoOptional = childrenInfoRep.findById(childrenInfoId);
-        ChildrenInfo childrenInfoResult = childrenInfoOptional.orElse(null);
-        if (childrenInfoResult == null){
-            return null;
-        }
-        return childrenInfoResult.getPersonInChildrenInfo();
+        ChildrenInfo childrenInfo = childrenInfoRep.findById(childrenInfoId).orElse(new ChildrenInfo());
+        return personRep.findByChildrenInfo(childrenInfo).orElse(null);
     }
 
     @Override
     public Person findLinkedPerson(ChildrenInfo childrenInfo) {
-        return findLinkedPerson(childrenInfo.getId());
-    }
-
-
-    @Override
-    public void updateChildrenInfo(ChildrenInfo entity) {
-        if (entity == null){
-            return;
-        }
-        childrenInfoRep.saveAndFlush(entity);
+        return personRep.findByChildrenInfo(childrenInfo).orElse(null);
     }
 }

@@ -2,6 +2,7 @@ package populationcensus.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import populationcensus.repository.entity.EducationInfo;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.EducationInfoRep;
@@ -19,13 +20,14 @@ public class EducationInfoServiceImpl implements EducationInfoService {
 
     @Override
     public void saveEducationInfo(EducationInfo entity) {
-        if(entity.getPersonInEducationInfo() == null) {
+        if (entity.getPersonInEducationInfo() == null) {
             return;
         }
         educationInfoRep.saveAndFlush(entity);
     }
 
     @Override
+    @Transactional
     public void saveEducationInfo(long personId, EducationInfo entity) {
         if (entity.getPersonInEducationInfo() != null) {
             return;
@@ -34,7 +36,7 @@ public class EducationInfoServiceImpl implements EducationInfoService {
 
         personOptional.ifPresent(
                 (obj) -> {
-                    if(obj.getEducationInfo() != null){
+                    if (obj.getEducationInfo() != null) {
                         return;
                     }
                     entity.setPersonInEducationInfo(personOptional.get());
@@ -45,12 +47,13 @@ public class EducationInfoServiceImpl implements EducationInfoService {
 
     @Override
     public void saveEducationInfo(Person person, EducationInfo entity) {
-        if(entity.getPersonInEducationInfo() != null || person.getId() == null){
+        if (entity.getPersonInEducationInfo() != null || person.getId() == null) {
             return;
         }
         entity.setPersonInEducationInfo(person);
         educationInfoRep.saveAndFlush(entity);
     }
+
 
     @Override
     public EducationInfo findEducationInfo(long educationInfoId) {
@@ -59,76 +62,49 @@ public class EducationInfoServiceImpl implements EducationInfoService {
     }
 
     @Override
+    @Transactional
     public EducationInfo findEducationInfoByPersonId(long personId) {
-        Optional<Person> personOptional = personRep.findById(personId);
-        Person personResult = personOptional.orElse(null);
-        if (personResult == null){
-            return null;
-        }
-        return personResult.getEducationInfo();
+        Person person = personRep.findById(personId).orElse(null);
+        return educationInfoRep.findByPersonInEducationInfo(person).orElse(null);
     }
 
     @Override
     public EducationInfo findEducationInfoByPerson(Person person) {
-        if (person == null) {
-            return null;
-        }
-        return findEducationInfoByPersonId(person.getId());
+        return educationInfoRep.findByPersonInEducationInfo(person).orElse(null);
     }
+
 
     @Override
     public void deleteEducationInfoById(long educationInfoId) {
         educationInfoRep.deleteById(educationInfoId);
-        educationInfoRep.flush();
     }
 
     @Override
     public void deleteEducationInfo(EducationInfo educationInfo) {
-        if (educationInfo == null){
-            return;
-        }
-        deleteEducationInfoById(educationInfo.getId());
+        educationInfoRep.delete(educationInfo);
     }
 
     @Override
     public void deleteEducationInfoByPersonId(long personId) {
-        Optional<Person> personOptional = personRep.findById(personId);
-        Person personResult = personOptional.orElse(null);
-        if (personResult == null){
-            return;
-        }
-        deleteEducationInfo(personResult.getEducationInfo());
-        personRep.flush();
+        Person person = personRep.findById(personId).orElse(null);
+        educationInfoRep.deleteByPersonInEducationInfo(person);
     }
 
     @Override
     public void deleteEducationInfoByPerson(Person person) {
-        if(person == null){
-            return;
-        }
-        deleteEducationInfoByPersonId(person.getId());
+        educationInfoRep.deleteByPersonInEducationInfo(person);
     }
 
+
+    @Transactional
     @Override
     public Person findLinkedPerson(long educationInfoId) {
-        Optional<EducationInfo> educationInfoOptional = educationInfoRep.findById(educationInfoId);
-        EducationInfo educationInfoResult = educationInfoOptional.orElse(null);
-        if (educationInfoResult == null){
-            return null;
-        }
-        return educationInfoResult.getPersonInEducationInfo();
+        EducationInfo educationInfo = educationInfoRep.findById(educationInfoId).orElse(new EducationInfo());
+        return personRep.findByEducationInfo(educationInfo).orElse(null);
     }
 
     @Override
     public Person findLinkedPerson(EducationInfo educationInfo) {
-        return findLinkedPerson(educationInfo.getId());
-    }
-
-    @Override
-    public void updateEducationInfo(EducationInfo entity) {
-        if (entity == null){
-            return;
-        }
-        educationInfoRep.saveAndFlush(entity);
+        return personRep.findByEducationInfo(educationInfo).orElse(null);
     }
 }

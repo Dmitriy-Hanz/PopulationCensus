@@ -36,22 +36,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void updatePerson(Household entity) {
-
-    }
-
-    @Override
     public List<Person> findAll() {
         return personRep.findAll();
     }
 
     @Override
     public Page<Person> findAllAndPaginate(Pageable pageable) {
-//        Pageable paging = PageRequest.of(3, 5);
-//        Page<Person> pagedResult = personRep.findAll(paging);
-//        return pagedResult.toList();
-
-
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;

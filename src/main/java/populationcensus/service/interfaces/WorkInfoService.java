@@ -20,5 +20,4 @@ public interface WorkInfoService {
     Person findLinkedPerson(long workInfoId);
     Person findLinkedPerson(WorkInfo workInfo);
 
-    void updateWorkInfo(WorkInfo entity);
 }

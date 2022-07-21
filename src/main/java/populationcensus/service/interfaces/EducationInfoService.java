@@ -23,6 +23,4 @@ public interface EducationInfoService {
     Person findLinkedPerson(long educationInfoId);
     Person findLinkedPerson(EducationInfo educationInfo);
 
-    void updateEducationInfo(EducationInfo entity);
-
 }

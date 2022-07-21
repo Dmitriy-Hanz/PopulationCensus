@@ -2,10 +2,11 @@ package populationcensus.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import populationcensus.repository.entity.WorkInfo;
 import populationcensus.repository.entity.Person;
-import populationcensus.repository.repositories.PersonRep;
 import populationcensus.repository.repositories.WorkInfoRep;
+import populationcensus.repository.repositories.PersonRep;
 import populationcensus.service.interfaces.WorkInfoService;
 
 import java.util.Optional;
@@ -19,13 +20,14 @@ public class WorkInfoServiceImpl implements WorkInfoService {
 
     @Override
     public void saveWorkInfo(WorkInfo entity) {
-        if(entity.getPersonInWorkInfo() == null) {
+        if (entity.getPersonInWorkInfo() == null) {
             return;
         }
         workInfoRep.saveAndFlush(entity);
     }
 
     @Override
+    @Transactional
     public void saveWorkInfo(long personId, WorkInfo entity) {
         if (entity.getPersonInWorkInfo() != null) {
             return;
@@ -34,7 +36,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
 
         personOptional.ifPresent(
                 (obj) -> {
-                    if(obj.getWorkInfo() != null){
+                    if (obj.getWorkInfo() != null) {
                         return;
                     }
                     entity.setPersonInWorkInfo(personOptional.get());
@@ -45,7 +47,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
 
     @Override
     public void saveWorkInfo(Person person, WorkInfo entity) {
-        if(entity.getPersonInWorkInfo() != null || person.getId() == null){
+        if (entity.getPersonInWorkInfo() != null || person.getId() == null) {
             return;
         }
         entity.setPersonInWorkInfo(person);
@@ -60,80 +62,49 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     }
 
     @Override
+    @Transactional
     public WorkInfo findWorkInfoByPersonId(long personId) {
-        Optional<Person> personOptional = personRep.findById(personId);
-        Person personResult = personOptional.orElse(null);
-        if (personResult == null){
-            return null;
-        }
-        return personResult.getWorkInfo();
+        Person person = personRep.findById(personId).orElse(null);
+        return workInfoRep.findByPersonInWorkInfo(person).orElse(null);
     }
 
     @Override
     public WorkInfo findWorkInfoByPerson(Person person) {
-        if (person == null) {
-            return null;
-        }
-        return findWorkInfoByPersonId(person.getId());
+        return workInfoRep.findByPersonInWorkInfo(person).orElse(null);
     }
 
 
     @Override
     public void deleteWorkInfoById(long workInfoId) {
         workInfoRep.deleteById(workInfoId);
-        workInfoRep.flush();
     }
 
     @Override
     public void deleteWorkInfo(WorkInfo workInfo) {
-        if (workInfo == null){
-            return;
-        }
-        deleteWorkInfoById(workInfo.getId());
+        workInfoRep.delete(workInfo);
     }
 
     @Override
     public void deleteWorkInfoByPersonId(long personId) {
-        Optional<Person> personOptional = personRep.findById(personId);
-        Person personResult = personOptional.orElse(null);
-        if (personResult == null){
-            return;
-        }
-        deleteWorkInfo(personResult.getWorkInfo());
-        personRep.flush();
+        Person person = personRep.findById(personId).orElse(null);
+        workInfoRep.deleteByPersonInWorkInfo(person);
     }
 
     @Override
     public void deleteWorkInfoByPerson(Person person) {
-        if(person == null){
-            return;
-        }
-        deleteWorkInfoByPersonId(person.getId());
+        workInfoRep.deleteByPersonInWorkInfo(person);
     }
 
 
-
+    @Transactional
     @Override
     public Person findLinkedPerson(long workInfoId) {
-        Optional<WorkInfo> workInfoOptional = workInfoRep.findById(workInfoId);
-        WorkInfo workInfoResult = workInfoOptional.orElse(null);
-        if (workInfoResult == null){
-            return null;
-        }
-        return workInfoResult.getPersonInWorkInfo();
+        WorkInfo workInfo = workInfoRep.findById(workInfoId).orElse(new WorkInfo());
+        return personRep.findByWorkInfo(workInfo).orElse(null);
     }
 
     @Override
     public Person findLinkedPerson(WorkInfo workInfo) {
-        return findLinkedPerson(workInfo.getId());
-    }
-
-
-    @Override
-    public void updateWorkInfo(WorkInfo entity) {
-        if (entity == null){
-            return;
-        }
-        workInfoRep.saveAndFlush(entity);
+        return personRep.findByWorkInfo(workInfo).orElse(null);
     }
 }

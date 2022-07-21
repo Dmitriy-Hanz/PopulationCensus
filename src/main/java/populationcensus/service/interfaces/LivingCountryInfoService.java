@@ -20,5 +20,4 @@ public interface LivingCountryInfoService {
     Person findLinkedPerson(long livingCountryInfoId);
     Person findLinkedPerson(LivingCountryInfo livingCountryInfo);
 
-    void updateLivingCountryInfo(LivingCountryInfo entity);
 }

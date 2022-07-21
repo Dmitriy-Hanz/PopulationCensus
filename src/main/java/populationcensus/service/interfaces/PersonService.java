@@ -15,8 +15,6 @@ public interface PersonService {
     void savePerson(Person entity, long householdId);
     void savePerson(Person entity, Household household);
 
-    void updatePerson(Household entity);
-
     List<Person> findAll();
     Page<Person> findAllAndPaginate(Pageable pageable);
     Person findPerson(long personId);

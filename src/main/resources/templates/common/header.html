@@ -43,7 +43,8 @@
 
     <div th:if="${#execInfo.processedTemplateName} eq 'adminMainPage' or
                 ${#execInfo.processedTemplateName} eq 'usersListPage' or
-                ${#execInfo.processedTemplateName} eq 'personsListPage'">
+                ${#execInfo.processedTemplateName} eq 'personsListPage' or
+                ${#execInfo.processedTemplateName} eq 'censusResultsPage'">
 
         <nav class="navbar navbar-expand-lg navbar-light" style="background: #71dd8a">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -51,11 +52,6 @@
                     <li class="nav-item active mr-1">
                         <form th:action="@{/navAdminMain}" method="post">
                             <button class="btn btn-primary">Главная</button>
-                        </form>
-                    </li>
-                    <li class="nav-item mr-1">
-                        <form th:action="@{/navCensusTerm}" method="post">
-                            <button class="btn btn-light">Сроки переписи</button>
                         </form>
                     </li>
                     <li class="nav-item mr-1">

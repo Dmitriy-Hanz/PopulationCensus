@@ -22,6 +22,4 @@ public interface ChildrenInfoService {
 
     Person findLinkedPerson(long childrenInfoId);
     Person findLinkedPerson(ChildrenInfo childrenInfo);
-
-    void updateChildrenInfo(ChildrenInfo entity);
 }

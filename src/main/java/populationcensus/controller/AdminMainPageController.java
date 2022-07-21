@@ -49,6 +49,10 @@ public class AdminMainPageController {
     public String navPersonsListPage(){
         return "redirect:adminMain/personsList";
     }
+    @PostMapping(value = "/navCensusResults")
+    public String navCensusResultsPage(){
+        return "redirect:adminMain/censusResults";
+    }
 
 
 
