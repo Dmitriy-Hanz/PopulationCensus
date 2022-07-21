@@ -1,9 +1,13 @@
 package populationcensus.service.interfaces;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import populationcensus.repository.entity.AccommodationsInfo;
 import populationcensus.repository.entity.FullAddressInfo;
 import populationcensus.repository.entity.Household;
 import populationcensus.repository.entity.Person;
+
+import java.util.List;
 
 public interface PersonService {
 
@@ -13,6 +17,8 @@ public interface PersonService {
 
     void updatePerson(Household entity);
 
+    List<Person> findAll();
+    Page<Person> findAllAndPaginate(Pageable pageable);
     Person findPerson(long personId);
     Person findPersonByHousehold(Household household);
     Person findPersonByHouseholdId(long householdId);

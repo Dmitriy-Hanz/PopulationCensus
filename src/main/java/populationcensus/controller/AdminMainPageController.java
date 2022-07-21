@@ -42,9 +42,15 @@ public class AdminMainPageController {
         return "redirect:adminMain";
     }
     @PostMapping(value = "/navUsersList")
-    public String navBlankViewerPage(){
+    public String navUsersListPage(){
         return "redirect:adminMain/usersList";
     }
+    @PostMapping(value = "/navPersonsList")
+    public String navPersonsListPage(){
+        return "redirect:adminMain/personsList";
+    }
+
+
 
     @PostMapping(value = "/deleteCurrentUser")
     public String deleteCurrentUser(Model model){

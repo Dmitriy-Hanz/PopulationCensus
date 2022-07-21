@@ -3,10 +3,7 @@ package populationcensus.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import populationcensus.dto.mapper.HouseholdMapper;
 import populationcensus.dto.mapper.PersonMapper;
@@ -40,11 +37,33 @@ public class PersonBlankViewerPageController {
     public String loadFail(){
         return "personBlankViewerFailPage";
     }
+    @GetMapping("/adminMain/personsList/blank/{id}")
+    public String loadFromPersonsList(Model model, @PathVariable String id){
+        Person person = personService.findPerson(Long.parseLong(id));
+        model.addAttribute("personForView", personMapper.toPersonDto(person));
+        model.addAttribute("householdForView",householdMapper.toHouseholdDto(person.getHouseholdField()));
+        return "personBlankViewerPage";
+    }
 
-    @GetMapping("*/myBlank/household")
-    public String load(){
+    @GetMapping("/main/myBlank/household")
+    public String loadFromMain(){
         return "householdBlankViewerPage";
     }
+    @GetMapping("/adminMain/personsList/blank/*/household")
+    public String loadFromPersonsList(){
+        return "householdBlankViewerPage";
+    }
+
+    @PostMapping("/showHousehold")
+    public String showHousehold(HttpServletRequest req){
+        return "redirect:" + req.getHeader("referer") + "/household";
+    }
+    @PostMapping("/showPerson")
+    public String showPerson(HttpServletRequest req){
+        return "redirect:" + req.getHeader("referer").replaceAll("/household","");
+    }
+
+
 
     @PostMapping("/backToPage")
     public String back(HttpSession httpSession, SessionStatus status, HttpServletRequest req){
@@ -54,19 +73,13 @@ public class PersonBlankViewerPageController {
         httpSession.removeAttribute("householdForView");
         return "redirect:" + previousPage(req);
     }
-    @PostMapping("/showHousehold")
-    public String showHousehold(){
-        return "redirect:/main/myBlank/household";
-    }
-    @PostMapping("/showPerson")
-    public String showPerson(){
-        return "redirect:/main/myBlank";
-    }
 
     private String previousPage(HttpServletRequest req) {
         return req.getHeader("referer")
                 .replaceAll("/myBlankFail", "")
                 .replaceAll("/myBlank/household", "")
+                .replaceAll("/blank/\\d/household", "")
+                .replaceAll("[/]\\w*[/]\\d", "")
                 .replaceAll("/myBlank", "");
     }
 }
