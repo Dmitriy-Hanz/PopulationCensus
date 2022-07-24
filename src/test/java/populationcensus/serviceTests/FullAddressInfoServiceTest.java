@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import populationcensus.Consts;
 import populationcensus.repository.entity.FullAddressInfo;
 import populationcensus.repository.entity.Household;
 import populationcensus.repository.repositories.FullAddressInfoRep;
@@ -40,14 +41,14 @@ public class FullAddressInfoServiceTest {
     @Before
     public void presets(){
         household = Household.builder()
-                .id(1L)
-                .roomsCount(3)
-                .numberOfMembers(3)
+                .id(Consts.Test.HOUSEHOLD_ID)
+                .roomsCount(Consts.Test.HOUSEHOLD_ROOMS_COUNT)
+                .numberOfMembers(Consts.Test.HOUSEHOLD_NUMBER_OF_MEMBERS)
                 .build();
 
         fullAddressInfo = FullAddressInfo.builder()
-                .id(1L)
-                .villageName("Village")
+                .id(Consts.Test.FULL_ADDRESS_INFO_ID)
+                .villageName(Consts.Test.FULL_ADDRESS_INFO_VILLAGE_NAME)
                 .householdInFullAddressInfo(household)
                 .build();
 

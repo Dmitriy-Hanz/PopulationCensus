@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import populationcensus.Consts;
 import populationcensus.repository.entity.AccommodationsInfo;
 import populationcensus.repository.entity.Household;
 import populationcensus.repository.repositories.AccommodationsInfoRep;
@@ -39,14 +40,14 @@ public class AccommodationsInfoServiceTest {
     @Before
     public void presets(){
         household = Household.builder()
-                .id(1L)
-                .roomsCount(3)
-                .numberOfMembers(3)
+                .id(Consts.Test.HOUSEHOLD_ID)
+                .roomsCount(Consts.Test.HOUSEHOLD_ROOMS_COUNT)
+                .numberOfMembers(Consts.Test.HOUSEHOLD_NUMBER_OF_MEMBERS)
                 .build();
 
         accommodationsInfo = AccommodationsInfo.builder()
-                .id(1L)
-                .areaOfFlat(228)
+                .id(Consts.Test.ACCOMMODATIONS_INFO_ID)
+                .areaOfFlat(Consts.Test.ACCOMMODATIONS_INFO_AREA_OF_FLAT)
                 .householdInAccommodationsInfo(household)
                 .build();
 

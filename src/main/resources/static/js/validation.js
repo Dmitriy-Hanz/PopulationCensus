@@ -13,9 +13,24 @@ function isChecked(name){
 function isEmptyString(name){
     return getValueByName(name) === "";
 }
-function isNotIntegerNumber(name) {
-    return Number.isInteger(+getValueByName(name)) === false;
+
+function isNotIntegerPositiveNumber(name) {
+    if (Number.isInteger(+getValueByName(name)) === false){
+        return true;
+    }
+    if (+getValueByName(name) < 0){
+        return true;
+    }
 }
+function isNotIntegerMoreThenOneNumber(name) {
+    if (Number.isInteger(+getValueByName(name)) === false){
+        return true;
+    }
+    if (+getValueByName(name) < 1){
+        return true;
+    }
+}
+
 function isDropdownZero(name) {
     return getValueByName(name) == 0;
 }
@@ -28,6 +43,8 @@ function isAgeMoreThan(value) {
 function isAgeInArea(down,up) {
     return +getValueByName("age") > down && +getValueByName("age") < up;
 }
+
+
 
 function validateHousehold() {
 
@@ -67,11 +84,11 @@ function validateHousehold() {
 
     if (isEmptyString("numberOfMembers")) { return validationFail("Не указано количество членов домохозяйства."); }
     else
-    { if (isNotIntegerNumber("numberOfMembers")) { return validationFail("Количество членов домохозяйства должно быть целой цифрой(целым числом)."); } }
+    { if (isNotIntegerMoreThenOneNumber("numberOfMembers")) { return validationFail("Количество членов домохозяйства должно быть целой положительной цифрой(целым положительным числом), не равным 0."); } }
 
     if (isEmptyString("roomsCount") && isEmptyString("partOfRoom")) { return validationFail("Не указано кол-во комнат или часть комнаты, занимаемых домохозяйством."); }
     else
-    { if (!isEmptyString("roomsCount") && isNotIntegerNumber("roomsCount")) return validationFail("количество комнат должно быть цифрой(числом)."); }
+    { if (!isEmptyString("roomsCount") && isNotIntegerMoreThenOneNumber("roomsCount")) return validationFail("количество комнат должно быть целой положительной цифрой(целым положительным числом), не равным 0."); }
 
     if (getValueByName("accommodationsInfo.ownerOfApartment") == 0) { return validationFail("Не указана информация о собственнике помещения для проживания."); }
     if (getValueByName("accommodationsInfo.apartmentType") == 0) { return validationFail("Не указан тип помещения, используемого для проживания."); }
@@ -80,7 +97,7 @@ function validateHousehold() {
     {
         if (isEmptyString("accommodationsInfo.areaOfFlat")) { return validationFail("Не указана площадь дома/квартиры."); }
         else 
-        { if (isNotIntegerNumber("accommodationsInfo.areaOfFlat")) return validationFail("Площадь дома/квартиры должна быть целым числом(целой цифрой)."); }
+        { if (isNotIntegerPositiveNumber("accommodationsInfo.areaOfFlat")) return validationFail("Площадь дома/квартиры должна быть целым положительным числом(целой положительной цифрой)."); }
 
         if (getValueByName("accommodationsInfo.waterPipes") == 0) { return validationFail("Не указана информация о водопроводе."); }
         if (getValueByName("accommodationsInfo.canalization") == 0) { return validationFail("Не указана информация о канализации."); }
@@ -110,7 +127,7 @@ function validatePerson() {
 
     if (isEmptyString("age")) { return validationFail("Не указано число полных лет."); }
     else
-    { if (isNotIntegerNumber("age")) return validationFail("число полных лет должно быть целым числом(целой цифрой)."); }
+    { if (isNotIntegerPositiveNumber("age")) return validationFail("Число полных лет должно быть целым положительным числом(целой положительной цифрой)."); }
 
     if (isDropdownZero("gender")) { return validationFail("Не указан пол."); }
     if (isDropdownZero("householdRelations")) { return validationFail("Не указана информация об отношении к первому лицу в домохозяйстве."); }
@@ -180,9 +197,9 @@ function validatePerson() {
             if (isEmptyString("livingCountryInfo.stringArrivalPeriod")) { return validationFail("Не указан период прибытия."); }
             if (isDropdownZero("livingCountryInfo.reasonForArrivalAtRB")) { return validationFail("Не указана причина прибытия."); }
         }
+        if (isDropdownZero("livingCountryInfo.infoAboutLeavingBelarus") && isAgeInArea(14,74)) { return validationFail("Не указана информация о желании покинуть РБ."); }
+        if (!isDropdownEqual("livingCountryInfo.infoAboutLeavingBelarus",4) && isDropdownZero("livingCountryInfo.reasonForLeavingBelarus")){return validationFail("Не указана причина выезда из РБ.");}
     }
-    if (isDropdownZero("livingCountryInfo.infoAboutLeavingBelarus") && isAgeInArea(14,74)) { return validationFail("Не указана информация о желании покинуть РБ."); }
-    if (!isDropdownEqual("livingCountryInfo.infoAboutLeavingBelarus",4) && isDropdownZero("livingCountryInfo.reasonForLeavingBelarus")){return validationFail("Не указана причина выезда из РБ.");}
 
 
     /////////////////
@@ -243,7 +260,7 @@ function validatePerson() {
         {
             if (isEmptyString("childrenInfo.howManyChildrenDoYouHave") && !isChecked("childrenInfo.noChildren")) { return validationFail("Не указана информация о количестве имеющихся детей."); }
             if (!isEmptyString("childrenInfo.howManyChildrenDoYouHave") && isChecked("childrenInfo.noChildren")) { return validationFail("Некорректно указана информация о количестве имеющихся детей."); }
-            if (!isEmptyString("childrenInfo.howManyChildrenDoYouHave") && isNotIntegerNumber("childrenInfo.howManyChildrenDoYouHave")) { return validationFail("Количество имеющихся детей должно быть числом/цифрой."); }
+            if (!isEmptyString("childrenInfo.howManyChildrenDoYouHave") && isNotIntegerMoreThenOneNumber("childrenInfo.howManyChildrenDoYouHave")) { return validationFail("Количество имеющихся детей должно быть целым положительным числом (целой положительной цифрой), не равной 0."); }
         }
         if (isAgeInArea(17,50))
         {
@@ -252,7 +269,7 @@ function validatePerson() {
             {
                 if (isEmptyString("childrenInfo.howManyChildrenDoYouWant") && !isChecked("childrenInfo.dontKnowHowMany")) { return validationFail("Не указана информация о количестве желаемых детей."); }
                 if (!isEmptyString("childrenInfo.howManyChildrenDoYouWant") && isChecked("childrenInfo.dontKnowHowMany")) { return validationFail("Некорректно указана информация о количестве желаемых детей."); }
-                if (isNotIntegerNumber("childrenInfo.howManyChildrenDoYouWant")) { return validationFail("Количество желаемых детей должно быть числом/цифрой."); }
+                if (isNotIntegerMoreThenOneNumber("childrenInfo.howManyChildrenDoYouWant")) { return validationFail("Количество желаемых детей должно быть целым положительным числом (целой положительной цифрой), не равной 0."); }
             }
         }
     }
@@ -265,7 +282,7 @@ function validateForeignPerson() {
 
     if (isEmptyString("age")) { return validationFail("Не указано число полных лет."); }
     else
-    { if (isNotIntegerNumber("age")) return validationFail("число полных лет должно быть целым числом(целой цифрой)."); }
+    { if (isNotIntegerPositiveNumber("age")) return validationFail("Число полных лет должно быть целым положительным числом(целой положительной цифрой)."); }
 
     if (isDropdownZero("gender")) { return validationFail("Не указан пол."); }
     if (isDropdownZero("birthCountry")) { return validationFail("Не указана информация о стране рождения."); }
