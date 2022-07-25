@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import populationcensus.Consts;
 import populationcensus.dto.mapper.HouseholdMapper;
 import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.repository.entity.Person;
@@ -22,17 +23,17 @@ public class PersonBlankViewerPageController {
     private final PersonMapper personMapper;
     private final HouseholdMapper householdMapper;
 
-    @GetMapping("main/myBlank")
+    @GetMapping(Consts.Url.MAIN_$_MY_BLANK)
     public String load(@ModelAttribute(name = "passportID") String passportID, Model model){
         Person person = personService.findPersonByPassportID(passportID);
         if (person == null){
-            return "redirect:/main/myBlankFail";
+            return "redirect:" + Consts.Url.$_MAIN_$_MY_BLANK_FAIL;
         }
         model.addAttribute("personForView", personMapper.toPersonDto(person));
         model.addAttribute("householdForView",householdMapper.toHouseholdDto(person.getHouseholdField()));
         return "personBlankViewerPage";
     }
-    @GetMapping("main/myBlankFail")
+    @GetMapping(Consts.Url.MAIN_$_MY_BLANK_FAIL)
     public String loadFail(){
         return "personBlankViewerFailPage";
     }
@@ -44,7 +45,7 @@ public class PersonBlankViewerPageController {
         return "personBlankViewerPage";
     }
 
-    @GetMapping("/main/myBlank/household")
+    @GetMapping(Consts.Url.$_MAIN_$_MY_BLANK_$_HOUSEHOLD)
     public String loadFromMain(){
         return "householdBlankViewerPage";
     }
@@ -53,18 +54,18 @@ public class PersonBlankViewerPageController {
         return "householdBlankViewerPage";
     }
 
-    @PostMapping("/showHousehold")
+    @PostMapping(Consts.Url.$_SHOW_HOUSEHOLD)
     public String showHousehold(HttpServletRequest req){
         return "redirect:" + req.getHeader("referer") + "/household";
     }
-    @PostMapping("/showPerson")
+    @PostMapping(Consts.Url.$_SHOW_PERSON)
     public String showPerson(HttpServletRequest req){
         return "redirect:" + req.getHeader("referer").replaceAll("/household","");
     }
 
 
 
-    @PostMapping("/backToPage")
+    @PostMapping(Consts.Url.$_BACK_TO_PAGE)
     public String back(HttpSession httpSession, SessionStatus status, HttpServletRequest req){
         status.setComplete();
         httpSession.removeAttribute("passportID");

@@ -28,6 +28,8 @@ public class CensusResultsPageController {
             model.addAttribute("populationCountByMaritalStatus", populationCountByMaritalStatus(allDatabase));
             model.addAttribute("populationCountByBirthrate", populationCountByBirthrate(allDatabase));
             model.addAttribute("populationCountByEducationLvl", populationCountByEducationLvl(allDatabase));
+            model.addAttribute("populationCountByNationality", populationCountByNationality(allDatabase));
+            model.addAttribute("populationCountByNativeLanguage", populationCountByNativeLanguage(allDatabase));
         }
         return "censusResultsPage";
     }
@@ -195,6 +197,77 @@ public class CensusResultsPageController {
 
         for (int i = 0; i < 5; i++) {
             results[i][1] = (double)(int)results[i][0]*100 / (double)(onlyOlderThan15.size() == 0 ? 1 : onlyOlderThan15.size());
+        }
+
+        return results;
+    }
+
+    private Number[][] populationCountByNationality(List<Person> persons) {
+        Number[][] results = new Number[6][2];
+
+        List<Person> onlyWithNationality = persons.stream()
+                .filter(person -> person.getNationality() != null)
+                .collect(Collectors.toList());
+
+        results[0][0] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == 1)
+                .count();
+        results[1][0] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == 2)
+                .count();
+        results[2][0] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == 3)
+                .count();
+        results[3][0] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == 4)
+                .count();
+        results[4][0] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == 5)
+                .count();
+        results[5][0] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == 6)
+                .count();
+
+        for (int i = 0; i < 6; i++) {
+            results[i][1] = (double)(int)results[i][0]*100 / (double)(onlyWithNationality.size() == 0 ? 1 : onlyWithNationality.size());
+        }
+
+        return results;
+    }
+
+    private Number[][] populationCountByNativeLanguage(List<Person> persons) {
+        Number[][] nationalitiesCounts = populationCountByNationality(persons);
+        Number[][] results = new Number[6][3];
+
+        for (int i = 0; i < 6; i++) {
+            results[i][0] = nationalitiesCounts[i][0];
+        }
+
+        List<Person> onlyWithNationality = persons.stream()
+                .filter(person -> person.getNationality() != null)
+                .collect(Collectors.toList());
+
+        results[0][1] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == p.getNativeLanguage() & p.getNationality() == 1)
+                .count();
+        results[1][1] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == p.getNativeLanguage() & p.getNationality() == 2)
+                .count();
+        results[2][1] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == p.getNativeLanguage() & p.getNationality() == 3)
+                .count();
+        results[3][1] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == p.getNativeLanguage() & p.getNationality() == 4)
+                .count();
+        results[4][1] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == p.getNativeLanguage() & p.getNationality() == 5)
+                .count();
+        results[5][1] = (int)onlyWithNationality.stream()
+                .filter(p -> p.getNationality() == p.getNativeLanguage() & p.getNationality() == 6)
+                .count();
+
+        for (int i = 0; i < 6; i++) {
+            results[i][2] = (int)results[i][0] - (int)results[i][1];
         }
 
         return results;

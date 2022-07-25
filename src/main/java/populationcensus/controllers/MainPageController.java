@@ -6,29 +6,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import populationcensus.Consts;
 
 @Controller
 @SessionAttributes("passportID")
 public class MainPageController {
 
-    @GetMapping("/main")
+    @GetMapping(Consts.Url.$_MAIN)
     public String load(){
         return "mainPage";
     }
 
-    @PostMapping(value = "/surveyHousehold")
+    @PostMapping(Consts.Url.$_SURVEY_HOUSEHOLD)
     public String householdQuestionsPage(){
-        return "redirect:main/surveyHousehold";
+        return "redirect:" + Consts.Url.MAIN_$_SURVEY_HOUSEHOLD;
     }
 
-    @PostMapping(value = "/myBlank")
+    @PostMapping(Consts.Url.$_MY_BLANK)
     public String userBlankViewerPage(@RequestParam(name = "passportID") String passportID, Model model){
         model.addAttribute("passportID", passportID);
-        return "redirect:main/myBlank";
+        return "redirect:" + Consts.Url.MAIN_$_MY_BLANK;
     }
 
-    @PostMapping("/authorization")
+    @PostMapping(Consts.Url.$_AUTHORISATION)
     public String authorization(){
-        return "redirect:adminMain";
+        return "redirect:" + Consts.Url.ADMIN_MAIN;
     }
 }

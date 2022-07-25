@@ -24,6 +24,8 @@
                 <div class="w-100"><a href="#populationCountByMaritalStatus" class="link-success">Численность мужчин и женщин в возрасте 15 лет и старше по состоянию в браке</a></div>
                 <div class="w-100"><a href="#populationCountByBirthrate" class="link-success">Рождаемость</a></div>
                 <div class="w-100"><a href="#populationCountByEducationLvl" class="link-success">Численность населения в возрасте 15 лет и старше по уровню образования</a></div>
+                <div class="w-100"><a href="#populationCountByNationality" class="link-success">Национальный состав населения</a></div>
+                <div class="w-100"><a href="#populationCountByNativeLanguage" class="link-success">Численность населения отдельных национальностей по родному языку</a></div>
             </div>
 
             <hr/>
@@ -225,6 +227,109 @@
             </div>
             <a href="#navPanel" class="link-success">К панели навигации</a>
 
+            <hr/>
+            <h5>Национальный состав населения</h5>
+            <div id="populationCountByNationality">
+                <table class="table table-sm table-bordered">
+                    <thead style="background: #71dd8a" class="text-center align-middle">
+                    <tr>
+                        <th scope="col">Национальность</th>
+                        <th scope="col">Численность</th>
+                        <th scope="col">В процентах</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:utext="'Белорусы'"/>
+                        <td th:utext="${populationCountByNationality[0][0]}"/>
+                        <td th:utext="${populationCountByNationality[0][1]}"/>
+                    </tr>
+                    <tr>
+                        <td th:utext="'Русские'"/>
+                        <td th:utext="${populationCountByNationality[1][0]}"/>
+                        <td th:utext="${populationCountByNationality[1][1]}"/>
+                    </tr>
+                    <tr>
+                        <td th:utext="'Поляки'"/>
+                        <td th:utext="${populationCountByNationality[2][0]}"/>
+                        <td th:utext="${populationCountByNationality[2][1]}"/>
+                    </tr>
+                    <tr>
+                        <td th:utext="'Украинцы'"/>
+                        <td th:utext="${populationCountByNationality[3][0]}"/>
+                        <td th:utext="${populationCountByNationality[3][1]}"/>
+                    </tr>
+                    <tr>
+                        <td th:utext="'Другие'"/>
+                        <td th:utext="${populationCountByNationality[4][0]}"/>
+                        <td th:utext="${populationCountByNationality[4][1]}"/>
+                    </tr>
+                    <tr>
+                        <td th:utext="'Нет данных'"/>
+                        <td th:utext="${populationCountByNationality[5][0]}"/>
+                        <td th:utext="${populationCountByNationality[5][1]}"/>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a href="#navPanel" class="link-success">К панели навигации</a>
+
+            <hr/>
+            <h5>Численность населения отдельных национальностей по родному языку</h5>
+            <div id="populationCountByNativeLanguage">
+                <table class="table table-sm table-bordered">
+                    <thead style="background: #71dd8a" class="text-center align-middle">
+                    <tr>
+                        <th rowspan="2" scope="col">Национальность</th>
+                        <th rowspan="2" scope="col">Мужчины и женщины</th>
+                        <th colspan="2" scope="col">Из общей численности мужчин и женщин данной национальности назвали родным языком</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Язык своей национальности</th>
+                        <th scope="col">Язык другой национальности</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:utext="'Белорусы'"/>
+                        <td th:utext="${populationCountByNativeLanguage[0][0]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[0][1]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[0][2]}"/>
+                    </tr>
+                    <tr>
+                        <td th:utext="'Русские'"/>
+                        <td th:utext="${populationCountByNativeLanguage[1][0]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[1][1]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[1][2]}"/>
+                    </tr>
+                    <tr>
+                        <td th:utext="'Поляки'"/>
+                        <td th:utext="${populationCountByNativeLanguage[2][0]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[2][1]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[2][2]}"/>
+                    </tr>
+                    <tr>
+                        <td th:utext="'Украинцы'"/>
+                        <td th:utext="${populationCountByNativeLanguage[3][0]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[3][1]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[3][2]}"/>
+                    </tr>
+                    <tr>
+                        <td th:utext="'Другие'"/>
+                        <td th:utext="${populationCountByNativeLanguage[4][0]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[4][1]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[4][2]}"/>
+                    </tr>
+                    <tr>
+                        <td th:utext="'Нет данных'"/>
+                        <td th:utext="${populationCountByNativeLanguage[5][0]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[5][1]}"/>
+                        <td th:utext="${populationCountByNativeLanguage[5][2]}"/>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a href="#navPanel" class="link-success">К панели навигации</a>
 
         </div>
 

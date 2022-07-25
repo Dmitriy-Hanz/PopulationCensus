@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import populationcensus.Consts;
 import populationcensus.repository.entity.Person;
 import populationcensus.service.interfaces.PersonService;
 
@@ -24,7 +25,7 @@ public class PersonsListPageController {
 
     private final PersonService personService;
 
-    @GetMapping("/adminMain/personsList")
+    @GetMapping(Consts.Url.$_ADMIN_MAIN_$_PERSONS_LIST)
     public String load(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(2);
