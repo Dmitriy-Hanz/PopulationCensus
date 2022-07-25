@@ -21,5 +21,4 @@ public interface AccommodationsInfoService {
     Household findLinkedHousehold(long accommodationsInfoId);
     Household findLinkedHousehold(AccommodationsInfo accommodationsInfo);
 
-    void updateAccommodationsInfo(AccommodationsInfo entity);
 }

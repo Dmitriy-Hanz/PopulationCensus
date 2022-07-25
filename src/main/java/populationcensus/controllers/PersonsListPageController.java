@@ -1,4 +1,4 @@
-package populationcensus.controller;
+package populationcensus.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,12 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import populationcensus.dto.PersonDto;
-import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.repository.entity.Person;
-import populationcensus.repository.entity.security.User;
 import populationcensus.service.interfaces.PersonService;
-import populationcensus.service.interfaces.security.UserService;
 
 import java.util.LinkedList;
 import java.util.List;

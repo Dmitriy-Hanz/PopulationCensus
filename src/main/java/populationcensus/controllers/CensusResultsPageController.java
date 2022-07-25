@@ -1,4 +1,4 @@
-package populationcensus.controller;
+package populationcensus.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -8,7 +8,6 @@ import populationcensus.repository.entity.Person;
 import populationcensus.service.interfaces.PersonService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -26,6 +25,9 @@ public class CensusResultsPageController {
         if (hasPersons) {
             model.addAttribute("populationCountAndDensity", populationCountAndDensity(allDatabase));
             model.addAttribute("populationCountByAgeGroups", populationCountByAgeGroups(allDatabase));
+            model.addAttribute("populationCountByMaritalStatus", populationCountByMaritalStatus(allDatabase));
+            model.addAttribute("populationCountByBirthrate", populationCountByBirthrate(allDatabase));
+            model.addAttribute("populationCountByEducationLvl", populationCountByEducationLvl(allDatabase));
         }
         return "censusResultsPage";
     }
@@ -104,5 +106,97 @@ public class CensusResultsPageController {
         return results;
     }
 
+    private Number[][] populationCountByMaritalStatus(List<Person> persons) {
+        Number[][] results = new Number[4][2];
 
+        List<Person> onlyMen = persons.stream()
+                .filter(p -> p.getGender() == 1)
+                .filter(p -> p.getMaritalStatus() != null)
+                .collect(Collectors.toList());
+
+        List<Person> onlyWomen = persons.stream()
+                .filter(p -> p.getGender() == 2)
+                .filter(p -> p.getMaritalStatus() != null)
+                .collect(Collectors.toList());
+
+
+        results[0][0] = onlyMen.stream()
+                .filter(p -> p.getMaritalStatus() == 1)
+                .count();
+        results[1][0] = onlyMen.stream()
+                .filter(p -> p.getMaritalStatus() == 2)
+                .count();
+        results[2][0] = onlyMen.stream()
+                .filter(p -> p.getMaritalStatus() == 3)
+                .count();
+        results[3][0] = onlyMen.stream()
+                .filter(p -> p.getMaritalStatus() == 4)
+                .count();
+
+        results[0][1] = onlyWomen.stream()
+                .filter(p -> p.getMaritalStatus() == 1)
+                .count();
+        results[1][1] = onlyWomen.stream()
+                .filter(p -> p.getMaritalStatus() == 2)
+                .count();
+        results[2][1] = onlyWomen.stream()
+                .filter(p -> p.getMaritalStatus() == 3)
+                .count();
+        results[3][1] = onlyWomen.stream()
+                .filter(p -> p.getMaritalStatus() == 4)
+                .count();
+
+        return results;
+    }
+
+    private Number[][] populationCountByBirthrate(List<Person> persons) {
+        Number[][] results = new Number[2][2];
+
+        List<Person> onlyWomen = persons.stream()
+                .filter(person -> person.getGender() == 2)
+                .collect(Collectors.toList());
+
+        results[0][0] = (int)onlyWomen.stream()
+                .filter(p -> !p.getChildrenInfo().getNoChildren())
+                .count();
+        results[0][1] = (int)onlyWomen.stream()
+                .filter(p -> p.getChildrenInfo().getChildrenPlans() == 1)
+                .count();
+
+        results[1][0] = (double)(int)results[0][0]*100 / (double)(onlyWomen.size() == 0 ? 1 : onlyWomen.size());
+        results[1][1] = (double)(int)results[0][1]*100 / (double)(onlyWomen.size() == 0 ? 1 : onlyWomen.size());
+
+        return results;
+    }
+
+    private Number[][] populationCountByEducationLvl(List<Person> persons) {
+        Number[][] results = new Number[5][2];
+
+        List<Person> onlyOlderThan15 = persons.stream()
+                .filter(person -> person.getAge() > 14)
+                .filter(person -> person.getEducationInfo().getLvlOfEducation() != null)
+                .collect(Collectors.toList());
+
+        results[0][0] = (int)onlyOlderThan15.stream()
+                .filter(p -> p.getEducationInfo().getLvlOfEducation() == 5)
+                .count();
+        results[1][0] = (int)onlyOlderThan15.stream()
+                .filter(p -> p.getEducationInfo().getLvlOfEducation() == 4)
+                .count();
+        results[2][0] = (int)onlyOlderThan15.stream()
+                .filter(p -> p.getEducationInfo().getLvlOfEducation() == 3)
+                .count();
+        results[3][0] = (int)onlyOlderThan15.stream()
+                .filter(p -> p.getEducationInfo().getLvlOfEducation() == 2)
+                .count();
+        results[4][0] = (int)onlyOlderThan15.stream()
+                .filter(p -> p.getEducationInfo().getLvlOfEducation() == 1)
+                .count();
+
+        for (int i = 0; i < 5; i++) {
+            results[i][1] = (double)(int)results[i][0]*100 / (double)(onlyOlderThan15.size() == 0 ? 1 : onlyOlderThan15.size());
+        }
+
+        return results;
+    }
 }

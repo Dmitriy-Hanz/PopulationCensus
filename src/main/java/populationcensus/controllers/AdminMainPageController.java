@@ -1,4 +1,4 @@
-package populationcensus.controller;
+package populationcensus.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -69,14 +69,14 @@ public class AdminMainPageController {
     }
 
 
-    @PostMapping("/logout")
-    public String logoutPost(HttpServletRequest request, HttpServletResponse response){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return "redirect:main";
-    }
+//    @PostMapping("/logout")
+//    public String logoutPost(HttpServletRequest request, HttpServletResponse response){
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if (auth != null){
+//            new SecurityContextLogoutHandler().logout(request, response, auth);
+//        }
+//        return "redirect:main";
+//    }
     @GetMapping("/customLogout")
     public String logoutGet(HttpServletRequest request, HttpServletResponse response){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

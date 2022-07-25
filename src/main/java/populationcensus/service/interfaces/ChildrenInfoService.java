@@ -1,8 +1,6 @@
 package populationcensus.service.interfaces;
 
-import populationcensus.repository.entity.AccommodationsInfo;
 import populationcensus.repository.entity.ChildrenInfo;
-import populationcensus.repository.entity.Household;
 import populationcensus.repository.entity.Person;
 
 public interface ChildrenInfoService {

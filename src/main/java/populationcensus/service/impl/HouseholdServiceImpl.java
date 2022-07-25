@@ -2,13 +2,9 @@ package populationcensus.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import populationcensus.repository.entity.AccommodationsInfo;
-import populationcensus.repository.entity.FullAddressInfo;
 import populationcensus.repository.entity.Household;
 import populationcensus.repository.entity.Person;
-import populationcensus.repository.repositories.AccommodationsInfoRep;
 import populationcensus.repository.repositories.HouseholdRep;
-import populationcensus.service.interfaces.AccommodationsInfoService;
 import populationcensus.service.interfaces.HouseholdService;
 
 import java.util.List;
@@ -67,10 +63,8 @@ public class HouseholdServiceImpl implements HouseholdService {
                 }
             }
         }
-
         householdRep.saveAndFlush(entity);
     }
-
 
     @Override
     public Household findHousehold(long householdId) {
@@ -82,89 +76,7 @@ public class HouseholdServiceImpl implements HouseholdService {
     }
 
     @Override
-    public Household findHouseholdByPerson(Person person) {
-        return null;
-    }
-
-    @Override
-    public Household findHouseholdByPersonId(long personId) {
-        return null;
-    }
-
-    @Override
-    public Household findHouseholdByAccommodationsInfo(AccommodationsInfo accommodationsInfo) {
-        return null;
-    }
-
-    @Override
-    public Household findHouseholdByAccommodationsInfoId(long accommodationsInfoId) {
-        return null;
-    }
-
-    @Override
-    public Household findHouseholdByFullAddressInfo(FullAddressInfo fullAddressInfo) {
-        return null;
-    }
-
-    @Override
-    public Household findHouseholdByFullAddressInfoId(long fullAddressInfoId) {
-        return null;
-    }
-
-    @Override
-    public void deleteHousehold(Household household) {
-
-    }
-
-    @Override
     public void deleteHouseholdById(long householdId) {
         householdRep.deleteById(householdId);
-        householdRep.flush();
-    }
-
-    @Override
-    public void deleteHouseholdByPerson(Person person) {
-
-    }
-
-    @Override
-    public void deleteHouseholdByPersonId(long personId) {
-
-    }
-
-    @Override
-    public void deleteHouseholdByAccommodationsInfo(AccommodationsInfo accommodationsInfo) {
-
-    }
-
-    @Override
-    public void deleteHouseholdByFullAddressInfo(FullAddressInfo fullAddressInfo) {
-
-    }
-
-    @Override
-    public void deleteHouseholdByAccommodationsInfoId(long accommodationsInfoId) {
-
-    }
-
-    @Override
-    public void deleteHouseholdByFullAddressInfoId(long fullAddressInfoId) {
-
-    }
-
-    @Override
-    public List<Person> findLinkedPersons(long householdId) {
-        return null;
-    }
-
-    @Override
-    public List<Person> findLinkedPersons(Household household) {
-        return null;
-    }
-
-
-    @Override
-    public void updateHousehold(Household entity) {
-        householdRep.flush();
     }
 }

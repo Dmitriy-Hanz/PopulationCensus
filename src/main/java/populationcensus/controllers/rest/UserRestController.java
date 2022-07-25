@@ -1,4 +1,4 @@
-package populationcensus.controller.rest;
+package populationcensus.controllers.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

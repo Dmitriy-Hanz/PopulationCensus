@@ -19,6 +19,4 @@ public interface FullAddressInfoService {
 
     Household findLinkedHousehold(long fullAddressInfoId);
     Household findLinkedHousehold(FullAddressInfo fullAddressInfo);
-
-    void updateFullAddressInfo(FullAddressInfo entity);
 }

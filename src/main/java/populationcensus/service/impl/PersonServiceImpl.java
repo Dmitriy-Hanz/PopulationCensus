@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import populationcensus.repository.entity.Household;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.PersonRep;
 import populationcensus.service.interfaces.PersonService;
@@ -19,21 +18,6 @@ import java.util.List;
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRep personRep;
-
-    @Override
-    public void savePerson(Person entity) {
-
-    }
-
-    @Override
-    public void savePerson(Person entity, long householdId) {
-
-    }
-
-    @Override
-    public void savePerson(Person entity, Household household) {
-
-    }
 
     @Override
     public List<Person> findAll() {
@@ -66,47 +50,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person findPersonByHousehold(Household household) {
-        return null;
-    }
-
-    @Override
-    public Person findPersonByHouseholdId(long householdId) {
-        return null;
-    }
-
-    @Override
     public Person findPersonByPassportID(String passportID) {
         return personRep.findByPassportID(passportID).orElse(null);
-    }
-
-    @Override
-    public void deletePerson(Person person) {
-
-    }
-
-    @Override
-    public void deletePersonById(long personId) {
-
-    }
-
-    @Override
-    public void deletePersonByHousehold(Household household) {
-
-    }
-
-    @Override
-    public void deletePersonByHouseholdId(long householdId) {
-
-    }
-
-    @Override
-    public Household findLinkedHousehold(long personId) {
-        return null;
-    }
-
-    @Override
-    public Household findLinkedHousehold(Person person) {
-        return null;
     }
 }

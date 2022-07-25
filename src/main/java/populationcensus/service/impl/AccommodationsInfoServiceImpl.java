@@ -127,11 +127,4 @@ public class AccommodationsInfoServiceImpl implements AccommodationsInfoService 
         return findLinkedHousehold(accommodationsInfo.getId());
     }
 
-    @Override
-    public void updateAccommodationsInfo(AccommodationsInfo entity) {
-        if (entity == null){
-            return;
-        }
-        accommodationsInfoRep.saveAndFlush(entity);
-    }
 }

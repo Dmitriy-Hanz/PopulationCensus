@@ -125,12 +125,4 @@ public class FullAddressInfoServiceImpl implements FullAddressInfoService {
         return findLinkedHousehold(fullAddressInfo.getId());
     }
 
-
-    @Override
-    public void updateFullAddressInfo(FullAddressInfo entity) {
-        if (entity == null){
-            return;
-        }
-        fullAddressInfoRep.saveAndFlush(entity);
-    }
 }

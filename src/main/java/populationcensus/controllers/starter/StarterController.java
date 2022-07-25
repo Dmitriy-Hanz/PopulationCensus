@@ -1,4 +1,4 @@
-package populationcensus.controller.starter;
+package populationcensus.controllers.starter;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

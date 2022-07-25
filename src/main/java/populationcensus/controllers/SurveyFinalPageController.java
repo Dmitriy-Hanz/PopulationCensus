@@ -1,9 +1,9 @@
-package populationcensus.controller;
+package populationcensus.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import populationcensus.Consts;
 
 @Controller
 public class SurveyFinalPageController {
@@ -12,8 +12,8 @@ public class SurveyFinalPageController {
         return "questionsFinishPage";
     }
 
-    @PostMapping("/finish")
+    @PostMapping(Consts.Url.$_FINISH)
     public String finish(){
-        return "redirect:/main";
+        return "redirect:" + Consts.Url.$_MAIN;
     }
 }

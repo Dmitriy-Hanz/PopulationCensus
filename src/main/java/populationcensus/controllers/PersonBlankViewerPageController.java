@@ -1,4 +1,4 @@
-package populationcensus.controller;
+package populationcensus.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import populationcensus.dto.mapper.HouseholdMapper;
 import populationcensus.dto.mapper.PersonMapper;
-import populationcensus.repository.entity.Household;
 import populationcensus.repository.entity.Person;
 import populationcensus.service.interfaces.PersonService;
 

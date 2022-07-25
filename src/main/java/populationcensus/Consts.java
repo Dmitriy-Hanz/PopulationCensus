@@ -7,7 +7,7 @@ public class Consts {
         public static final String $_ADMIN_MAIN_$_USERS_LIST_$_CREATE_USER = "/adminMain/usersList/createUser";
         public static final String $_CREATE_USER = "/createUser";
         public static final String $_MAIN_$_SURVEY_PERSON = "/main/surveyPerson";
-        public static final String $_MAIN_$_SURVEY_FOREIGN_PERSON = "/main/surveyPerson";
+        public static final String $_MAIN_$_SURVEY_FOREIGN_PERSON = "/main/surveyForeignPerson";
         public static final String $_MAIN_$_SURVEY_FINISH = "/main/surveyFinish";
         public static final String $_INTERRUPT = "/interrupt";
         public static final String $_HOUSEHOLD_NEXT = "/householdNext";

@@ -1,4 +1,4 @@
-package populationcensus.controller;
+package populationcensus.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import populationcensus.Consts;
 import populationcensus.dto.security.UserDto;
 import populationcensus.dto.mapper.UserMapper;
 import populationcensus.repository.entity.security.Role;
@@ -28,7 +29,7 @@ public class CreateEditUserPageController {
     private final RoleService roleService;
     private final UserMapper userMapper;
 
-    @GetMapping("/adminMain/usersList/createUser")
+    @GetMapping(Consts.Url.$_ADMIN_MAIN_$_USERS_LIST_$_CREATE_USER)
     public String loadCreate(Model model) {
         model.addAttribute("user", new UserDto());
         return "createEditUserPage";
@@ -49,7 +50,7 @@ public class CreateEditUserPageController {
         return "redirect:" + previousPage(req);
     }
 
-    @PostMapping("/adminMain/usersList/createUser")
+    @PostMapping(Consts.Url.$_ADMIN_MAIN_$_USERS_LIST_$_CREATE_USER)
     public String saveCreatedUser(@ModelAttribute(name = "user") @Valid UserDto obj, BindingResult bindingResult, HttpServletRequest req) {
         if (bindingResult.hasErrors()) {
             return "createEditUserPage";
