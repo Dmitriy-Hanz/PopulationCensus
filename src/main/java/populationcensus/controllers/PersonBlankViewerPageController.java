@@ -8,6 +8,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import populationcensus.Consts;
 import populationcensus.dto.mapper.HouseholdMapper;
 import populationcensus.dto.mapper.PersonMapper;
+import populationcensus.repository.entity.Household;
 import populationcensus.repository.entity.Person;
 import populationcensus.service.interfaces.PersonService;
 
@@ -78,8 +79,8 @@ public class PersonBlankViewerPageController {
         return req.getHeader("referer")
                 .replaceAll("/myBlankFail", "")
                 .replaceAll("/myBlank/household", "")
-                .replaceAll("/blank/\\d/household", "")
-                .replaceAll("[/]\\w*[/]\\d", "")
+                .replaceAll("/blank/\\d+/household", "")
+                .replaceAll("[/]\\w*[/]\\d+", "")
                 .replaceAll("/myBlank", "");
     }
 }

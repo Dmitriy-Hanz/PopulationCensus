@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import populationcensus.Consts;
 import populationcensus.repository.entity.Person;
 import populationcensus.service.interfaces.PersonService;
 
@@ -16,7 +17,7 @@ public class CensusResultsPageController {
 
     private final PersonService personService;
 
-    @GetMapping("/adminMain/censusResults")
+    @GetMapping(Consts.Url.$_ADMIN_MAIN_$_CENSUS_RESULTS)
     public String load(Model model) {
         List<Person> allDatabase = personService.findAll();
 

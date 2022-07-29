@@ -1,27 +1,32 @@
 package populationcensus;
 
 public class Consts {
-
     public static class Url{
         public static final String ADMIN_MAIN = "adminMain";
+        public static final String $_ADMIN_MAIN = "/adminMain";
+        public static final String $_NAV_ADMIN_MAIN = "/navAdminMain";
+        public static final String $_NAV_USERS_LIST = "/navUsersList";
+        public static final String $_NAV_PERSONS_LIST = "/navPersonsList";
+        public static final String $_NAV_CENSUS_RESULTS = "/navCensusResults";
         public static final String $_ADMIN_MAIN_$_USERS_LIST = "/adminMain/usersList";
+        public static final String $_ADMIN_MAIN_$_CENSUS_RESULTS = "/adminMain/censusResults";
+        public static final String $_ADMIN_MAIN_$_EDIT_USER = "/adminMain/editUser";
         public static final String $_ADMIN_MAIN_$_USERS_LIST_$_CREATE_USER = "/adminMain/usersList/createUser";
         public static final String $_ADMIN_MAIN_$_PERSONS_LIST = "/adminMain/personsList";
-        public static final String $_CREATE_USER = "/createUser";
+
         public static final String $_MAIN = "/main";
-        public static final String $_MAIN_$_SURVEY_PERSON = "/main/surveyPerson";
+        public static final String MAIN_$_MY_BLANK_FAIL = "/main/myBlankFail";
         public static final String MAIN_$_SURVEY_HOUSEHOLD = "main/surveyHousehold";
+        public static final String MAIN_$_MY_BLANK = "main/myBlank";
+        public static final String $_MAIN_$_SURVEY_PERSON = "/main/surveyPerson";
+        public static final String $_MAIN_$_MY_BLANK_FAIL = "/main/myBlankFail";
+        public static final String $_MAIN_$_MY_BLANK_$_HOUSEHOLD = "/main/myBlank/household";
         public static final String $_MAIN_$_SURVEY_FOREIGN_PERSON = "/main/surveyForeignPerson";
         public static final String $_MAIN_$_SURVEY_FINISH = "/main/surveyFinish";
-        public static final String MAIN_$_MY_BLANK = "main/myBlank";
+
         public static final String $_INTERRUPT = "/interrupt";
         public static final String $_HOUSEHOLD_NEXT = "/householdNext";
         public static final String $_PERSON_NEXT = "/personNext";
-
-
-        public static final String $_MAIN_$_MY_BLANK_FAIL = "/main/myBlankFail";
-        public static final String MAIN_$_MY_BLANK_FAIL = "/main/myBlankFail";
-        public static final String $_MAIN_$_MY_BLANK_$_HOUSEHOLD = "/main/myBlank/household";
         public static final String $_SHOW_HOUSEHOLD = "/showHousehold";
         public static final String $_SHOW_PERSON = "/showPerson";
         public static final String $_BACK_TO_PAGE = "/backToPage";
@@ -30,6 +35,11 @@ public class Consts {
         public static final String $_SURVEY_HOUSEHOLD = "/surveyHousehold";
         public static final String $_MY_BLANK = "/myBlank";
         public static final String $_AUTHORISATION = "/authorization";
+        public static final String $_CANCEL = "/cancel";
+        public static final String $_CUSTOM_LOGOUT = "/customLogout";
+        public static final String $_CREATE_USER = "/createUser";
+        public static final String $_DELETE_CURRENT_USER = "/deleteCurrentUser";
+        public static final String $_EDIT_CURRENT_USER = "/editCurrentUser";
     }
     public static class Test{
         public static final long HOUSEHOLD_ID = 1L;

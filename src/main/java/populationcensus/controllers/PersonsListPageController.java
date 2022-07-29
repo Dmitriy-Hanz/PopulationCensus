@@ -28,7 +28,7 @@ public class PersonsListPageController {
     @GetMapping(Consts.Url.$_ADMIN_MAIN_$_PERSONS_LIST)
     public String load(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(2);
+        int pageSize = size.orElse(5);
 
         Page<Person> personPage = personService.findAllAndPaginate(PageRequest.of(currentPage - 1, pageSize));
 

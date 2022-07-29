@@ -93,7 +93,7 @@ public class Person {
     private Integer mainSourceOfResources;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_household")
     private Household householdField;
 
@@ -103,7 +103,7 @@ public class Person {
     @OneToOne(mappedBy = "personInLivingCountryInfo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private LivingCountryInfo livingCountryInfo;
 
-    @OneToOne(mappedBy = "personInEducationInfo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "personInEducationInfo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private EducationInfo educationInfo;
 
     @OneToOne(mappedBy = "personInWorkInfo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

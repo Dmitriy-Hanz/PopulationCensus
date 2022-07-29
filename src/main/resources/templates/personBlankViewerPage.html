@@ -168,7 +168,7 @@
                 <div class="form-row">
                     <span class="w-100">13.</span>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" th:value="*{livingPlaceInfo.doYouLiveHereFromBirth}" disabled>
+                        <input class="form-check-input" type="checkbox" th:field="*{livingPlaceInfo.doYouLiveHereFromBirth}" disabled>
                         <label>В вашем текущем городе, поселке городского типа или сельском населенном пункте этого административного района вы проживаете непрерывно с рождения?</label>
                         <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Нет" -> к вопросу 13.1; "Да" -> к вопросу 14</small>
                     </div>
@@ -177,7 +177,7 @@
                 <div th:if="(*{livingPlaceInfo.doYouLiveHereFromBirth}) == false" class="form-row mb-3">
                     <div th:if="(*{livingPlaceInfo.arrivalPeriod}) != null" class="col-7 pl-0">
                         <span class="align-bottom mt-1">13.1. Укажите период, когда вы прибыли в данный населенный пункт (месяц, год)</span>
-                        <input class="form-control font-weight-bold" th:value="*{livingPlaceInfo.arrivalPeriod}" readonly/>
+                        <input class="form-control font-weight-bold" th:field="*{livingPlaceInfo.arrivalPeriod}" readonly/>
                     </div>
                 </div>
 
@@ -192,15 +192,15 @@
                     <div class="form-row">
                         <div class="col text-center pl-0">
                             <small class="text-muted align-bottom">Укажите наименования области, района</small>
-                            <input class="form-control font-weight-bold" th:value="*{livingPlaceInfo.regionOrDistrictName}" readonly/>
+                            <input class="form-control font-weight-bold" th:field="*{livingPlaceInfo.regionOrDistrictName}" readonly/>
                         </div>
                         <div class="col text-center pl-0">
                             <small class="text-muted align-bottom">Укажите наименования города, ПГТ</small>
-                            <input class="form-control font-weight-bold" th:value="*{livingPlaceInfo.cityOrPGTName}" readonly/>
+                            <input class="form-control font-weight-bold" th:field="*{livingPlaceInfo.cityOrPGTName}" readonly/>
                         </div>
                     </div>
                     <div class="form-check mt-2 mb-0">
-                        <input class="form-check-input" type="checkbox" th:value="*{livingPlaceInfo.isItVillage}" disabled>
+                        <input class="form-check-input" type="checkbox" th:field="*{livingPlaceInfo.isItVillage}" disabled>
                         <label>Является ли ваше предыдущее место жительства сельским населенным пунктом?</label>
                         <small class="form-text text-muted" style="margin-top: -5px;">Если ответ "Да" -> не заполнять поля "наименования области, района" и "наименования города, ПГТ"</small>
                     </div>
@@ -209,7 +209,7 @@
                 <div th:if="(*{livingPlaceInfo.previousLivingPlace}) == 2" class="form-row w-50" style="display: none" id="lp_regionOrDistrictName_v2">
                     <div class="col text-center pl-0">
                         <small class="text-muted align-bottom">Укажите название страны</small>
-                        <input class="form-control font-weight-bold" th:value="*{livingPlaceInfo.nameOfPreviousCountry}" readonly/>
+                        <input class="form-control font-weight-bold" th:field="*{livingPlaceInfo.nameOfPreviousCountry}" readonly/>
                     </div>
                     <small class="form-text text-muted">К вопросу 14.4 после ответа на вопрос 13.3</small>
                 </div>
@@ -236,7 +236,7 @@
                     <div class="form-row">
                         <span class="w-100">14.</span>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" th:value="*{livingCountryInfo.didYouLiveInOtherCountry}" disabled>
+                            <input class="form-check-input" type="checkbox" th:field="*{livingCountryInfo.didYouLiveInOtherCountry}" disabled>
                             <label>Проживали ли Вы непрерывно 1 год и более в другой стране?</label>
                             <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Нет" -> к вопросу 14.4</small>
                         </div>
@@ -244,7 +244,7 @@
 
                     <div th:if="(*{livingCountryInfo.nameOfCountryYouCameFrom}) != ''" class="form-row mt-2">
                         <span class="align-bottom mt-1">14.1. Укажите название страны Вы прибыли в Республику Беларусь на постоянное место жительства</span>
-                        <input class="form-control font-weight-bold" th:value="*{livingPlaceInfo.nameOfCountryYouCameFrom}" readonly/>
+                        <input class="form-control font-weight-bold" th:value="*{livingPlaceInfo.nameOfPreviousCountry}" readonly/>
                     </div>
 
                     <div th:if="(*{livingCountryInfo.arrivalPeriod}) != null" class="form-row mt-2">
@@ -356,14 +356,14 @@
 
                     <div class="form-row">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" th:value="*{workInfo.doYouHaveWork}" disabled>
+                            <input class="form-check-input" type="checkbox" th:field="*{workInfo.doYouHaveWork}" disabled>
                             <label>16. Была ли у Вас с 27 сентября 2019 г. по 3 октября 2019 г. оплачиваемая работа, занятие, приносящее доход, или работа без оплаты труда у родственника (далее - работа) (для лиц в возрасте 15-74 лет)</label>
                             <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Да" -> к вопросу 16.2; "Нет" -> к вопросу 16.1</small>
                         </div>
                     </div>
                     <div th:if="(*{workInfo.doYouHaveWork}) == false" class="form-row mt-2" style="display: block">
                         <div class="form-check pr-2">
-                            <input class="form-check-input" type="checkbox" th:value="*{workInfo.whyDidntYouWorkTillNow}" disabled>
+                            <input class="form-check-input" type="checkbox" th:field="*{workInfo.whyDidntYouWorkTillNow}" disabled>
                             <label>16.1 Вы временно не работали по причине болезни; отпуска, в том числе отпуска по беременности и родам, по уходу за ребенком в возрасте до 3 лет; производства работ вахтовым методом или иного специфического характера работы, прохождения курсов повышения квалификации и тому подобное?</label>
                             <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Да" -> к вопросу 16.2; "Нет" -> к вопросу 20</small>
                         </div>
@@ -382,15 +382,15 @@
                         <div class="form-row">
                             <div class="col text-center pl-0">
                                 <small class="text-muted align-bottom">Укажите наименования области, района</small>
-                                <input class="form-control font-weight-bold" th:value="*{workInfo.regionOrDistrictName}" readonly/>
+                                <input class="form-control font-weight-bold" th:field="*{workInfo.regionOrDistrictName}" readonly/>
                             </div>
                             <div class="col text-center pl-0">
                                 <small class="text-muted align-bottom">Укажите наименования города, ПГТ</small>
-                                <input class="form-control font-weight-bold" th:value="*{workInfo.cityOrPGTName}" readonly/>
+                                <input class="form-control font-weight-bold" th:field="*{workInfo.cityOrPGTName}" readonly/>
                             </div>
                         </div>
                         <div class="form-check mt-2 mb-0">
-                            <input class="form-check-input" type="checkbox" th:value="*{workInfo.isItVillage}" disabled>
+                            <input class="form-check-input" type="checkbox" th:field="*{workInfo.isItVillage}" disabled>
                             <label>Является ли ваше предыдущее место жительства сельским населенным пунктом?</label>
                         </div>
                         <small class="form-text text-muted" style="margin-top: -5px">К вопросу 17</small>
@@ -398,26 +398,26 @@
                     <div th:if="(*{workInfo.locationOfWork}) == 3" class="form-row w-50 mt-2">
                         <div class="col text-center pl-0">
                             <small class="text-muted align-bottom">Укажите название страны</small>
-                            <input class="form-control font-weight-bold" th:value="*{workInfo.nameOfCountry}" readonly/>
+                            <input class="form-control font-weight-bold" th:field="*{workInfo.nameOfCountry}" readonly/>
                         </div>
                         <small class="form-text text-muted">К вопросу 16.3</small>
                     </div>
 
-                    <div th:if="(*{workInfo.departureFrequencyToWork}) != 0" class="form-row mt-2">
+                    <div th:if="(*{workInfo.departureFrequencyToWork}) != 0 and (*{workInfo.departureFrequencyToWork}) != null" class="form-row mt-2">
                         <span class="align-bottom">16.3. Как часто вы выезжали на работу на территорию другого государства?</span>
                         <input value="Ежедневно" th:if="(*{workInfo.departureFrequencyToWork}) == 1" class="form-control font-weight-bold" readonly>
                         <input value="На несколько дней в течение недели" th:if="(*{workInfo.departureFrequencyToWork}) == 2" class="form-control font-weight-bold" readonly>
                         <input value="На иной период" th:if="(*{workInfo.departureFrequencyToWork}) == 3" class="form-control font-weight-bold" readonly>
                     </div>
 
-                    <div th:if="(*{workInfo.unemploymentReason}) != 0" class="form-row mt-2">
+                    <div th:if="(*{workInfo.unemploymentReason}) != 0 and (*{workInfo.unemploymentReason}) != null" class="form-row mt-2">
                         <span class="align-bottom">17. Укажите основную причину, по которой вы не работаете в населенном пункте по месту жительства?</span>
                         <input value="Не нашел(нашла) работу в данном населенном пункте" th:if="(*{workInfo.unemploymentReason}) == 1" class="form-control font-weight-bold" readonly>
                         <input value="Нашел(нашла) работу с более высоким заработком" th:if="(*{workInfo.unemploymentReason}) == 2" class="form-control font-weight-bold" readonly>
                         <input value="Другие причины" th:if="(*{workInfo.unemploymentReason}) == 3" class="form-control font-weight-bold" readonly>
                     </div>
 
-                    <div th:if="(*{workInfo.typeOfWorkplace}) != 0" class="form-row mt-2">
+                    <div th:if="(*{workInfo.typeOfWorkplace}) != 0 and (*{workInfo.typeOfWorkplace}) != null" class="form-row mt-2">
                         <span class="align-bottom">18. Укажите, где осуществлялась ваша работа</span>
                         <input value="В организации (структурном подразделении организации)" th:if="(*{workInfo.typeOfWorkplace}) == 1" class="form-control font-weight-bold" readonly>
                         <input value="В крестьянском (фермерском) хозяйстве" th:if="(*{workInfo.typeOfWorkplace}) == 2" class="form-control font-weight-bold" readonly>
@@ -431,7 +431,7 @@
                         <input value="Другое" th:if="(*{workInfo.typeOfWorkplace}) == 10" class="form-control font-weight-bold" readonly>
                     </div>
 
-                    <div th:if="(*{workInfo.typeOfWorkPosition}) != 0" class="form-row mt-2">
+                    <div th:if="(*{workInfo.typeOfWorkPosition}) != 0 and (*{workInfo.typeOfWorkPosition}) != null" class="form-row mt-2">
                         <span class="align-bottom">19. Кем Вы являлись на работе?</span>
                         <input value="Наемным работником" th:if="(*{workInfo.typeOfWorkPosition}) == 1" class="form-control font-weight-bold" readonly>
                         <input value="Самозанятым (работающим не по найму)" th:if="(*{workInfo.typeOfWorkPosition}) == 2" class="form-control font-weight-bold" readonly>
@@ -443,20 +443,20 @@
 
                     <div th:if="(*{workInfo.whyDidntYouWorkTillNow}) == false and (*{workInfo.doYouHaveWork}) == false" class="form-row mt-2">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" th:value="*{workInfo.didYouLookedForAJob}" disabled>
+                            <input class="form-check-input" type="checkbox" th:field="*{workInfo.didYouLookedForAJob}" disabled>
                             <label>20. Искали ли вы работу в течение последнего месяца до начала переписи (для лиц, которые не имеют работы)</label>
                         </div>
                     </div>
 
                     <div th:if="(*{workInfo.whyDidntYouWorkTillNow}) == false and (*{workInfo.doYouHaveWork}) == false" class="form-row">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" th:value="*{workInfo.canYouStarWorkingInTwoWeeks}" disabled>
+                            <input class="form-check-input" type="checkbox" th:field="*{workInfo.canYouStarWorkingInTwoWeeks}" disabled>
                             <label>21. Если бы Вы получили подходящую работу, готовы ли Вы приступить к ней в ближайшие две недели?</label>
                             <small class="form-text text-muted" style="margin-top: -5px">Если ответ "Да" и на вопрос 20 ответ "Да" -> к вопросу 22; Если ответ "Да" и на вопрос 20 ответ "Нет" -> к вопросу 22; Если ответ "Нет" -> к вопросу 22</small>
                         </div>
                     </div>
 
-                    <div th:if="(*{workInfo.whyYouCantWorkOrStoppedSearch}) != 0" class="form-row mt-2">
+                    <div th:if="(*{workInfo.whyYouCantWorkOrStoppedSearch}) != 0 and (*{workInfo.whyYouCantWorkOrStoppedSearch}) != null" class="form-row mt-2">
                         <span class="align-bottom">22. Укажите основную причину, по которой Вы отказались от поиска работы (не готовы приступить к работе)</span>
                         <input value="Получил(а) работу, организовал(а) собственное дело и приступлю к ней в ближайшие две недели" th:if="(*{workInfo.whyYouCantWorkOrStoppedSearch}) == 1" class="form-control font-weight-bold" readonly>
                         <input value="Нашел (нашла) работу и ожидаю ответа" th:if="(*{workInfo.whyYouCantWorkOrStoppedSearch}) == 2" class="form-control font-weight-bold" readonly>
@@ -475,18 +475,18 @@
                 </div>
             </div>
 
-            <div th:if="(*{gender}) == 2">
+            <div th:if="(*{gender}) == 2 and (*{age}) > 14">
                 <p class="font-weight-bold">Дети:</p>
                 <div class="border rounded mb-4" style="margin: -10px; padding: 10px">
 
                     <div th:if="(*{age}) > 14" class="form-row">
-                        <div th:if="(*{childrenInfo.howManyChildrenDoYouHave}) != ''" class="col-6 p-0 mr-3">
-                            <span class="align-bottom mt-1">23. Сколько детей Вы родили (для женщин в возрасте 15 лет и старше)</span>
-                            <input class="form-control font-weight-bold" th:value="*{childrenInfo.howManyChildrenDoYouHave}" readonly/>
+                        <span class="align-bottom mt-1">23. Сколько детей Вы родили (для женщин в возрасте 15 лет и старше)</span>
+                        <div th:if="(*{childrenInfo.howManyChildrenDoYouHave}) != '' and (*{childrenInfo.howManyChildrenDoYouHave}) != null" class="col-6 p-0 mr-3">
+                            <input class="form-control font-weight-bold" th:field="*{childrenInfo.howManyChildrenDoYouHave}" readonly/>
                         </div>
-                        <div th:if="(*{childrenInfo.howManyChildrenDoYouHave}) == ''" class="col pl-0 pt-4">
+                        <div th:if="(*{childrenInfo.howManyChildrenDoYouHave}) == '' or (*{childrenInfo.howManyChildrenDoYouHave}) == null" class="col pl-0 pt-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" th:value="*{childrenInfo.noChildren}" disabled>
+                                <input class="form-check-input" type="checkbox" th:field="*{childrenInfo.noChildren}" disabled>
                                 <label>Ни одного</label>
                             </div>
                         </div>
@@ -501,11 +501,11 @@
                     <div th:if="(*{childrenInfo.childrenPlans}) == 1" class="form-row mt-2">
                         <div th:if="(*{childrenInfo.howManyChildrenDoYouWant}) != ''" class="col-6 p-0 mr-3">
                             <span class="align-bottom mt-1">Укажите число планируемых детей:</span>
-                            <input class="form-control font-weight-bold" th:value="*{childrenInfo.howManyChildrenDoYouWant}" readonly/>
+                            <input class="form-control font-weight-bold" th:field="*{childrenInfo.howManyChildrenDoYouWant}" readonly/>
                         </div>
                         <div th:if="(*{childrenInfo.howManyChildrenDoYouWant}) == ''" class="col pl-0 pt-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" th:value="*{childrenInfo.dontKnowHowMany}" disabled>
+                                <input class="form-check-input" type="checkbox" th:field="*{childrenInfo.dontKnowHowMany}" disabled>
                                 <label>число планируемых детей не определено</label>
                             </div>
                         </div>

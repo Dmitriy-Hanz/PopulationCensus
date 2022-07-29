@@ -118,7 +118,7 @@ public class SurveyPageController {
     public void clearPersonUselessValues(PersonDto person) {
         if (person.getAge() < 15)
         {
-            person.setMaritalStatus(0);
+            person.setMaritalStatus(null);
         }
         if (person.getBirthCountry() == 1)
         {
@@ -135,15 +135,15 @@ public class SurveyPageController {
         if (person.getLivingPlaceInfo().getDoYouLiveHereFromBirth())
         {
             person.getLivingPlaceInfo().setArrivalPeriod(null);
-            person.getLivingPlaceInfo().setPreviousLivingPlace(0);
-            person.getLivingPlaceInfo().setReasonForArrivalAtPlace(0);
+            person.getLivingPlaceInfo().setPreviousLivingPlace(null);
+            person.getLivingPlaceInfo().setReasonForArrivalAtPlace(null);
             person.getLivingPlaceInfo().setRegionOrDistrictName(null);
             person.getLivingPlaceInfo().setCityOrPGTName(null);
             person.getLivingPlaceInfo().setIsItVillage(null);
             person.getLivingCountryInfo().setDidYouLiveInOtherCountry(null);
             person.getLivingCountryInfo().setNameOfCountryYouCameFrom(null);
             person.getLivingCountryInfo().setArrivalPeriod(null);
-            person.getLivingCountryInfo().setReasonForArrivalAtRB(0);
+            person.getLivingCountryInfo().setReasonForArrivalAtRB(null);
         }
         else
         {
@@ -153,7 +153,7 @@ public class SurveyPageController {
                     if (!person.getLivingCountryInfo().getDidYouLiveInOtherCountry()) {
                         person.getLivingCountryInfo().setNameOfCountryYouCameFrom(null);
                         person.getLivingCountryInfo().setArrivalPeriod(null);
-                        person.getLivingCountryInfo().setReasonForArrivalAtRB(0);
+                        person.getLivingCountryInfo().setReasonForArrivalAtRB(null);
                     }
                 }
                 case 2 -> {
@@ -163,14 +163,14 @@ public class SurveyPageController {
                     person.getLivingCountryInfo().setDidYouLiveInOtherCountry(null);
                     person.getLivingCountryInfo().setNameOfCountryYouCameFrom(null);
                     person.getLivingCountryInfo().setArrivalPeriod(null);
-                    person.getLivingCountryInfo().setReasonForArrivalAtRB(0);
+                    person.getLivingCountryInfo().setReasonForArrivalAtRB(null);
                 }
             }
         }
 
         if (person.getAge() >= 15 & person.getAge() < 74)
         {
-            person.getLivingCountryInfo().setReasonForLeavingBelarus(0);
+            person.getLivingCountryInfo().setReasonForLeavingBelarus(null);
         }
 
 
@@ -178,20 +178,20 @@ public class SurveyPageController {
 
         if (person.getAge() < 10)
         {
-            person.getEducationInfo().setLvlOfEducation(0);
-            person.getEducationInfo().setAcademicDegree(0);
+            person.getEducationInfo().setLvlOfEducation(null);
+            person.getEducationInfo().setAcademicDegree(null);
             person.getEducationInfo().setCanYouReadAndWrite(null);
         }
         else
         {
             if (person.getEducationInfo().getLvlOfEducation() == 8) {
-                person.getEducationInfo().setAcademicDegree(0);
+                person.getEducationInfo().setAcademicDegree(null);
             } else {
                 person.getEducationInfo().setCanYouReadAndWrite(null);
             }
         }
 
-        if (person.getAge() < 6) { person.getEducationInfo().setBasicEducationInfo(0); }
+        if (person.getAge() < 6) { person.getEducationInfo().setBasicEducationInfo(null); }
 
         if (!(person.getAge() >= 15 && person.getAge() <= 65)) { person.getEducationInfo().setAdditionalEducationInfo(null); }
 
@@ -211,15 +211,15 @@ public class SurveyPageController {
                 person.getWorkInfo().setCanYouStarWorkingInTwoWeeks(null);
             } else {
                 if (!person.getWorkInfo().getWhyDidntYouWorkTillNow()) {
-                    person.getWorkInfo().setLocationOfWork(0);
+                    person.getWorkInfo().setLocationOfWork(null);
                     person.getWorkInfo().setRegionOrDistrictName(null);
                     person.getWorkInfo().setCityOrPGTName(null);
                     person.getWorkInfo().setIsItVillage(null);
                     person.getWorkInfo().setNameOfCountry(null);
-                    person.getWorkInfo().setDepartureFrequencyToWork(0);
-                    person.getWorkInfo().setUnemploymentReason(0);
-                    person.getWorkInfo().setTypeOfWorkplace(0);
-                    person.getWorkInfo().setTypeOfWorkPosition(0);
+                    person.getWorkInfo().setDepartureFrequencyToWork(null);
+                    person.getWorkInfo().setUnemploymentReason(null);
+                    person.getWorkInfo().setTypeOfWorkplace(null);
+                    person.getWorkInfo().setTypeOfWorkPosition(null);
                 }
                 person.getWorkInfo().setDidYouLookedForAJob(null);
                 person.getWorkInfo().setCanYouStarWorkingInTwoWeeks(null);
@@ -232,12 +232,12 @@ public class SurveyPageController {
                     person.getWorkInfo().setCityOrPGTName(null);
                     person.getWorkInfo().setIsItVillage(null);
                     person.getWorkInfo().setNameOfCountry(null);
-                    person.getWorkInfo().setDepartureFrequencyToWork(0);
-                    person.getWorkInfo().setUnemploymentReason(0);
+                    person.getWorkInfo().setDepartureFrequencyToWork(null);
+                    person.getWorkInfo().setUnemploymentReason(null);
                 }
                 case 2 -> {
                     person.getWorkInfo().setNameOfCountry(null);
-                    person.getWorkInfo().setDepartureFrequencyToWork(0);
+                    person.getWorkInfo().setDepartureFrequencyToWork(null);
                 }
                 case 3 -> {
                     person.getWorkInfo().setRegionOrDistrictName(null);
@@ -246,7 +246,7 @@ public class SurveyPageController {
                 }
             }
             if (person.getWorkInfo().getDidYouLookedForAJob() == person.getWorkInfo().getCanYouStarWorkingInTwoWeeks()) {
-                person.getWorkInfo().setWhyYouCantWorkOrStoppedSearch(0);
+                person.getWorkInfo().setWhyYouCantWorkOrStoppedSearch(null);
             }
         }
 
@@ -257,7 +257,7 @@ public class SurveyPageController {
         {
             person.getChildrenInfo().setHowManyChildrenDoYouHave(null);
             person.getChildrenInfo().setNoChildren(null);
-            person.getChildrenInfo().setChildrenPlans(0);
+            person.getChildrenInfo().setChildrenPlans(null);
             person.getChildrenInfo().setHowManyChildrenDoYouWant(null);
             person.getChildrenInfo().setDontKnowHowMany(null);
         }
@@ -274,7 +274,7 @@ public class SurveyPageController {
             }
             if (!(person.getAge() >= 18 && person.getAge() <= 49))
             {
-                person.getChildrenInfo().setChildrenPlans(0);
+                person.getChildrenInfo().setChildrenPlans(null);
                 person.getChildrenInfo().setHowManyChildrenDoYouWant(null);
                 person.getChildrenInfo().setDontKnowHowMany(null);
             }

@@ -35,12 +35,12 @@ public class CreateEditUserPageController {
         return "createEditUserPage";
     }
 
-    @GetMapping("/adminMain/editUser")
+    @GetMapping(Consts.Url.$_ADMIN_MAIN_$_EDIT_USER)
     public String loadEdit() {
         return "createEditUserPage";
     }
 
-    @PostMapping("/adminMain/editUser")
+    @PostMapping(Consts.Url.$_ADMIN_MAIN_$_EDIT_USER)
     public String saveEditedUser(@ModelAttribute(name = "currentUser") @Valid UserDto obj, BindingResult bindingResult, HttpServletRequest req) {
         if (bindingResult.hasErrors()) {
             return "createEditUserPage";
@@ -62,7 +62,7 @@ public class CreateEditUserPageController {
         return "redirect:" + previousPage(req);
     }
 
-    @PostMapping("/cancel")
+    @PostMapping(Consts.Url.$_CANCEL)
     public String cancel(HttpServletRequest req) {
         return "redirect:" + previousPage(req);
     }

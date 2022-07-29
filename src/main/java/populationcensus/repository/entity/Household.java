@@ -41,6 +41,6 @@ public class Household {
     @OneToOne(mappedBy = "householdInAccommodationsInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AccommodationsInfo accommodationsInfo;
 
-    @OneToMany(mappedBy = "householdField", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "householdField", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Person> persons;
 }

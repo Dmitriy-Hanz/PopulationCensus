@@ -7,6 +7,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import populationcensus.Consts;
 import populationcensus.dto.mapper.UserMapper;
 import populationcensus.dto.security.UserDto;
 import populationcensus.repository.entity.security.User;
@@ -24,7 +25,7 @@ public class AdminMainPageController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @GetMapping("/adminMain")
+    @GetMapping(Consts.Url.$_ADMIN_MAIN)
     public String load(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User authenticatedUser = ((UserDetailsImpl)authentication.getPrincipal()).getUser();
@@ -37,52 +38,43 @@ public class AdminMainPageController {
         return "adminMainPage";
     }
 
-    @PostMapping(value = "/navAdminMain")
+    @PostMapping(Consts.Url.$_NAV_ADMIN_MAIN)
     public String navAdminMainPage(){
-        return "redirect:adminMain";
+        return "redirect:" + Consts.Url.ADMIN_MAIN;
     }
-    @PostMapping(value = "/navUsersList")
+    @PostMapping(Consts.Url.$_NAV_USERS_LIST)
     public String navUsersListPage(){
-        return "redirect:adminMain/usersList";
+        return "redirect:" + Consts.Url.$_ADMIN_MAIN_$_USERS_LIST;
     }
-    @PostMapping(value = "/navPersonsList")
+    @PostMapping(Consts.Url.$_NAV_PERSONS_LIST)
     public String navPersonsListPage(){
-        return "redirect:adminMain/personsList";
+        return "redirect:" + Consts.Url.$_ADMIN_MAIN_$_PERSONS_LIST;
     }
-    @PostMapping(value = "/navCensusResults")
+    @PostMapping(Consts.Url.$_NAV_CENSUS_RESULTS)
     public String navCensusResultsPage(){
-        return "redirect:adminMain/censusResults";
+        return "redirect:" + Consts.Url.$_ADMIN_MAIN_$_CENSUS_RESULTS;
     }
 
 
 
-    @PostMapping(value = "/deleteCurrentUser")
+    @PostMapping(Consts.Url.$_DELETE_CURRENT_USER)
     public String deleteCurrentUser(Model model){
         User user = userMapper.toUser((UserDto) model.getAttribute("currentUser"));
         userService.deleteUser(user);
         return "redirect:/customLogout";
     }
 
-    @PostMapping(value = "/editCurrentUser")
+    @PostMapping(Consts.Url.$_EDIT_CURRENT_USER)
     public String editCurrentUser(){
-        return "redirect:/adminMain/editUser";
+        return "redirect:" + Consts.Url.$_ADMIN_MAIN_$_EDIT_USER;
     }
 
-
-//    @PostMapping("/logout")
-//    public String logoutPost(HttpServletRequest request, HttpServletResponse response){
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth != null){
-//            new SecurityContextLogoutHandler().logout(request, response, auth);
-//        }
-//        return "redirect:main";
-//    }
-    @GetMapping("/customLogout")
+    @GetMapping(Consts.Url.$_CUSTOM_LOGOUT)
     public String logoutGet(HttpServletRequest request, HttpServletResponse response){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:main";
+        return "redirect:" + Consts.Url.$_MAIN;
     }
 }
