@@ -9,6 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface EducationInfoRep extends JpaRepository<EducationInfo, Long> {
-    Optional<EducationInfo> findByPersonInEducationInfo(Person person);
-    void deleteByPersonInEducationInfo(Person person);
+    Optional<EducationInfo> findEducationInfoByPersonInEducationInfoId(long personId);
+    Optional<EducationInfo> findEducationInfoByPersonInEducationInfo(Person person);
+    void deleteEducationInfoByPersonInEducationInfoId(long personId);
+    void deleteEducationInfoByPersonInEducationInfo(Person person);
 }

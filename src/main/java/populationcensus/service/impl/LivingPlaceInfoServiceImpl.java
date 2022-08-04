@@ -3,6 +3,10 @@ package populationcensus.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import populationcensus.dto.LivingPlaceInfoDto;
+import populationcensus.dto.PersonDto;
+import populationcensus.dto.mapper.LivingPlaceInfoMapper;
+import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.repository.entity.LivingPlaceInfo;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.LivingPlaceInfoRep;
@@ -17,60 +21,53 @@ public class LivingPlaceInfoServiceImpl implements LivingPlaceInfoService {
 
     private final LivingPlaceInfoRep livingPlaceInfoRep;
     private final PersonRep personRep;
-
-    @Override
-    public void saveLivingPlaceInfo(LivingPlaceInfo entity) {
-        if (entity.getPersonInLivingPlaceInfo() == null) {
-            return;
-        }
-        livingPlaceInfoRep.saveAndFlush(entity);
-    }
+    private final PersonMapper personMapper;
+    private final LivingPlaceInfoMapper livingPlaceInfoMapper;
 
     @Override
     @Transactional
     public void saveLivingPlaceInfo(long personId, LivingPlaceInfo entity) {
-        if (entity.getPersonInLivingPlaceInfo() != null) {
-            return;
+        Person person = personRep.findById(personId).orElse(null);
+        Person personWithEntity = personRep.findByLivingPlaceInfoId(entity.getId() == null ? 0 : entity.getId()).orElse(null);
+        if (person != null && personWithEntity == null) {
+            entity.setPersonInLivingPlaceInfo(person);
+            livingPlaceInfoRep.save(entity);
         }
-        Optional<Person> personOptional = personRep.findById(personId);
-
-        personOptional.ifPresent(
-                (obj) -> {
-                    if (obj.getLivingPlaceInfo() != null) {
-                        return;
-                    }
-                    entity.setPersonInLivingPlaceInfo(personOptional.get());
-                    livingPlaceInfoRep.saveAndFlush(entity);
-                }
-        );
     }
 
     @Override
     public void saveLivingPlaceInfo(Person person, LivingPlaceInfo entity) {
-        if (entity.getPersonInLivingPlaceInfo() != null || person.getId() == null) {
-            return;
+        saveLivingPlaceInfo(person.getId() == null? 0: person.getId(), entity);
+    }
+
+    @Override
+    public void saveLivingPlaceInfo(LivingPlaceInfo entity) {
+        if (entity.getPersonInLivingPlaceInfo() != null) {
+            saveLivingPlaceInfo(entity.getPersonInLivingPlaceInfo(),entity);
         }
-        entity.setPersonInLivingPlaceInfo(person);
-        livingPlaceInfoRep.saveAndFlush(entity);
     }
 
 
     @Override
-    public LivingPlaceInfo findLivingPlaceInfo(long livingPlaceInfoId) {
+    public LivingPlaceInfoDto findLivingPlaceInfo(long livingPlaceInfoId) {
         Optional<LivingPlaceInfo> result = livingPlaceInfoRep.findById(livingPlaceInfoId);
-        return result.orElse(null);
+        return result
+                .map(livingPlaceInfoMapper::toLivingPlaceInfoDto)
+                .orElse(null);
     }
 
     @Override
-    @Transactional
-    public LivingPlaceInfo findLivingPlaceInfoByPersonId(long personId) {
-        Person person = personRep.findById(personId).orElse(null);
-        return livingPlaceInfoRep.findByPersonInLivingPlaceInfo(person).orElse(null);
+    public LivingPlaceInfoDto findLivingPlaceInfoByPersonId(long personId) {
+        return livingPlaceInfoRep.findByPersonInLivingPlaceInfoId(personId)
+                .map(livingPlaceInfoMapper::toLivingPlaceInfoDto)
+                .orElse(null);
     }
 
     @Override
-    public LivingPlaceInfo findLivingPlaceInfoByPerson(Person person) {
-        return livingPlaceInfoRep.findByPersonInLivingPlaceInfo(person).orElse(null);
+    public LivingPlaceInfoDto findLivingPlaceInfoByPerson(Person person) {
+        return livingPlaceInfoRep.findByPersonInLivingPlaceInfo(person)
+                .map(livingPlaceInfoMapper::toLivingPlaceInfoDto)
+                .orElse(null);
     }
 
 
@@ -86,8 +83,7 @@ public class LivingPlaceInfoServiceImpl implements LivingPlaceInfoService {
 
     @Override
     public void deleteLivingPlaceInfoByPersonId(long personId) {
-        Person person = personRep.findById(personId).orElse(null);
-        livingPlaceInfoRep.deleteByPersonInLivingPlaceInfo(person);
+        livingPlaceInfoRep.deleteByPersonInLivingPlaceInfoId(personId);
     }
 
     @Override
@@ -96,15 +92,29 @@ public class LivingPlaceInfoServiceImpl implements LivingPlaceInfoService {
     }
 
 
-    @Transactional
     @Override
-    public Person findLinkedPerson(long livingPlaceInfoId) {
-        LivingPlaceInfo livingPlaceInfo = livingPlaceInfoRep.findById(livingPlaceInfoId).orElse(new LivingPlaceInfo());
-        return personRep.findByLivingPlaceInfo(livingPlaceInfo).orElse(null);
+    public PersonDto findLinkedPerson(long livingPlaceInfoId) {
+        return personRep.findByLivingPlaceInfoId(livingPlaceInfoId)
+                .map(personMapper::toPersonDto)
+                .orElse(null);
     }
 
     @Override
-    public Person findLinkedPerson(LivingPlaceInfo livingPlaceInfo) {
-        return personRep.findByLivingPlaceInfo(livingPlaceInfo).orElse(null);
+    public PersonDto findLinkedPerson(LivingPlaceInfo livingPlaceInfo) {
+        return personRep.findByLivingPlaceInfo(livingPlaceInfo)
+                .map(personMapper::toPersonDto)
+                .orElse(null);
+    }
+
+
+    @Override
+    @Transactional
+    public void updateLivingPlaceInfo(LivingPlaceInfo livingPlaceInfo) {
+        Optional<LivingPlaceInfo> livingPlaceInfoFromDB = livingPlaceInfoRep.findById(livingPlaceInfo.getId() == null? 0:livingPlaceInfo.getId());
+        if (livingPlaceInfoFromDB.isPresent())
+        {
+            livingPlaceInfo.setPersonInLivingPlaceInfo(livingPlaceInfoFromDB.get().getPersonInLivingPlaceInfo());
+            livingPlaceInfoRep.save(livingPlaceInfo);
+        }
     }
 }

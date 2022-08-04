@@ -27,7 +27,7 @@ public class LivingPlaceInfoDto {
     public LivingPlaceInfoDto(LivingPlaceInfo entity) {
         id = entity.getId();
         doYouLiveHereFromBirth = entity.getDoYouLiveHereFromBirth();
-        arrivalPeriod = entity.getArrivalPeriod(); stringArrivalPeriod = arrivalPeriod.toString();
+        arrivalPeriod = entity.getArrivalPeriod(); stringArrivalPeriod = arrivalPeriod == null? "" : arrivalPeriod.toString();
         previousLivingPlace = entity.getPreviousLivingPlace();
         regionOrDistrictName = entity.getRegionOrDistrictName();
         cityOrPGTName = entity.getCityOrPGTName();

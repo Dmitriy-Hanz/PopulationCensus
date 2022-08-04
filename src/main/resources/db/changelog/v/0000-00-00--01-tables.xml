@@ -12,7 +12,7 @@
                 id                    bigint auto_increment,
                 number_of_members     int,
                 rooms_count           int,
-                part_of_room          char(5),
+                part_of_room          char(100),
                 has_foreign_residents bool,
                 has_farm_facilities   bool,
 

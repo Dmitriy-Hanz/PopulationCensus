@@ -11,6 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import populationcensus.Consts;
+import populationcensus.dto.LivingPlaceInfoDto;
+import populationcensus.dto.PersonDto;
+import populationcensus.dto.mapper.LivingPlaceInfoMapper;
+import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.repository.entity.LivingPlaceInfo;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.LivingPlaceInfoRep;
@@ -30,13 +34,19 @@ public class LivingPlaceInfoServiceTest {
     private LivingPlaceInfoRep livingPlaceInfoRep;
     @Mock
     private PersonRep personRep;
+    @Mock
+    private LivingPlaceInfoMapper livingPlaceInfoMapper;
+    @Mock
+    private PersonMapper personMapper;
 
     @InjectMocks
     private LivingPlaceInfoServiceImpl livingPlaceInfoService;
 
     private Person person;
+    private PersonDto personDto;
     private LivingPlaceInfo livingPlaceInfo;
-
+    private LivingPlaceInfoDto livingPlaceInfoDto;
+    
     @Before
     public void presets(){
         person = Person.builder()
@@ -52,6 +62,9 @@ public class LivingPlaceInfoServiceTest {
                 .build();
 
         person.setLivingPlaceInfo(livingPlaceInfo);
+
+        personDto = new PersonDto(person);
+        livingPlaceInfoDto = new LivingPlaceInfoDto(livingPlaceInfo);
     }
 
     @Test
@@ -88,34 +101,34 @@ public class LivingPlaceInfoServiceTest {
     @Test
     public void findLivingPlaceInfoByIdTest() {
         when(livingPlaceInfoRep.findById(any())).thenReturn(Optional.of(livingPlaceInfo));
+        when(livingPlaceInfoMapper.toLivingPlaceInfoDto(any())).thenReturn(livingPlaceInfoDto);
 
-        Optional<LivingPlaceInfo> result = Optional.of(livingPlaceInfoService.findLivingPlaceInfo(livingPlaceInfo.getId()));
+        LivingPlaceInfoDto result = livingPlaceInfoService.findLivingPlaceInfo(livingPlaceInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),livingPlaceInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,livingPlaceInfoDto);
     }
 
     @Test
     public void findLivingPlaceInfoByPersonIdTest() {
-        when(livingPlaceInfoRep.findByPersonInLivingPlaceInfo(any())).thenReturn(Optional.of(livingPlaceInfo));
+        when(livingPlaceInfoRep.findByPersonInLivingPlaceInfoId(Consts.Test.HOUSEHOLD_ID)).thenReturn(Optional.of(livingPlaceInfo));
+        when(livingPlaceInfoMapper.toLivingPlaceInfoDto(any())).thenReturn(livingPlaceInfoDto);
 
-        Optional<LivingPlaceInfo> result = Optional.of(livingPlaceInfoService.findLivingPlaceInfoByPersonId(livingPlaceInfo.getPersonInLivingPlaceInfo().getId()));
+        LivingPlaceInfoDto result = livingPlaceInfoService.findLivingPlaceInfoByPersonId(livingPlaceInfo.getPersonInLivingPlaceInfo().getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),livingPlaceInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,livingPlaceInfoDto);
     }
 
     @Test
     public void findLivingPlaceInfoByPersonTest() {
         when(livingPlaceInfoRep.findByPersonInLivingPlaceInfo(any())).thenReturn(Optional.of(livingPlaceInfo));
+        when(livingPlaceInfoMapper.toLivingPlaceInfoDto(any())).thenReturn(livingPlaceInfoDto);
 
-        Optional<LivingPlaceInfo> result = Optional.of(livingPlaceInfoService.findLivingPlaceInfoByPerson(livingPlaceInfo.getPersonInLivingPlaceInfo()));
+        LivingPlaceInfoDto result = livingPlaceInfoService.findLivingPlaceInfoByPerson(livingPlaceInfo.getPersonInLivingPlaceInfo());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),livingPlaceInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,livingPlaceInfoDto);
     }
 
 
@@ -162,23 +175,35 @@ public class LivingPlaceInfoServiceTest {
 
     @Test
     public void findLinkedPersonByIdTest() {
-        when(personRep.findByLivingPlaceInfo(any())).thenReturn(Optional.of(person));
+        when(personRep.findByLivingPlaceInfoId(1L)).thenReturn(Optional.of(person));
+        when(personMapper.toPersonDto(any())).thenReturn(personDto);
 
-        Optional<Person> result = Optional.of(livingPlaceInfoService.findLinkedPerson(livingPlaceInfo.getId()));
+        PersonDto result = livingPlaceInfoService.findLinkedPerson(livingPlaceInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),person);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,personDto);
     }
 
     @Test
     public void findLinkedPersonByEntityTest() {
         when(personRep.findByLivingPlaceInfo(any())).thenReturn(Optional.of(person));
+        when(personMapper.toPersonDto(any())).thenReturn(personDto);
 
-        Optional<Person> result = Optional.of(livingPlaceInfoService.findLinkedPerson(livingPlaceInfo));
+        PersonDto result = livingPlaceInfoService.findLinkedPerson(livingPlaceInfo);
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),person);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,personDto);
+    }
+
+
+    @Test
+    public void updateLivingPlaceInfoTest() {
+        when(livingPlaceInfoRep.findById(any())).thenReturn(Optional.of(livingPlaceInfo));
+        try {
+            livingPlaceInfoService.updateLivingPlaceInfo(livingPlaceInfo);
+        } catch (Exception e){
+            Assertions.fail();
+        }
+        Assertions.assertTrue(true);
     }
 }

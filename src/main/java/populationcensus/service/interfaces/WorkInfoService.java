@@ -1,5 +1,7 @@
 package populationcensus.service.interfaces;
 
+import populationcensus.dto.PersonDto;
+import populationcensus.dto.WorkInfoDto;
 import populationcensus.repository.entity.*;
 
 public interface WorkInfoService {
@@ -8,16 +10,17 @@ public interface WorkInfoService {
     void saveWorkInfo(long personId, WorkInfo entity);
     void saveWorkInfo(Person person, WorkInfo entity);
 
-    WorkInfo findWorkInfo(long workInfoId);
-    WorkInfo findWorkInfoByPersonId(long personId);
-    WorkInfo findWorkInfoByPerson(Person person);
+    WorkInfoDto findWorkInfo(long workInfoId);
+    WorkInfoDto findWorkInfoByPersonId(long personId);
+    WorkInfoDto findWorkInfoByPerson(Person person);
 
     void deleteWorkInfoById(long workInfoId);
     void deleteWorkInfo(WorkInfo workInfo);
     void deleteWorkInfoByPersonId(long personId);
     void deleteWorkInfoByPerson(Person person);
 
-    Person findLinkedPerson(long workInfoId);
-    Person findLinkedPerson(WorkInfo workInfo);
+    PersonDto findLinkedPerson(long workInfoId);
+    PersonDto findLinkedPerson(WorkInfo workInfo);
 
+    void updateWorkInfo(WorkInfo entity);
 }

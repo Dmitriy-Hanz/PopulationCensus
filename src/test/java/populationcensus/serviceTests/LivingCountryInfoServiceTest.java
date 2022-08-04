@@ -11,6 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import populationcensus.Consts;
+import populationcensus.dto.LivingCountryInfoDto;
+import populationcensus.dto.PersonDto;
+import populationcensus.dto.mapper.LivingCountryInfoMapper;
+import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.repository.entity.LivingCountryInfo;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.LivingCountryInfoRep;
@@ -30,12 +34,18 @@ public class LivingCountryInfoServiceTest {
     private LivingCountryInfoRep livingCountryInfoRep;
     @Mock
     private PersonRep personRep;
+    @Mock
+    private LivingCountryInfoMapper livingCountryInfoMapper;
+    @Mock
+    private PersonMapper personMapper;
 
     @InjectMocks
     private LivingCountryInfoServiceImpl livingCountryInfoService;
 
     private Person person;
+    private PersonDto personDto;
     private LivingCountryInfo livingCountryInfo;
+    private LivingCountryInfoDto livingCountryInfoDto;
 
     @Before
     public void presets(){
@@ -52,6 +62,9 @@ public class LivingCountryInfoServiceTest {
                 .build();
 
         person.setLivingCountryInfo(livingCountryInfo);
+        
+        personDto = new PersonDto(person);
+        livingCountryInfoDto = new LivingCountryInfoDto(livingCountryInfo);
     }
 
     @Test
@@ -88,34 +101,34 @@ public class LivingCountryInfoServiceTest {
     @Test
     public void findLivingCountryInfoByIdTest() {
         when(livingCountryInfoRep.findById(any())).thenReturn(Optional.of(livingCountryInfo));
+        when(livingCountryInfoMapper.toLivingCountryInfoDto(any())).thenReturn(livingCountryInfoDto);
 
-        Optional<LivingCountryInfo> result = Optional.of(livingCountryInfoService.findLivingCountryInfo(livingCountryInfo.getId()));
+        LivingCountryInfoDto result = livingCountryInfoService.findLivingCountryInfo(livingCountryInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),livingCountryInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,livingCountryInfoDto);
     }
 
     @Test
     public void findLivingCountryInfoByPersonIdTest() {
-        when(livingCountryInfoRep.findByPersonInLivingCountryInfo(any())).thenReturn(Optional.of(livingCountryInfo));
+        when(livingCountryInfoRep.findByPersonInLivingCountryInfoId(Consts.Test.HOUSEHOLD_ID)).thenReturn(Optional.of(livingCountryInfo));
+        when(livingCountryInfoMapper.toLivingCountryInfoDto(any())).thenReturn(livingCountryInfoDto);
 
-        Optional<LivingCountryInfo> result = Optional.of(livingCountryInfoService.findLivingCountryInfoByPersonId(livingCountryInfo.getPersonInLivingCountryInfo().getId()));
+        LivingCountryInfoDto result = livingCountryInfoService.findLivingCountryInfoByPersonId(livingCountryInfo.getPersonInLivingCountryInfo().getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),livingCountryInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,livingCountryInfoDto);
     }
 
     @Test
     public void findLivingCountryInfoByPersonTest() {
         when(livingCountryInfoRep.findByPersonInLivingCountryInfo(any())).thenReturn(Optional.of(livingCountryInfo));
+        when(livingCountryInfoMapper.toLivingCountryInfoDto(any())).thenReturn(livingCountryInfoDto);
 
-        Optional<LivingCountryInfo> result = Optional.of(livingCountryInfoService.findLivingCountryInfoByPerson(livingCountryInfo.getPersonInLivingCountryInfo()));
+        LivingCountryInfoDto result = livingCountryInfoService.findLivingCountryInfoByPerson(livingCountryInfo.getPersonInLivingCountryInfo());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),livingCountryInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,livingCountryInfoDto);
     }
 
 
@@ -162,23 +175,35 @@ public class LivingCountryInfoServiceTest {
 
     @Test
     public void findLinkedPersonByIdTest() {
-        when(personRep.findByLivingCountryInfo(any())).thenReturn(Optional.of(person));
+        when(personRep.findByLivingCountryInfoId(1L)).thenReturn(Optional.of(person));
+        when(personMapper.toPersonDto(any())).thenReturn(personDto);
 
-        Optional<Person> result = Optional.of(livingCountryInfoService.findLinkedPerson(livingCountryInfo.getId()));
+        PersonDto result = livingCountryInfoService.findLinkedPerson(livingCountryInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),person);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,personDto);
     }
 
     @Test
     public void findLinkedPersonByEntityTest() {
         when(personRep.findByLivingCountryInfo(any())).thenReturn(Optional.of(person));
+        when(personMapper.toPersonDto(any())).thenReturn(personDto);
 
-        Optional<Person> result = Optional.of(livingCountryInfoService.findLinkedPerson(livingCountryInfo));
+        PersonDto result = livingCountryInfoService.findLinkedPerson(livingCountryInfo);
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),person);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,personDto);
+    }
+
+
+    @Test
+    public void updateLivingCountryInfoTest() {
+        when(livingCountryInfoRep.findById(any())).thenReturn(Optional.of(livingCountryInfo));
+        try {
+            livingCountryInfoService.updateLivingCountryInfo(livingCountryInfo);
+        } catch (Exception e){
+            Assertions.fail();
+        }
+        Assertions.assertTrue(true);
     }
 }

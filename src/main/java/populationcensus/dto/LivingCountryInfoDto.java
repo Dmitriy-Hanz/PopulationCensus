@@ -25,7 +25,7 @@ public class LivingCountryInfoDto {
         id = entity.getId();
         didYouLiveInOtherCountry = entity.getDidYouLiveInOtherCountry();
         nameOfCountryYouCameFrom = entity.getNameOfCountryYouCameFrom();
-        arrivalPeriod = entity.getArrivalPeriod(); stringArrivalPeriod = arrivalPeriod.toString();
+        arrivalPeriod = entity.getArrivalPeriod(); stringArrivalPeriod = arrivalPeriod == null? "" : arrivalPeriod.toString();
         reasonForArrivalAtRB = entity.getReasonForArrivalAtRB();
         infoAboutLeavingBelarus = entity.getInfoAboutLeavingBelarus();
         reasonForLeavingBelarus = entity.getReasonForLeavingBelarus();

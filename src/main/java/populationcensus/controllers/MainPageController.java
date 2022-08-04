@@ -1,5 +1,6 @@
 package populationcensus.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,9 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import populationcensus.Consts;
+import populationcensus.dto.mapper.AccommodationsInfoMapper;
+import populationcensus.repository.entity.AccommodationsInfo;
+import populationcensus.service.interfaces.AccommodationsInfoService;
 
 @Controller
 @SessionAttributes("passportID")
+@RequiredArgsConstructor
 public class MainPageController {
 
     @GetMapping(Consts.Url.$_MAIN)

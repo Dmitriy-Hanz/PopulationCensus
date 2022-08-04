@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import populationcensus.dto.PersonDto;
+import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.PersonRep;
 import populationcensus.service.interfaces.PersonService;
@@ -18,6 +20,7 @@ import java.util.List;
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRep personRep;
+    private final PersonMapper personMapper;
 
     @Override
     public List<Person> findAll() {
@@ -45,12 +48,16 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person findPerson(long personId) {
-        return personRep.findById(personId).orElse(null);
+    public PersonDto findPerson(long personId) {
+        return personRep.findById(personId)
+                .map(personMapper::toPersonDto)
+                .orElse(null);
     }
 
     @Override
-    public Person findPersonByPassportID(String passportID) {
-        return personRep.findByPassportID(passportID).orElse(null);
+    public PersonDto findPersonByPassportID(String passportID) {
+        return personRep.findByPassportID(passportID)
+                .map(personMapper::toPersonDto)
+                .orElse(null);
     }
 }

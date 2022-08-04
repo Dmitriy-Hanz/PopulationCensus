@@ -15,6 +15,7 @@ public class HouseholdDto {
     private String partOfRoom;
     private Boolean hasForeignResidents;
     private Boolean hasFarmFacilities;
+
     private AccommodationsInfoDto accommodationsInfo;
     private FullAddressInfoDto fullAddressInfo;
 

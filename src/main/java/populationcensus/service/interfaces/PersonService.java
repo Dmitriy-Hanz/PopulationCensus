@@ -2,6 +2,7 @@ package populationcensus.service.interfaces;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import populationcensus.dto.PersonDto;
 import populationcensus.repository.entity.Household;
 import populationcensus.repository.entity.Person;
 
@@ -11,7 +12,7 @@ public interface PersonService {
 
     List<Person> findAll();
     Page<Person> findAllAndPaginate(Pageable pageable);
-    Person findPerson(long personId);
-    Person findPersonByPassportID(String passportID);
+    PersonDto findPerson(long personId);
+    PersonDto findPersonByPassportID(String passportID);
 
 }

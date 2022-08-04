@@ -6,9 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import populationcensus.Consts;
-import populationcensus.dto.mapper.HouseholdMapper;
-import populationcensus.dto.mapper.PersonMapper;
-import populationcensus.repository.entity.Person;
+import populationcensus.dto.HouseholdDto;
+import populationcensus.dto.PersonDto;
+import populationcensus.service.interfaces.HouseholdService;
 import populationcensus.service.interfaces.PersonService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,18 +20,18 @@ import javax.servlet.http.HttpSession;
 public class PersonBlankViewerPageController {
 
     private final PersonService personService;
-    private final PersonMapper personMapper;
-    private final HouseholdMapper householdMapper;
+    private final HouseholdService householdService;
 
     @GetMapping(Consts.Url.MAIN_$_MY_BLANK)
     public String load(@ModelAttribute(name = "passportID") String passportID, Model model){
-        Person person = personService.findPersonByPassportID(passportID);
-        if (person == null){
-            return "redirect:" + Consts.Url.$_MAIN_$_MY_BLANK_FAIL;
+        PersonDto person = personService.findPersonByPassportID(passportID);
+        if (person != null){
+            HouseholdDto household = householdService.findHouseholdByPersonId(person.getId());
+            model.addAttribute("personForView", person);
+            model.addAttribute("householdForView",household);
+            return "personBlankViewerPage";
         }
-        model.addAttribute("personForView", personMapper.toPersonDto(person));
-        model.addAttribute("householdForView",householdMapper.toHouseholdDto(person.getHouseholdField()));
-        return "personBlankViewerPage";
+        return "redirect:" + Consts.Url.$_MAIN_$_MY_BLANK_FAIL;
     }
     @GetMapping(Consts.Url.MAIN_$_MY_BLANK_FAIL)
     public String loadFail(){
@@ -39,9 +39,13 @@ public class PersonBlankViewerPageController {
     }
     @GetMapping("/adminMain/personsList/blank/{id}")
     public String loadFromPersonsList(Model model, @PathVariable String id){
-        Person person = personService.findPerson(Long.parseLong(id));
-        model.addAttribute("personForView", personMapper.toPersonDto(person));
-        model.addAttribute("householdForView",householdMapper.toHouseholdDto(person.getHouseholdField()));
+        PersonDto person = personService.findPerson(Long.parseLong(id));
+        if (person != null)
+        {
+            HouseholdDto household = householdService.findHouseholdByPersonId(person.getId());
+            model.addAttribute("personForView", person);
+            model.addAttribute("householdForView",household);
+        }
         return "personBlankViewerPage";
     }
 

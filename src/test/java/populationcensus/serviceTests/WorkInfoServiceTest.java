@@ -11,6 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import populationcensus.Consts;
+import populationcensus.dto.WorkInfoDto;
+import populationcensus.dto.PersonDto;
+import populationcensus.dto.mapper.WorkInfoMapper;
+import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.repository.entity.WorkInfo;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.WorkInfoRep;
@@ -30,12 +34,18 @@ public class WorkInfoServiceTest {
     private WorkInfoRep workInfoRep;
     @Mock
     private PersonRep personRep;
+    @Mock
+    private WorkInfoMapper workInfoMapper;
+    @Mock
+    private PersonMapper personMapper;
 
     @InjectMocks
     private WorkInfoServiceImpl workInfoService;
 
     private Person person;
+    private PersonDto personDto;
     private WorkInfo workInfo;
+    private WorkInfoDto workInfoDto;
 
     @Before
     public void presets(){
@@ -52,6 +62,9 @@ public class WorkInfoServiceTest {
                 .build();
 
         person.setWorkInfo(workInfo);
+
+        personDto = new PersonDto(person);
+        workInfoDto = new WorkInfoDto(workInfo);
     }
 
     @Test
@@ -88,34 +101,34 @@ public class WorkInfoServiceTest {
     @Test
     public void findWorkInfoByIdTest() {
         when(workInfoRep.findById(any())).thenReturn(Optional.of(workInfo));
+        when(workInfoMapper.toWorkInfoDto(any())).thenReturn(workInfoDto);
 
-        Optional<WorkInfo> result = Optional.of(workInfoService.findWorkInfo(workInfo.getId()));
+        WorkInfoDto result = workInfoService.findWorkInfo(workInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),workInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,workInfoDto);
     }
 
     @Test
     public void findWorkInfoByPersonIdTest() {
-        when(workInfoRep.findByPersonInWorkInfo(any())).thenReturn(Optional.of(workInfo));
+        when(workInfoRep.findByPersonInWorkInfoId(Consts.Test.HOUSEHOLD_ID)).thenReturn(Optional.of(workInfo));
+        when(workInfoMapper.toWorkInfoDto(any())).thenReturn(workInfoDto);
 
-        Optional<WorkInfo> result = Optional.of(workInfoService.findWorkInfoByPersonId(workInfo.getPersonInWorkInfo().getId()));
+        WorkInfoDto result = workInfoService.findWorkInfoByPersonId(workInfo.getPersonInWorkInfo().getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),workInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,workInfoDto);
     }
 
     @Test
     public void findWorkInfoByPersonTest() {
         when(workInfoRep.findByPersonInWorkInfo(any())).thenReturn(Optional.of(workInfo));
+        when(workInfoMapper.toWorkInfoDto(any())).thenReturn(workInfoDto);
 
-        Optional<WorkInfo> result = Optional.of(workInfoService.findWorkInfoByPerson(workInfo.getPersonInWorkInfo()));
+        WorkInfoDto result = workInfoService.findWorkInfoByPerson(workInfo.getPersonInWorkInfo());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),workInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,workInfoDto);
     }
 
 
@@ -162,24 +175,36 @@ public class WorkInfoServiceTest {
 
     @Test
     public void findLinkedPersonByIdTest() {
-        when(personRep.findByWorkInfo(any())).thenReturn(Optional.of(person));
+        when(personRep.findByWorkInfoId(1L)).thenReturn(Optional.of(person));
+        when(personMapper.toPersonDto(any())).thenReturn(personDto);
 
-        Optional<Person> result = Optional.of(workInfoService.findLinkedPerson(workInfo.getId()));
+        PersonDto result = workInfoService.findLinkedPerson(workInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),person);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,personDto);
     }
 
     @Test
     public void findLinkedPersonByEntityTest() {
         when(personRep.findByWorkInfo(any())).thenReturn(Optional.of(person));
+        when(personMapper.toPersonDto(any())).thenReturn(personDto);
 
-        Optional<Person> result = Optional.of(workInfoService.findLinkedPerson(workInfo));
+        PersonDto result = workInfoService.findLinkedPerson(workInfo);
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),person);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,personDto);
+    }
+
+
+    @Test
+    public void updateWorkInfoTest() {
+        when(workInfoRep.findById(any())).thenReturn(Optional.of(workInfo));
+        try {
+            workInfoService.updateWorkInfo(workInfo);
+        } catch (Exception e){
+            Assertions.fail();
+        }
+        Assertions.assertTrue(true);
     }
 }
 

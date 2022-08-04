@@ -9,6 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface ChildrenInfoRep extends JpaRepository<ChildrenInfo, Long> {
-    Optional<ChildrenInfo> findByPersonInChildrenInfo(Person person);
-    void deleteByPersonInChildrenInfo(Person person);
+    Optional<ChildrenInfo> findChildrenInfoByPersonInChildrenInfoId(long personId);
+    Optional<ChildrenInfo> findChildrenInfoByPersonInChildrenInfo(Person person);
+    void deleteChildrenInfoByPersonInChildrenInfoId(long personId);
+    void deleteChildrenInfoByPersonInChildrenInfo(Person person);
 }

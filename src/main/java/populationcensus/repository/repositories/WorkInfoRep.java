@@ -9,6 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface WorkInfoRep extends JpaRepository<WorkInfo, Long> {
+    Optional<WorkInfo> findByPersonInWorkInfoId(long personId);
     Optional<WorkInfo> findByPersonInWorkInfo(Person person);
+    void deleteByPersonInWorkInfoId(long personId);
     void deleteByPersonInWorkInfo(Person person);
 }

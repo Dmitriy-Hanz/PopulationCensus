@@ -11,6 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import populationcensus.Consts;
+import populationcensus.dto.AccommodationsInfoDto;
+import populationcensus.dto.HouseholdDto;
+import populationcensus.dto.mapper.AccommodationsInfoMapper;
+import populationcensus.dto.mapper.HouseholdMapper;
 import populationcensus.repository.entity.AccommodationsInfo;
 import populationcensus.repository.entity.Household;
 import populationcensus.repository.repositories.AccommodationsInfoRep;
@@ -30,12 +34,18 @@ public class AccommodationsInfoServiceTest {
     private AccommodationsInfoRep accommodationsInfoRep;
     @Mock
     private HouseholdRep householdRep;
+    @Mock
+    private AccommodationsInfoMapper accommodationsInfoMapper;
+    @Mock
+    private HouseholdMapper householdMapper;
 
     @InjectMocks
     private AccommodationsInfoServiceImpl accommodationsInfoService;
 
     private Household household;
+    private HouseholdDto householdDto;
     private AccommodationsInfo accommodationsInfo;
+    private AccommodationsInfoDto accommodationsInfoDto;
 
     @Before
     public void presets(){
@@ -52,6 +62,9 @@ public class AccommodationsInfoServiceTest {
                 .build();
 
         household.setAccommodationsInfo(accommodationsInfo);
+
+        householdDto = new HouseholdDto(household);
+        accommodationsInfoDto = new AccommodationsInfoDto(accommodationsInfo);
     }
 
     @Test
@@ -88,34 +101,34 @@ public class AccommodationsInfoServiceTest {
     @Test
     public void findAccommodationsInfoByIdTest() {
         when(accommodationsInfoRep.findById(any())).thenReturn(Optional.of(accommodationsInfo));
+        when(accommodationsInfoMapper.toAccommodationsInfoDto(any())).thenReturn(accommodationsInfoDto);
 
-        Optional<AccommodationsInfo> result = Optional.of(accommodationsInfoService.findAccommodationsInfo(accommodationsInfo.getId()));
+        AccommodationsInfoDto result = accommodationsInfoService.findAccommodationsInfo(accommodationsInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),accommodationsInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,accommodationsInfoDto);
     }
 
     @Test
     public void findAccommodationsInfoByHouseholdIdTest() {
-        when(householdRep.findById(any())).thenReturn(Optional.of(household));
+        when(accommodationsInfoRep.findAccommodationsInfoByHouseholdInAccommodationsInfoId(Consts.Test.HOUSEHOLD_ID)).thenReturn(Optional.of(accommodationsInfo));
+        when(accommodationsInfoMapper.toAccommodationsInfoDto(any())).thenReturn(accommodationsInfoDto);
 
-        Optional<AccommodationsInfo> result = Optional.of(accommodationsInfoService.findAccommodationsInfoByHouseholdId(accommodationsInfo.getHouseholdInAccommodationsInfo().getId()));
+        AccommodationsInfoDto result = accommodationsInfoService.findAccommodationsInfoByHouseholdId(accommodationsInfo.getHouseholdInAccommodationsInfo().getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),accommodationsInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,accommodationsInfoDto);
     }
 
     @Test
     public void findAccommodationsInfoByHouseholdTest() {
-        when(householdRep.findById(any())).thenReturn(Optional.of(household));
+        when(accommodationsInfoRep.findAccommodationsInfoByHouseholdInAccommodationsInfo(any())).thenReturn(Optional.of(accommodationsInfo));
+        when(accommodationsInfoMapper.toAccommodationsInfoDto(any())).thenReturn(accommodationsInfoDto);
 
-        Optional<AccommodationsInfo> result = Optional.of(accommodationsInfoService.findAccommodationsInfoByHousehold(accommodationsInfo.getHouseholdInAccommodationsInfo()));
+        AccommodationsInfoDto result = accommodationsInfoService.findAccommodationsInfoByHousehold(accommodationsInfo.getHouseholdInAccommodationsInfo());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),accommodationsInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,accommodationsInfoDto);
     }
 
 
@@ -162,23 +175,35 @@ public class AccommodationsInfoServiceTest {
 
     @Test
     public void findLinkedHouseholdByIdTest() {
-        when(accommodationsInfoRep.findById(any())).thenReturn(Optional.of(accommodationsInfo));
+        when(householdRep.findHouseholdByAccommodationsInfoId(any())).thenReturn(Optional.of(household));
+        when(householdMapper.toHouseholdDto(any())).thenReturn(householdDto);
 
-        Optional<Household> result = Optional.of(accommodationsInfoService.findLinkedHousehold(accommodationsInfo.getId()));
+        HouseholdDto result = accommodationsInfoService.findLinkedHousehold(accommodationsInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),household);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,householdDto);
     }
 
     @Test
     public void findLinkedHouseholdByEntityTest() {
+        when(householdRep.findHouseholdByAccommodationsInfo(any())).thenReturn(Optional.of(household));
+        when(householdMapper.toHouseholdDto(any())).thenReturn(householdDto);
+
+        HouseholdDto result = accommodationsInfoService.findLinkedHousehold(accommodationsInfo);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,householdDto);
+    }
+
+
+    @Test
+    public void updateAccommodationsInfoTest() {
         when(accommodationsInfoRep.findById(any())).thenReturn(Optional.of(accommodationsInfo));
-
-        Optional<Household> result = Optional.of(accommodationsInfoService.findLinkedHousehold(accommodationsInfo));
-
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),household);
+        try {
+            accommodationsInfoService.updateAccommodationsInfo(accommodationsInfo);
+        } catch (Exception e){
+            Assertions.fail();
+        }
+        Assertions.assertTrue(true);
     }
 }

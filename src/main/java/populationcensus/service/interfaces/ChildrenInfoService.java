@@ -1,5 +1,7 @@
 package populationcensus.service.interfaces;
 
+import populationcensus.dto.ChildrenInfoDto;
+import populationcensus.dto.PersonDto;
 import populationcensus.repository.entity.ChildrenInfo;
 import populationcensus.repository.entity.Person;
 
@@ -9,15 +11,17 @@ public interface ChildrenInfoService {
     void saveChildrenInfo(long personId, ChildrenInfo entity);
     void saveChildrenInfo(Person person, ChildrenInfo entity);
 
-    ChildrenInfo findChildrenInfo(long childrenInfoId);
-    ChildrenInfo findChildrenInfoByPersonId(long personId);
-    ChildrenInfo findChildrenInfoByPerson(Person person);
+    ChildrenInfoDto findChildrenInfo(long childrenInfoId);
+    ChildrenInfoDto findChildrenInfoByPersonId(long personId);
+    ChildrenInfoDto findChildrenInfoByPerson(Person person);
 
     void deleteChildrenInfoById(long childrenInfoId);
     void deleteChildrenInfo(ChildrenInfo childrenInfo);
     void deleteChildrenInfoByPersonId(long personId);
     void deleteChildrenInfoByPerson(Person person);
 
-    Person findLinkedPerson(long childrenInfoId);
-    Person findLinkedPerson(ChildrenInfo childrenInfo);
+    PersonDto findLinkedPerson(long childrenInfoId);
+    PersonDto findLinkedPerson(ChildrenInfo childrenInfo);
+
+    void updateChildrenInfo(ChildrenInfo entity);
 }

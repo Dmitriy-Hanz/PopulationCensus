@@ -43,6 +43,7 @@ public class CensusResultsPageController {
                 .count();
         results[2] = (int) persons.stream()
                 .map(Person::getHouseholdField)
+                .filter(household -> household.getFullAddressInfo().getVillageName() != null)
                 .filter(household -> !household.getFullAddressInfo().getVillageName().equals(""))
                 .count();
         results[3] = (100 * (double) (int) results[1]) / (double) (int) results[0];
@@ -55,10 +56,11 @@ public class CensusResultsPageController {
 
         List<Person> cityPersons = persons.stream()
                 .filter(person -> !person.getHouseholdField().getFullAddressInfo().getCity().equals(""))
-                .toList();
+                .collect(Collectors.toList());
         List<Person> villagePersons = persons.stream()
+                .filter(person -> person.getHouseholdField().getFullAddressInfo().getVillageName() != null)
                 .filter(person -> !person.getHouseholdField().getFullAddressInfo().getVillageName().equals(""))
-                .toList();
+                .collect(Collectors.toList());
 
         results[0][0] = persons.size();
         results[0][1] = (int) persons.stream()

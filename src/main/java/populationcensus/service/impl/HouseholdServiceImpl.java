@@ -2,9 +2,15 @@ package populationcensus.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import populationcensus.dto.HouseholdDto;
+import populationcensus.dto.PersonDto;
+import populationcensus.dto.mapper.HouseholdMapper;
+import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.repository.entity.Household;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.HouseholdRep;
+import populationcensus.repository.repositories.PersonRep;
 import populationcensus.service.interfaces.HouseholdService;
 
 import java.util.List;
@@ -15,6 +21,9 @@ import java.util.Optional;
 public class HouseholdServiceImpl implements HouseholdService {
 
     private final HouseholdRep householdRep;
+    private final PersonRep personRep;
+    private final HouseholdMapper householdMapper;
+    private final PersonMapper personMapper;
 
     @Override
     public void saveHousehold(Household entity) {
@@ -63,16 +72,36 @@ public class HouseholdServiceImpl implements HouseholdService {
                 }
             }
         }
-        householdRep.saveAndFlush(entity);
+        householdRep.save(entity);
     }
 
     @Override
-    public Household findHousehold(long householdId) {
+    public void saveHousehold(HouseholdDto householdDto, List<PersonDto> persons) {
+        Household householdResult = householdMapper.toHousehold(householdDto);
+        List<Person> personsResult = personMapper.toPersonList(persons);
+        householdResult.setPersons(personsResult);
+
+        saveHousehold(householdResult);
+    }
+
+    @Override
+    public HouseholdDto findHousehold(long householdId) {
         Optional<Household> result = householdRep.findById(householdId);
-        if(result.isEmpty()){
-            return null;
+        return result
+                .map(householdMapper::toHouseholdDto)
+                .orElse(null);
+    }
+    @Override
+    @Transactional
+    public HouseholdDto findHouseholdByPersonId(long personId) {
+        Optional<Person> optionalPerson = personRep.findById(personId);
+        if (optionalPerson.isPresent()){
+            Optional<Household> result = householdRep.findHouseholdByPersonsContains(optionalPerson.get());
+            return result
+                    .map(householdMapper::toHouseholdDto)
+                    .orElse(null);
         }
-        return result.get();
+        return null;
     }
 
     @Override

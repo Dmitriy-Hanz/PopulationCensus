@@ -67,7 +67,7 @@ public class PersonDto {
         surname = entity.getSurname();
         fathername = entity.getFathername();
         passportID = entity.getPassportID();
-        birthdayDate = entity.getBirthdayDate(); stringBirthdayDate = birthdayDate.toString();
+        birthdayDate = entity.getBirthdayDate(); stringBirthdayDate = birthdayDate == null ? "" : birthdayDate.toString();
         age = entity.getAge();
         gender = entity.getGender();
         householdRelations = entity.getHouseholdRelations();

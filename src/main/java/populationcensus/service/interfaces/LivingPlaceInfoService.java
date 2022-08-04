@@ -1,5 +1,7 @@
 package populationcensus.service.interfaces;
 
+import populationcensus.dto.LivingPlaceInfoDto;
+import populationcensus.dto.PersonDto;
 import populationcensus.repository.entity.*;
 
 public interface LivingPlaceInfoService {
@@ -8,16 +10,17 @@ public interface LivingPlaceInfoService {
     void saveLivingPlaceInfo(long personId, LivingPlaceInfo entity);
     void saveLivingPlaceInfo(Person person, LivingPlaceInfo entity);
 
-    LivingPlaceInfo findLivingPlaceInfo(long livingPlaceInfoId);
-    LivingPlaceInfo findLivingPlaceInfoByPersonId(long personId);
-    LivingPlaceInfo findLivingPlaceInfoByPerson(Person person);
+    LivingPlaceInfoDto findLivingPlaceInfo(long livingPlaceInfoId);
+    LivingPlaceInfoDto findLivingPlaceInfoByPersonId(long personId);
+    LivingPlaceInfoDto findLivingPlaceInfoByPerson(Person person);
 
     void deleteLivingPlaceInfoById(long livingPlaceInfoId);
     void deleteLivingPlaceInfo(LivingPlaceInfo livingPlaceInfo);
     void deleteLivingPlaceInfoByPersonId(long personId);
     void deleteLivingPlaceInfoByPerson(Person person);
 
-    Person findLinkedPerson(long livingPlaceInfoId);
-    Person findLinkedPerson(LivingPlaceInfo livingPlaceInfo);
+    PersonDto findLinkedPerson(long livingPlaceInfoId);
+    PersonDto findLinkedPerson(LivingPlaceInfo livingPlaceInfo);
 
+    void updateLivingPlaceInfo(LivingPlaceInfo entity);
 }

@@ -3,6 +3,10 @@ package populationcensus.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import populationcensus.dto.EducationInfoDto;
+import populationcensus.dto.PersonDto;
+import populationcensus.dto.mapper.EducationInfoMapper;
+import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.repository.entity.EducationInfo;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.EducationInfoRep;
@@ -17,60 +21,53 @@ public class EducationInfoServiceImpl implements EducationInfoService {
 
     private final EducationInfoRep educationInfoRep;
     private final PersonRep personRep;
-
-    @Override
-    public void saveEducationInfo(EducationInfo entity) {
-        if (entity.getPersonInEducationInfo() == null) {
-            return;
-        }
-        educationInfoRep.saveAndFlush(entity);
-    }
+    private final PersonMapper personMapper;
+    private final EducationInfoMapper educationInfoMapper;
 
     @Override
     @Transactional
     public void saveEducationInfo(long personId, EducationInfo entity) {
-        if (entity.getPersonInEducationInfo() != null) {
-            return;
+        Person person = personRep.findById(personId).orElse(null);
+        Person personWithEntity = personRep.findPersonByEducationInfoId(entity.getId() == null ? 0 : entity.getId()).orElse(null);
+        if (person != null && personWithEntity == null) {
+            entity.setPersonInEducationInfo(person);
+            educationInfoRep.save(entity);
         }
-        Optional<Person> personOptional = personRep.findById(personId);
-
-        personOptional.ifPresent(
-                (obj) -> {
-                    if (obj.getEducationInfo() != null) {
-                        return;
-                    }
-                    entity.setPersonInEducationInfo(personOptional.get());
-                    educationInfoRep.saveAndFlush(entity);
-                }
-        );
     }
 
     @Override
     public void saveEducationInfo(Person person, EducationInfo entity) {
-        if (entity.getPersonInEducationInfo() != null || person.getId() == null) {
-            return;
+        saveEducationInfo(person.getId() == null? 0: person.getId(), entity);
+    }
+
+    @Override
+    public void saveEducationInfo(EducationInfo entity) {
+        if (entity.getPersonInEducationInfo() != null) {
+            saveEducationInfo(entity.getPersonInEducationInfo(),entity);
         }
-        entity.setPersonInEducationInfo(person);
-        educationInfoRep.saveAndFlush(entity);
     }
 
 
     @Override
-    public EducationInfo findEducationInfo(long educationInfoId) {
+    public EducationInfoDto findEducationInfo(long educationInfoId) {
         Optional<EducationInfo> result = educationInfoRep.findById(educationInfoId);
-        return result.orElse(null);
+        return result
+                .map(educationInfoMapper::toEducationInfoDto)
+                .orElse(null);
     }
 
     @Override
-    @Transactional
-    public EducationInfo findEducationInfoByPersonId(long personId) {
-        Person person = personRep.findById(personId).orElse(null);
-        return educationInfoRep.findByPersonInEducationInfo(person).orElse(null);
+    public EducationInfoDto findEducationInfoByPersonId(long personId) {
+        return educationInfoRep.findEducationInfoByPersonInEducationInfoId(personId)
+                .map(educationInfoMapper::toEducationInfoDto)
+                .orElse(null);
     }
 
     @Override
-    public EducationInfo findEducationInfoByPerson(Person person) {
-        return educationInfoRep.findByPersonInEducationInfo(person).orElse(null);
+    public EducationInfoDto findEducationInfoByPerson(Person person) {
+        return educationInfoRep.findEducationInfoByPersonInEducationInfo(person)
+                .map(educationInfoMapper::toEducationInfoDto)
+                .orElse(null);
     }
 
 
@@ -86,25 +83,38 @@ public class EducationInfoServiceImpl implements EducationInfoService {
 
     @Override
     public void deleteEducationInfoByPersonId(long personId) {
-        Person person = personRep.findById(personId).orElse(null);
-        educationInfoRep.deleteByPersonInEducationInfo(person);
+        educationInfoRep.deleteEducationInfoByPersonInEducationInfoId(personId);
     }
 
     @Override
     public void deleteEducationInfoByPerson(Person person) {
-        educationInfoRep.deleteByPersonInEducationInfo(person);
+        educationInfoRep.deleteEducationInfoByPersonInEducationInfo(person);
     }
 
 
+    @Override
+    public PersonDto findLinkedPerson(long educationInfoId) {
+        return personRep.findPersonByEducationInfoId(educationInfoId)
+                .map(personMapper::toPersonDto)
+                .orElse(null);
+    }
+
+    @Override
+    public PersonDto findLinkedPerson(EducationInfo educationInfo) {
+        return personRep.findPersonByEducationInfo(educationInfo)
+                .map(personMapper::toPersonDto)
+                .orElse(null);
+    }
+
+
+    @Override
     @Transactional
-    @Override
-    public Person findLinkedPerson(long educationInfoId) {
-        EducationInfo educationInfo = educationInfoRep.findById(educationInfoId).orElse(new EducationInfo());
-        return personRep.findByEducationInfo(educationInfo).orElse(null);
-    }
-
-    @Override
-    public Person findLinkedPerson(EducationInfo educationInfo) {
-        return personRep.findByEducationInfo(educationInfo).orElse(null);
+    public void updateEducationInfo(EducationInfo educationInfo) {
+        Optional<EducationInfo> educationInfoFromDB = educationInfoRep.findById(educationInfo.getId() == null? 0:educationInfo.getId());
+        if (educationInfoFromDB.isPresent())
+        {
+            educationInfo.setPersonInEducationInfo(educationInfoFromDB.get().getPersonInEducationInfo());
+            educationInfoRep.save(educationInfo);
+        }
     }
 }

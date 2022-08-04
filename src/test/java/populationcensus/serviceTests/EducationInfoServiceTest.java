@@ -11,6 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import populationcensus.Consts;
+import populationcensus.dto.EducationInfoDto;
+import populationcensus.dto.PersonDto;
+import populationcensus.dto.mapper.EducationInfoMapper;
+import populationcensus.dto.mapper.PersonMapper;
 import populationcensus.repository.entity.EducationInfo;
 import populationcensus.repository.entity.Person;
 import populationcensus.repository.repositories.EducationInfoRep;
@@ -30,12 +34,18 @@ public class EducationInfoServiceTest {
     private EducationInfoRep educationInfoRep;
     @Mock
     private PersonRep personRep;
+    @Mock
+    private EducationInfoMapper educationInfoMapper;
+    @Mock
+    private PersonMapper personMapper;
 
     @InjectMocks
     private EducationInfoServiceImpl educationInfoService;
 
     private Person person;
+    private PersonDto personDto;
     private EducationInfo educationInfo;
+    private EducationInfoDto educationInfoDto;
 
     @Before
     public void presets(){
@@ -52,6 +62,9 @@ public class EducationInfoServiceTest {
                 .build();
 
         person.setEducationInfo(educationInfo);
+
+        personDto = new PersonDto(person);
+        educationInfoDto = new EducationInfoDto(educationInfo);
     }
 
     @Test
@@ -88,34 +101,34 @@ public class EducationInfoServiceTest {
     @Test
     public void findEducationInfoByIdTest() {
         when(educationInfoRep.findById(any())).thenReturn(Optional.of(educationInfo));
+        when(educationInfoMapper.toEducationInfoDto(any())).thenReturn(educationInfoDto);
 
-        Optional<EducationInfo> result = Optional.of(educationInfoService.findEducationInfo(educationInfo.getId()));
+        EducationInfoDto result = educationInfoService.findEducationInfo(educationInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),educationInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,educationInfoDto);
     }
 
     @Test
     public void findEducationInfoByPersonIdTest() {
-        when(educationInfoRep.findByPersonInEducationInfo(any())).thenReturn(Optional.of(educationInfo));
+        when(educationInfoRep.findEducationInfoByPersonInEducationInfoId(Consts.Test.HOUSEHOLD_ID)).thenReturn(Optional.of(educationInfo));
+        when(educationInfoMapper.toEducationInfoDto(any())).thenReturn(educationInfoDto);
 
-        Optional<EducationInfo> result = Optional.of(educationInfoService.findEducationInfoByPersonId(educationInfo.getPersonInEducationInfo().getId()));
+        EducationInfoDto result = educationInfoService.findEducationInfoByPersonId(educationInfo.getPersonInEducationInfo().getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),educationInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,educationInfoDto);
     }
 
     @Test
     public void findEducationInfoByPersonTest() {
-        when(educationInfoRep.findByPersonInEducationInfo(any())).thenReturn(Optional.of(educationInfo));
+        when(educationInfoRep.findEducationInfoByPersonInEducationInfo(any())).thenReturn(Optional.of(educationInfo));
+        when(educationInfoMapper.toEducationInfoDto(any())).thenReturn(educationInfoDto);
 
-        Optional<EducationInfo> result = Optional.of(educationInfoService.findEducationInfoByPerson(educationInfo.getPersonInEducationInfo()));
+        EducationInfoDto result = educationInfoService.findEducationInfoByPerson(educationInfo.getPersonInEducationInfo());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),educationInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,educationInfoDto);
     }
 
 
@@ -162,23 +175,35 @@ public class EducationInfoServiceTest {
 
     @Test
     public void findLinkedPersonByIdTest() {
-        when(personRep.findByEducationInfo(any())).thenReturn(Optional.of(person));
+        when(personRep.findPersonByEducationInfoId(Consts.Test.EDUCATION_INFO_ID)).thenReturn(Optional.of(person));
+        when(personMapper.toPersonDto(any())).thenReturn(personDto);
 
-        Optional<Person> result = Optional.of(educationInfoService.findLinkedPerson(educationInfo.getId()));
+        PersonDto result = educationInfoService.findLinkedPerson(educationInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),person);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,personDto);
     }
 
     @Test
     public void findLinkedPersonByEntityTest() {
-        when(personRep.findByEducationInfo(any())).thenReturn(Optional.of(person));
+        when(personRep.findPersonByEducationInfo(any())).thenReturn(Optional.of(person));
+        when(personMapper.toPersonDto(any())).thenReturn(personDto);
 
-        Optional<Person> result = Optional.of(educationInfoService.findLinkedPerson(educationInfo));
+        PersonDto result = educationInfoService.findLinkedPerson(educationInfo);
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),person);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,personDto);
+    }
+
+
+    @Test
+    public void updateEducationInfoTest() {
+        when(educationInfoRep.findById(any())).thenReturn(Optional.of(educationInfo));
+        try {
+            educationInfoService.updateEducationInfo(educationInfo);
+        } catch (Exception e){
+            Assertions.fail();
+        }
+        Assertions.assertTrue(true);
     }
 }

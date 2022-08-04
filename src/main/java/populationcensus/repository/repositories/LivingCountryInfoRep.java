@@ -9,6 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface LivingCountryInfoRep extends JpaRepository<LivingCountryInfo, Long> {
+    Optional<LivingCountryInfo> findByPersonInLivingCountryInfoId(long personId);
     Optional<LivingCountryInfo> findByPersonInLivingCountryInfo(Person person);
+    void deleteByPersonInLivingCountryInfoId(long personId);
     void deleteByPersonInLivingCountryInfo(Person person);
 }

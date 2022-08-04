@@ -2,12 +2,18 @@ package populationcensus.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import populationcensus.dto.AccommodationsInfoDto;
+import populationcensus.dto.HouseholdDto;
+import populationcensus.dto.mapper.AccommodationsInfoMapper;
+import populationcensus.dto.mapper.HouseholdMapper;
 import populationcensus.repository.entity.AccommodationsInfo;
 import populationcensus.repository.entity.Household;
 import populationcensus.repository.repositories.AccommodationsInfoRep;
 import populationcensus.repository.repositories.HouseholdRep;
 import populationcensus.service.interfaces.AccommodationsInfoService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service("accommodationsInfoService")
@@ -16,115 +22,100 @@ public class AccommodationsInfoServiceImpl implements AccommodationsInfoService 
 
     private final AccommodationsInfoRep accommodationsInfoRep;
     private final HouseholdRep householdRep;
+    private final HouseholdMapper householdMapper;
+    private final AccommodationsInfoMapper accommodationsInfoMapper;
 
     @Override
-    public void saveAccommodationsInfo(AccommodationsInfo entity) {
-        if(entity.getHouseholdInAccommodationsInfo() == null) {
-            return;
-        }
-        accommodationsInfoRep.saveAndFlush(entity);
-    }
-
-    @Override
+    @Transactional
     public void saveAccommodationsInfo(long householdId, AccommodationsInfo entity) {
-        if (entity.getHouseholdInAccommodationsInfo() != null) {
-            return;
+        Household household = householdRep.findById(householdId).orElse(null);
+        Household householdWithEntity = householdRep.findHouseholdByAccommodationsInfoId(entity.getId() == null ? 0 : entity.getId()).orElse(null);
+        if (household != null && householdWithEntity == null) {
+            entity.setHouseholdInAccommodationsInfo(household);
+            accommodationsInfoRep.save(entity);
         }
-        Optional<Household> householdOptional = householdRep.findById(householdId);
-
-        householdOptional.ifPresent(
-                (obj) -> {
-                    if(obj.getAccommodationsInfo() != null){
-                        return;
-                    }
-                    entity.setHouseholdInAccommodationsInfo(householdOptional.get());
-                    accommodationsInfoRep.saveAndFlush(entity);
-                }
-        );
     }
 
     @Override
     public void saveAccommodationsInfo(Household household, AccommodationsInfo entity) {
-        if(entity.getHouseholdInAccommodationsInfo() != null || household.getId() == null){
-            return;
+        saveAccommodationsInfo(household.getId() == null? 0: household.getId(), entity);
+    }
+
+    @Override
+    public void saveAccommodationsInfo(AccommodationsInfo entity) {
+        if (entity.getHouseholdInAccommodationsInfo() != null) {
+            saveAccommodationsInfo(entity.getHouseholdInAccommodationsInfo(),entity);
         }
-        entity.setHouseholdInAccommodationsInfo(household);
-        accommodationsInfoRep.saveAndFlush(entity);
     }
 
 
     @Override
-    public AccommodationsInfo findAccommodationsInfo(long accommodationsInfoId) {
+    public AccommodationsInfoDto findAccommodationsInfo(long accommodationsInfoId) {
         Optional<AccommodationsInfo> result = accommodationsInfoRep.findById(accommodationsInfoId);
-        return result.orElse(null);
+        return result
+                .map(accommodationsInfoMapper::toAccommodationsInfoDto)
+                .orElse(null);
     }
 
     @Override
-    public AccommodationsInfo findAccommodationsInfoByHouseholdId(long householdId) {
-        Optional<Household> householdOptional = householdRep.findById(householdId);
-        Household householdResult = householdOptional.orElse(null);
-        if (householdResult == null){
-            return null;
-        }
-        return householdResult.getAccommodationsInfo();
+    public AccommodationsInfoDto findAccommodationsInfoByHouseholdId(long householdId) {
+        return accommodationsInfoRep.findAccommodationsInfoByHouseholdInAccommodationsInfoId(householdId)
+                .map(accommodationsInfoMapper::toAccommodationsInfoDto)
+                .orElse(null);
     }
 
     @Override
-    public AccommodationsInfo findAccommodationsInfoByHousehold(Household household) {
-        if (household == null) {
-            return null;
-        }
-        return findAccommodationsInfoByHouseholdId(household.getId());
+    public AccommodationsInfoDto findAccommodationsInfoByHousehold(Household household) {
+        return accommodationsInfoRep.findAccommodationsInfoByHouseholdInAccommodationsInfo(household)
+                .map(accommodationsInfoMapper::toAccommodationsInfoDto)
+                .orElse(null);
     }
 
 
     @Override
     public void deleteAccommodationsInfoById(long accommodationsInfoId) {
         accommodationsInfoRep.deleteById(accommodationsInfoId);
-        accommodationsInfoRep.flush();
     }
 
     @Override
     public void deleteAccommodationsInfo(AccommodationsInfo accommodationsInfo) {
-        if (accommodationsInfo == null){
-            return;
-        }
-        deleteAccommodationsInfoById(accommodationsInfo.getId());
+        accommodationsInfoRep.delete(accommodationsInfo);
     }
 
     @Override
     public void deleteAccommodationsInfoByHouseholdId(long householdId) {
-        Optional<Household> householdOptional = householdRep.findById(householdId);
-        Household householdResult = householdOptional.orElse(null);
-        if (householdResult == null){
-            return;
-        }
-        deleteAccommodationsInfo(householdResult.getAccommodationsInfo());
-        householdRep.flush();
+        accommodationsInfoRep.deleteAccommodationsInfoByHouseholdInAccommodationsInfoId(householdId);
     }
 
     @Override
     public void deleteAccommodationsInfoByHousehold(Household household) {
-        if(household == null){
-            return;
-        }
-        deleteAccommodationsInfoByHouseholdId(household.getId());
+        accommodationsInfoRep.deleteAccommodationsInfoByHouseholdInAccommodationsInfo(household);
     }
 
 
     @Override
-    public Household findLinkedHousehold(long accommodationsInfoId) {
-        Optional<AccommodationsInfo> accommodationsInfoOptional = accommodationsInfoRep.findById(accommodationsInfoId);
-        AccommodationsInfo accommodationsInfoResult = accommodationsInfoOptional.orElse(null);
-        if (accommodationsInfoResult == null){
-            return null;
-        }
-        return accommodationsInfoResult.getHouseholdInAccommodationsInfo();
+    public HouseholdDto findLinkedHousehold(long accommodationsInfoId) {
+        return householdRep.findHouseholdByAccommodationsInfoId(accommodationsInfoId)
+                .map(householdMapper::toHouseholdDto)
+                .orElse(null);
     }
 
     @Override
-    public Household findLinkedHousehold(AccommodationsInfo accommodationsInfo) {
-        return findLinkedHousehold(accommodationsInfo.getId());
+    public HouseholdDto findLinkedHousehold(AccommodationsInfo accommodationsInfo) {
+        return householdRep.findHouseholdByAccommodationsInfo(accommodationsInfo)
+                .map(householdMapper::toHouseholdDto)
+                .orElse(null);
     }
 
+
+    @Override
+    @Transactional
+    public void updateAccommodationsInfo(AccommodationsInfo accommodationsInfo) {
+        Optional<AccommodationsInfo> accommodationsInfoFromDB = accommodationsInfoRep.findById(accommodationsInfo.getId() == null? 0:accommodationsInfo.getId());
+        if (accommodationsInfoFromDB.isPresent())
+        {
+            accommodationsInfo.setHouseholdInAccommodationsInfo(accommodationsInfoFromDB.get().getHouseholdInAccommodationsInfo());
+            accommodationsInfoRep.save(accommodationsInfo);
+        }
+    }
 }

@@ -122,7 +122,7 @@
                         <input value="Украинский" th:if="(*{nativeLanguage}) == 4" class="form-control font-weight-bold" readonly>
                         <input value="Другой" th:if="(*{nativeLanguage}) == 5" class="form-control font-weight-bold" readonly>
                     </div>
-                    <div th:if="(*{nationality}) == 6" class="col-5 text-center">
+                    <div th:if="(*{nativeLanguage}) == 6" class="col-5 text-center">
                         <small class="text-muted align-bottom">Укажите название</small>
                         <input class="form-control" th:field="*{nameOfNativeLanguage}">
                     </div>
@@ -137,7 +137,7 @@
                         <input value="Украинском" th:if="(*{speakingLanguage}) == 4" class="form-control font-weight-bold" readonly>
                         <input value="Другом" th:if="(*{speakingLanguage}) == 5" class="form-control font-weight-bold" readonly>
                     </div>
-                    <div th:if="(*{nationality}) == 6" class="col-5 text-center">
+                    <div th:if="(*{speakingLanguage}) == 6" class="col-5 text-center">
                         <small class="text-muted align-bottom">Укажите название</small>
                         <input class="form-control" th:field="*{nameOfSpeakingLanguage}">
                     </div>
@@ -244,13 +244,13 @@
 
                     <div th:if="(*{livingCountryInfo.nameOfCountryYouCameFrom}) != ''" class="form-row mt-2">
                         <span class="align-bottom mt-1">14.1. Укажите название страны Вы прибыли в Республику Беларусь на постоянное место жительства</span>
-                        <input class="form-control font-weight-bold" th:value="*{livingPlaceInfo.nameOfCountryYouCameFrom}" readonly/>
+                        <input class="form-control font-weight-bold" th:value="*{livingCountryInfo.nameOfCountryYouCameFrom}" readonly/>
                     </div>
 
                     <div th:if="(*{livingCountryInfo.arrivalPeriod}) != null" class="form-row mt-2">
                         <div class="col-7 pl-0">
                             <span class="align-bottom mt-1">14.2. Укажите период прибытия (месяц, год)</span>
-                            <input class="form-control font-weight-bold" th:value="*{livingPlaceInfo.arrivalPeriod}" readonly/>
+                            <input class="form-control font-weight-bold" th:value="*{livingCountryInfo.arrivalPeriod}" readonly/>
                         </div>
                     </div>
 

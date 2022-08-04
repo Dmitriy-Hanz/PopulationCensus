@@ -11,6 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import populationcensus.Consts;
+import populationcensus.dto.FullAddressInfoDto;
+import populationcensus.dto.HouseholdDto;
+import populationcensus.dto.mapper.FullAddressInfoMapper;
+import populationcensus.dto.mapper.HouseholdMapper;
 import populationcensus.repository.entity.FullAddressInfo;
 import populationcensus.repository.entity.Household;
 import populationcensus.repository.repositories.FullAddressInfoRep;
@@ -31,12 +35,18 @@ public class FullAddressInfoServiceTest {
     private FullAddressInfoRep fullAddressInfoRep;
     @Mock
     private HouseholdRep householdRep;
+    @Mock
+    private FullAddressInfoMapper fullAddressInfoMapper;
+    @Mock
+    private HouseholdMapper householdMapper;
 
     @InjectMocks
     private FullAddressInfoServiceImpl fullAddressInfoService;
 
     private Household household;
+    private HouseholdDto householdDto;
     private FullAddressInfo fullAddressInfo;
+    private FullAddressInfoDto fullAddressInfoDto;
 
     @Before
     public void presets(){
@@ -47,12 +57,15 @@ public class FullAddressInfoServiceTest {
                 .build();
 
         fullAddressInfo = FullAddressInfo.builder()
-                .id(Consts.Test.FULL_ADDRESS_INFO_ID)
+                .id(Consts.Test.ACCOMMODATIONS_INFO_ID)
                 .villageName(Consts.Test.FULL_ADDRESS_INFO_VILLAGE_NAME)
                 .householdInFullAddressInfo(household)
                 .build();
 
         household.setFullAddressInfo(fullAddressInfo);
+
+        householdDto = new HouseholdDto(household);
+        fullAddressInfoDto = new FullAddressInfoDto(fullAddressInfo);
     }
 
     @Test
@@ -89,34 +102,34 @@ public class FullAddressInfoServiceTest {
     @Test
     public void findFullAddressInfoByIdTest() {
         when(fullAddressInfoRep.findById(any())).thenReturn(Optional.of(fullAddressInfo));
+        when(fullAddressInfoMapper.toFullAddressInfoDto(any())).thenReturn(fullAddressInfoDto);
 
-        Optional<FullAddressInfo> result = Optional.of(fullAddressInfoService.findFullAddressInfo(fullAddressInfo.getId()));
+        FullAddressInfoDto result = fullAddressInfoService.findFullAddressInfo(fullAddressInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),fullAddressInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,fullAddressInfoDto);
     }
 
     @Test
     public void findFullAddressInfoByHouseholdIdTest() {
-        when(householdRep.findById(any())).thenReturn(Optional.of(household));
+        when(fullAddressInfoRep.findFullAddressInfoByHouseholdInFullAddressInfoId(Consts.Test.HOUSEHOLD_ID)).thenReturn(Optional.of(fullAddressInfo));
+        when(fullAddressInfoMapper.toFullAddressInfoDto(any())).thenReturn(fullAddressInfoDto);
 
-        Optional<FullAddressInfo> result = Optional.of(fullAddressInfoService.findFullAddressInfoByHouseholdId(fullAddressInfo.getHouseholdInFullAddressInfo().getId()));
+        FullAddressInfoDto result = fullAddressInfoService.findFullAddressInfoByHouseholdId(fullAddressInfo.getHouseholdInFullAddressInfo().getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),fullAddressInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,fullAddressInfoDto);
     }
 
     @Test
     public void findFullAddressInfoByHouseholdTest() {
-        when(householdRep.findById(any())).thenReturn(Optional.of(household));
+        when(fullAddressInfoRep.findFullAddressInfoByHouseholdInFullAddressInfo(any())).thenReturn(Optional.of(fullAddressInfo));
+        when(fullAddressInfoMapper.toFullAddressInfoDto(any())).thenReturn(fullAddressInfoDto);
 
-        Optional<FullAddressInfo> result = Optional.of(fullAddressInfoService.findFullAddressInfoByHousehold(fullAddressInfo.getHouseholdInFullAddressInfo()));
+        FullAddressInfoDto result = fullAddressInfoService.findFullAddressInfoByHousehold(fullAddressInfo.getHouseholdInFullAddressInfo());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),fullAddressInfo);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,fullAddressInfoDto);
     }
 
 
@@ -163,23 +176,35 @@ public class FullAddressInfoServiceTest {
 
     @Test
     public void findLinkedHouseholdByIdTest() {
-        when(fullAddressInfoRep.findById(any())).thenReturn(Optional.of(fullAddressInfo));
+        when(householdRep.findHouseholdByFullAddressInfoId(any())).thenReturn(Optional.of(household));
+        when(householdMapper.toHouseholdDto(any())).thenReturn(householdDto);
 
-        Optional<Household> result = Optional.of(fullAddressInfoService.findLinkedHousehold(fullAddressInfo.getId()));
+        HouseholdDto result = fullAddressInfoService.findLinkedHousehold(fullAddressInfo.getId());
 
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),household);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,householdDto);
     }
 
     @Test
     public void findLinkedHouseholdByEntityTest() {
+        when(householdRep.findHouseholdByFullAddressInfo(any())).thenReturn(Optional.of(household));
+        when(householdMapper.toHouseholdDto(any())).thenReturn(householdDto);
+
+        HouseholdDto result = fullAddressInfoService.findLinkedHousehold(fullAddressInfo);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,householdDto);
+    }
+
+
+    @Test
+    public void updateFullAddressInfoTest() {
         when(fullAddressInfoRep.findById(any())).thenReturn(Optional.of(fullAddressInfo));
-
-        Optional<Household> result = Optional.of(fullAddressInfoService.findLinkedHousehold(fullAddressInfo));
-
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get(),household);
+        try {
+            fullAddressInfoService.updateFullAddressInfo(fullAddressInfo);
+        } catch (Exception e){
+            Assertions.fail();
+        }
+        Assertions.assertTrue(true);
     }
 }
