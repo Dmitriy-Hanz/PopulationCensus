@@ -53,7 +53,10 @@ public class AdminMainPageController {
     public String navCensusResultsPage(){
         return "redirect:adminMain/censusResults";
     }
-
+    @PostMapping(value = "/navRequestsList")
+    public String navRequestsListPage(){
+        return "redirect:adminMain/requestsList";
+    }
 
 
     @PostMapping(value = "/deleteCurrentUser")
